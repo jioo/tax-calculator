@@ -1,1 +1,1 @@
-# salary-calculator
+# Salary Calculator
