@@ -6,8 +6,19 @@ const PrerenderSPAPlugin = require('prerender-spa-plugin')
 module.exports = {
   // https://cli.vuejs.org/guide/deployment.html#github-pages
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/salary-calculator/'
+    ? '/tax-calculator/'
     : '/',
+
+  css: {
+    loaderOptions: {
+      // import sass file in every component
+      sass: {
+        data: `
+          @import "@/assets/scss/app.scss";
+        `
+      }
+    }
+  },
 
   configureWebpack: {
     plugins: [
@@ -46,11 +57,11 @@ module.exports = {
       // To match cross-origin requests, use a RegExp that matches
       // the start of the origin:
       runtimeCaching: [{
-        urlPattern: new RegExp('^https://jioo\.github\.io/salary-calculator/'),
+        urlPattern: new RegExp('^https://jioo\.github\.io/tax-calculator/'),
         handler: 'staleWhileRevalidate',
         options: {
           // Use a custom cache name for this route.
-          cacheName: 'salary-calculator',
+          cacheName: 'tax-calculator',
           // Configure custom cache expiration.
           expiration: {
             maxEntries: 60,

@@ -8,10 +8,10 @@ export default {
 
   data() {
     return {
-      title: 'Salary Calculator',
+      title: `${new Date().getFullYear()} Philippines Tax Calculator`,
       description: '',
-      pageUrl: 'https://jioo.github.io/salary-calculator/',
-      imageUrl: 'https://jioo.github.io/salary-calculator/img/logo-200x200.png',
+      pageUrl: 'https://jioo.github.io/tax-calculator/',
+      imageUrl: 'https://jioo.github.io/tax-calculator/img/logo-200x200.png',
       imageType: 'image/png',
       imageWidth: '200',
       imageHeight: '200',
@@ -23,7 +23,6 @@ export default {
   metaInfo() {
     return {
       title: `${this.title}`,
-      titleTemplate: '%s | Software Developer',
       meta: [
         // Regular Meta Info
         { name: 'description', content: `${this.description}` },

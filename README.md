@@ -1,1 +1,1 @@
-# Salary Calculator
+# Philippine Tax Calculator
