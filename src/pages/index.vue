@@ -63,7 +63,24 @@
 </template>
 
 <script>
-export default {};
+import taxCalculator from '@/utils/2018-to-2022-tax-calculator'
+import contributionCalculator from '@/utils/contributions'
+
+export default {
+  created () {
+    let salary = 30000
+
+    const contributions = contributionCalculator(salary)
+    const taxable = salary - contributions
+    console.log('contributions: ',contributions)
+    console.log('taxable: ',taxable)
+
+    const tax = taxCalculator(taxable)
+    
+    console.log('withholding tax: ', tax.toFixedFloat(2))
+    console.log( 'net pay: ', (salary - tax) )
+  }
+};
 </script>
 
 <style lang="scss">
