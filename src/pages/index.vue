@@ -70,7 +70,7 @@ export default {
   methods: {
     calculateContrubutions(contributions) {
       
-      const status = 'government employee' // private employee, government employee, self employed
+      const status = 'private employee' // private employee, government employee, self employed
       const result = Object.keys(contributions)
         .filter(key => (status === 'government employee') ? key !== 'sss' : key !== 'gsis')
         .reduce((previous, key) => {
@@ -84,15 +84,16 @@ export default {
   created () {
     let salary = 30000
 
-    // const contributions = contributionCalculator(salary)
-    // const taxable = salary - contributions
-    // console.log('contributions: ', contributions) // 1093.8
-    // console.log('taxable: ', taxable) // 28906.2
+    let contributions = contributionCalculator(salary)
+    contributions = this.calculateContrubutions(contributions)
+    const taxable = salary - contributions
+    console.log('contributions: ', contributions) // 1093.8
+    console.log('taxable: ', taxable) // 28906.2
 
-    // const tax = taxCalculator(taxable) 
+    const tax = taxCalculator(taxable) 
     
-    // console.log('withholding tax: ', tax.toFixedFloat(2)) // 1614.64
-    // console.log( 'net pay: ', (salary - tax) ) // 28385.36
+    console.log('withholding tax: ', tax.toFixedFloat(2)) // 1614.64
+    console.log( 'net pay: ', (salary - tax) ) // 28385.36
 
 
     // const data = { from: 166667, to: 666666, adjustement: 500, computation: function () { return this.adjustement } }
@@ -103,7 +104,7 @@ export default {
     // console.log('total: ',  contributions)
     // console.log(this.calculateContrubutions(contributions))
 
-    console.log(taxCalculator)
+    // console.log(taxCalculator)
   }
 };
 </script>

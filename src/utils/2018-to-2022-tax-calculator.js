@@ -1,4 +1,4 @@
-import { computationFromTable } from './common'
+import { computation, computationFromTable } from './common'
 
 /**
  * 
@@ -17,13 +17,7 @@ const monthlyTaxTable = [
    * Income Tax rate ----------- 0%
    * 
    */
-  { 
-    from: 0, 
-    to: 20833, 
-    sum: 0, 
-    deduct: 0, 
-    computation: 0
-  },
+  { from: 0,  to: 20833,  taxableCompensation: 0, percentage: 0, excessOver: 0, computation, },
 
   /**
    * 
@@ -32,15 +26,7 @@ const monthlyTaxTable = [
    * Income Tax rate ----------- 20% of the excess over ₱20,833
    * 
    */
-  { 
-    from: 20833, 
-    to: 33332, 
-    sum: 0, 
-    deduct: 20833, 
-    computation: function (salary) { 
-      return 0.20 * (salary - this.deduct)
-    }
-  },
+  { from: 20833, to: 33332, taxableCompensation: 0, percentage: 20, excessOver: 20833, computation, },
   
   /**
    * 
@@ -49,15 +35,7 @@ const monthlyTaxTable = [
    * Income Tax rate ----------- ₱2,500 + 25% of the excess over ₱33,333
    * 
    */
-  { 
-    from: 33333, 
-    to: 66666, 
-    sum: 2500, 
-    deduct: 33333, 
-    computation: function (salary) { 
-      return this.sum + ( 0.25 * (salary - this.deduct) ) 
-    } 
-  },
+  { from: 33333, to: 66666, taxableCompensation: 2500, percentage: 25, excessOver: 33333, computation, },
 
   /**
    * 
@@ -66,15 +44,7 @@ const monthlyTaxTable = [
    * Income Tax rate ----------- ₱10,833.33 + 30% of the excess over ₱66,667
    * 
    */
-  { 
-    from: 66667, 
-    to: 166666, 
-    sum: 10833.33, 
-    deduct: 66667, 
-    computation: function (salary) { 
-      return this.sum + ( 0.30 * (salary - this.deduct) ) 
-    } 
-  },
+  { from: 66667, to: 166666, taxableCompensation: 10833.33, percentage: 30, excessOver: 66667, computation, },
 
   /**
    * 
@@ -83,15 +53,7 @@ const monthlyTaxTable = [
    * Income Tax rate ----------- ₱40,833.33 + 32% of the excess over ₱166,667
    * 
    */
-  { 
-    from: 166667, 
-    to: 666666, 
-    sum: 40833.33, 
-    deduct: 166667, 
-    computation: function (salary) { 
-      return this.sum + ( 0.32 * (salary - this.deduct) ) 
-    } 
-  },
+  { from: 166667, to: 666666, taxableCompensation: 40833.33, percentage: 32, excessOver: 166667, computation, },
 
   /**
    * Bracket: ------------------- 6
@@ -99,15 +61,7 @@ const monthlyTaxTable = [
    * Income Tax rate ----------- ₱200,833.33 + 35% of the excess over ₱666,667
    * 
    */
-  { 
-    from: 666667, 
-    to: Number.MAX_SAFE_INTEGER, 
-    sum: 200833.33, 
-    deduct: 666667, 
-    computation: function (salary) { 
-      return this.sum + ( 0.35 * (salary - this.deduct) ) 
-    } 
-  },
+  { from: 666667, to: Number.MAX_SAFE_INTEGER, taxableCompensation: 200833.33, percentage: 35, excessOver: 666667, computation, },
 ]
 
 /**
@@ -138,16 +92,16 @@ const semiMonthlyTaxTable = () => {
     .map((item, index) => {
       let from = (item.from / 2).toFixedFloat(0),
           to = (item.to !== Number.MAX_SAFE_INTEGER) ? (item.to / 2).toFixedFloat(0) : item.to,
-          sum = (item.sum / 2).toFixedFloat(0),
-          deduct = (item.deduct / 2).toFixedFloat(0)
+          taxableCompensation = (item.taxableCompensation / 2).toFixedFloat(0),
+          excessOver = (item.excessOver / 2).toFixedFloat(0)
 
       if (index === 2) {
         to -= 1
       }
 
       if (index === 3) {
-        sum = (item.sum / 2).toFixedFloat(2)
-        deduct -= 1
+        taxableCompensation = (item.taxableCompensation / 2).toFixedFloat(2)
+        excessOver -= 1
         to = (item.to / 2) - 1
         from = parseInt(item.from / 2)
       }
@@ -155,15 +109,16 @@ const semiMonthlyTaxTable = () => {
       if (index === 4 || index === 5) {
         from -= 1
         to -= 1
-        sum = (item.sum / 2).toFixedFloat(2)
-        deduct -= 1
+        taxableCompensation = (item.taxableCompensation / 2).toFixedFloat(2)
+        excessOver -= 1
       } 
 
       return {
         from: from,
         to: to,
-        sum: sum,
-        deduct: deduct,
+        taxableCompensation: taxableCompensation,
+        percentage: item.percentage,
+        excessOver: excessOver,
         computation: item.computation,
       }
     })
@@ -195,13 +150,16 @@ const annualTaxTable = () => {
       return {
         from: (item.from * 12).toNearestHundredth() + 1,
         to: (item.to !== Number.MAX_SAFE_INTEGER) ? (item.to * 12).toNearestHundredth() : item.to,
-        sum: (item.sum * 12).toNearestHundredth(),
-        deduct: (item.deduct * 12).toNearestHundredth(),
+        taxableCompensation: (item.taxableCompensation * 12).toNearestHundredth(),
+        excessOver: (item.excessOver * 12).toNearestHundredth(),
         computation: item.computation,
       }
     })
 }
 
+const weeklyTaxTable = () => {
+  return 
+}
 
 /**
  * 
@@ -218,8 +176,8 @@ const annualTaxTable = () => {
  */
 const selfEmployedTax = salary => 0.08 * salary
 
-// const result = (salary) => computationFromTable(salary, monthlyTaxTable)
+const result = (salary) => computationFromTable(salary, monthlyTaxTable)
 
-const result = semiMonthlyTaxTable()
+// const result = semiMonthlyTaxTable()
 
 export default result
