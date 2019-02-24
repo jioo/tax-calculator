@@ -123,24 +123,47 @@ const monthlyTaxTable = [
  * 
  * Generated Result:
  * 
- * | Bracket 	| Compensation Range  	| Income Tax Rate                            	|
- * |---------	|---------------------	|--------------------------------------------	|
- * | 1       	| ₱10,417 and below   	| 0%                                         	|
- * | 2       	| ₱10,417 to ₱16,666  	| 20% of the excess over ₱10,417             	|
- * | 3       	| ₱16,667 to ₱33,333  	| ₱1,250 + 25% of the excess over ₱16,667    	|
- * | 4       	| ₱33,334 to ₱83,333  	| ₱5,417 + 30% of the excess over ₱33,334    	|
- * | 5       	| ₱83,334 to ₱333,333 	| ₱20,417 + 32% of the excess over ₱83,334   	|
- * | 6       	| Above ₱333,334      	| ₱100,417 + 35% of the excess over ₱333,334 	|
+ * | Bracket 	| Compensation Range  	| Income Tax Rate                            	  |
+ * |---------	|---------------------	|---------------------------------------------- |
+ * | 1       	| ₱10,417 and below   	| 0%                                         	  |
+ * | 2       	| ₱10,417 to ₱16,666  	| 20% of the excess over ₱10,417             	  |
+ * | 3       	| ₱16,667 to ₱33,332  	| ₱1,250 + 25% of the excess over ₱16,667    	  |
+ * | 4       	| ₱33,333 to ₱83,332  	| ₱5,416.67 + 30% of the excess over ₱33,333    |
+ * | 5       	| ₱83,333 to ₱333,332 	| ₱20,416.67 + 32% of the excess over ₱83,333   |
+ * | 6       	| Above ₱333,333      	| ₱100,416.67 + 35% of the excess over ₱333,333 |
  * 
  */
 const semiMonthlyTaxTable = () => {
   return monthlyTaxTable
-    .map(item => {
+    .map((item, index) => {
+      let from = (item.from / 2).toFixedFloat(0),
+          to = (item.to !== Number.MAX_SAFE_INTEGER) ? (item.to / 2).toFixedFloat(0) : item.to,
+          sum = (item.sum / 2).toFixedFloat(0),
+          deduct = (item.deduct / 2).toFixedFloat(0)
+
+      if (index === 2) {
+        to -= 1
+      }
+
+      if (index === 3) {
+        sum = (item.sum / 2).toFixedFloat(2)
+        deduct -= 1
+        to = (item.to / 2) - 1
+        from = parseInt(item.from / 2)
+      }
+
+      if (index === 4 || index === 5) {
+        from -= 1
+        to -= 1
+        sum = (item.sum / 2).toFixedFloat(2)
+        deduct -= 1
+      } 
+
       return {
-        from: (item.from / 2).toFixedFloat(0),
-        to: (item.to !== Number.MAX_SAFE_INTEGER) ? (item.to / 2).toFixedFloat(0) : item.to,
-        sum: (item.sum / 2).toFixedFloat(0),
-        deduct: (item.deduct / 2).toFixedFloat(0),
+        from: from,
+        to: to,
+        sum: sum,
+        deduct: deduct,
         computation: item.computation,
       }
     })

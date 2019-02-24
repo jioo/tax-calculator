@@ -98,18 +98,12 @@ export default {
     // const data = { from: 166667, to: 666666, adjustement: 500, computation: function () { return this.adjustement } }
     // console.log(data.computation())
 
-    /**
-     * Can't use Self refencing object in Array function
-     * 
-     * `computation: () => this.sum` returns undefined
-     */
-    // const data = { from: 166667, to: 666666, sum: 500, computation: function () { return this.sum } }
-    // console.log( data.computation() )
+    // let contributions = contributionCalculator(salary)
+    // console.log(contributions)
+    // console.log('total: ',  contributions)
+    // console.log(this.calculateContrubutions(contributions))
 
-    let contributions = contributionCalculator(salary)
-    console.log(contributions)
-    console.log('total: ',  contributions)
-    console.log(this.calculateContrubutions(contributions))
+    console.log(taxCalculator)
   }
 };
 </script>
