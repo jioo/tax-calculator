@@ -19,13 +19,10 @@ const sssTable = () => {
         RANGE_INC = 500
   
   /**
+   *  
+   * the Range of Compensation increments by 500 from above ₱1,250.
    * 
-   * because I'm too lazy to write 31 rows of SSS contribution table, I made a loop to 
-   * generate all of them. And here are my observations:
-   * 
-   * - the Range of Compensation increments by 500 from above ₱1,250.
-   * 
-   * - contribution starts from 36.30 then increments by (18.2), but for every 3rd 
+   * contribution starts from 36.30 then increments by (18.2), but for every 3rd 
    * row the increment value is changed from (18.1).
    * 
    */
@@ -125,11 +122,16 @@ const philhealthTable = [
 
 const compute = (salary) => {
   const sss = computationFromTable(salary, sssTable()),
+        gsis = gsisContribution(salary),
         pagibig = pagibigContribution(salary),
         philhealth = computationFromTable(salary, philhealthTable)
 
-  console.log(`sss: ${sss}`, `pagibig: ${pagibig}`, `philhealth: ${philhealth}`)
-  return sss + pagibig + philhealth
+  return {
+    sss,
+    gsis,
+    pagibig,
+    philhealth,
+  }
 }
 
 export default compute

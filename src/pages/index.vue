@@ -67,18 +67,49 @@ import taxCalculator from '@/utils/2018-to-2022-tax-calculator'
 import contributionCalculator from '@/utils/contributions'
 
 export default {
+  methods: {
+    calculateContrubutions(contributions) {
+      
+      const status = 'government employee' // private employee, government employee, self employed
+      const result = Object.keys(contributions)
+        .filter(key => (status === 'government employee') ? key !== 'sss' : key !== 'gsis')
+        .reduce((previous, key) => {
+          return previous + contributions[key];
+        }, 0);
+
+      return result
+    }
+  },
+
   created () {
     let salary = 30000
 
-    const contributions = contributionCalculator(salary)
-    const taxable = salary - contributions
-    console.log('contributions: ',contributions)
-    console.log('taxable: ',taxable)
+    // const contributions = contributionCalculator(salary)
+    // const taxable = salary - contributions
+    // console.log('contributions: ', contributions) // 1093.8
+    // console.log('taxable: ', taxable) // 28906.2
 
-    const tax = taxCalculator(taxable)
+    // const tax = taxCalculator(taxable) 
     
-    console.log('withholding tax: ', tax.toFixedFloat(2))
-    console.log( 'net pay: ', (salary - tax) )
+    // console.log('withholding tax: ', tax.toFixedFloat(2)) // 1614.64
+    // console.log( 'net pay: ', (salary - tax) ) // 28385.36
+
+
+    // const data = { from: 166667, to: 666666, adjustement: 500, computation: function () { return this.adjustement } }
+    // console.log(data.computation())
+
+    /**
+     * Can't use Self refencing object in Array function
+     * 
+     * `computation: () => this.sum` returns undefined
+     */
+    // const data = { from: 166667, to: 666666, sum: 500, computation: function () { return this.sum } }
+    // console.log( data.computation() )
+
+    let contributions = contributionCalculator(salary)
+    console.log(contributions)
+    console.log('total: ',  contributions)
+    console.log(this.calculateContrubutions(contributions))
   }
 };
 </script>
