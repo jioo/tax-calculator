@@ -90,37 +90,27 @@ const pagibigContribution = (salary) => {
  * 
  * https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf
  * 
+ * 
+ * | Monthly Salary Range        	| Monthly Premium         	| Personal Share        	| Employer Share        	|
+ * |-----------------------------	|-------------------------	|-----------------------	|-----------------------	|
+ * | ₱10,000 and below           	| ₱275.00                 	| ₱137.50               	| ₱137.50               	|
+ * | ₱10,000.01 up to ₱39,999.99 	| ₱275.50 up to ₱1,099.99 	| ₱137.50 up to ₱549.99 	| ₱137.50 up to ₱549.99 	|
+ * | ₱40,000 and above           	| ₱1,100.00               	| ₱550.00               	| ₱550.00               	|
+ * 
  */
 const philhealthTable = [
-  /**
-   * 
-   * Monthly Salary Range: -------- ₱10,000 and below
-   * Monthly Premium: ------------- ₱275.00
-   * Personal/Employer Share: ----- ₱137.50
-   * 
-   */
   { from: 0, to: 10000, computation: 137.50 },
-
-  /**
-   * 
-   * Monthly Salary Range: -------- ₱10,000.01 up to ₱39,999.99
-   * Monthly Premium: ------------- ₱275.50 up to ₱1,099.99
-   * Personal/Employer Share: ----- ₱137.50 up to ₱549.99
-   * 
-   */
   { from: 10000.01, to: 39999.99, computation: (salary) => (salary * 0.0275) / 2 },
-
-  /**
-   * 
-   * Monthly Salary Range: -------- ₱40,000 and above
-   * Monthly Premium: ------------- ₱1,100.00
-   * Personal/Employer Share: ----- ₱550.00
-   * 
-   */
   { from: 40000, to: Number.MAX_SAFE_INTEGER, computation: 550 },
 ]
 
-const compute = (salary) => {
+/**
+ * 
+ * Calculate all contributions
+ * 
+ * @param {number} salary 
+ */
+const contributions = (salary) => {
   const sss = computationFromTable(salary, sssTable()),
         gsis = gsisContribution(salary),
         pagibig = pagibigContribution(salary),
@@ -134,4 +124,4 @@ const compute = (salary) => {
   }
 }
 
-export default compute
+export default contributions
