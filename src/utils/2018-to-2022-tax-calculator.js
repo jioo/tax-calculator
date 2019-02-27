@@ -1,7 +1,6 @@
 import { computation, computationFromTable } from './common'
 
 /**
- * 
  * ------------------------------------------------------
  *  Annual Tax Table
  * ------------------------------------------------------
@@ -30,7 +29,6 @@ const annualTaxTable = [
 ]
 
 /**
- * 
  * ------------------------------------------------------
  *  Monthly Tax Table
  * ------------------------------------------------------
@@ -59,7 +57,6 @@ const monthlyTaxTable = [
 ]
 
 /**
- * 
  * ------------------------------------------------------
  *  Semi Monthly Tax Table
  * ------------------------------------------------------
@@ -88,7 +85,6 @@ const semiMonthlyTaxTable = [
 ]
 
 /**
- * 
  * ------------------------------------------------------
  *  Weekly Tax Table
  * ------------------------------------------------------
@@ -118,7 +114,6 @@ const weeklyTaxTable = [
 
 
 /**
- * 
  * ------------------------------------------------------
  *  Daily Tax Table
  * ------------------------------------------------------
@@ -147,7 +142,6 @@ const daliyTaxTable = [
 ]
 
 /**
- * 
  * ------------------------------------------------------
  *  8% Withholding Tax for Self-employed and Professionals
  * ------------------------------------------------------
@@ -156,12 +150,41 @@ const daliyTaxTable = [
  * (for self-employed and professionals earning less than P720,000 income every year) 
  * or 15% (for those earning more than P720,000 per year).
  * 
- * https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/
+ * https://www.pinoymoneytalk.com/8-percent-tax-rate-bir-rmo-23-2018/
  * 
+ * 
+ * @param {number} salary Annual Salary
  */
-const selfEmployedTax = salary => 0.08 * salary
+const selfEmployedTax = salary =>  0.08 * (salary - 250000)
 
-const result = (salary) => computationFromTable(salary, monthlyTaxTable)
+/**
+ * 
+ * @param {array} data 
+ */
+const result = (data) => {
+  const { 
+    totalContribution, 
+    annualSalary, 
+    monthlySalary,
+    semiMonthlySalary,
+    weeklySalary,
+    dailySalary 
+  } = data
+  
+  const annually = computationFromTable(annualSalary, annualTaxTable),
+        monthly = computationFromTable(monthlySalary - totalContribution, monthlyTaxTable),
+        semiMonthly = computationFromTable(semiMonthlySalary, semiMonthlyTaxTable),
+        weekly = computationFromTable(weeklySalary, weeklyTaxTable),
+        daily = computationFromTable(dailySalary, daliyTaxTable)
+
+  return {
+    annually,
+    monthly,
+    semiMonthly,
+    weekly,
+    daily,
+  }
+}
 
 // const result = weeklyTaxTable()
 

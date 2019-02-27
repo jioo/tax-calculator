@@ -28,23 +28,109 @@
 			</div>
 		</div>
 		<!-- ./Off Canvas -->
-    
-    <div class="uk-section uk-section-default">
-        <div class="uk-container">
-          <div class="uk-child-width-1-2@m " uk-grid="masonry: true">
-            <div>
-                <div class="uk-card uk-card-default uk-flex uk-flex-center uk-flex-middle" style="height: 100px">Item</div>
-            </div>
-            <div>
-                <div class="uk-card uk-card-default uk-flex uk-flex-center uk-flex-middle" style="height: 130px">Item</div>
-            </div>
-          </div>
-        </div>
-    </div>
 
     <div class="uk-section uk-section-default">
       <div class="uk-container">
+
+        <div class="uk-margin-large">
+          <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3>
+        </div>
         
+        <!-- Card -->
+        <div class="uk-card uk-card-default uk-card-body">
+          <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
+            
+            <!-- Grid -->
+            <div>
+              <h4 class="uk-heading-line uk-text-bold uk-text-center@m"><span>Salary</span></h4>
+
+              <div class="uk-form-horizontal">
+                <!-- Annualy Salary -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">Annual Salary</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="salary.annually" 
+                      @input="onSalaryInput('Annual')"
+                    ></vue-numeric>
+                  </div>
+                </div>
+
+                <!-- Monthly Salary -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">Monthly Salary</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="salary.monthly" 
+                      @input="onSalaryInput('Month')"
+                      @blur="onSalaryBlur"
+                    ></vue-numeric>
+                  </div>
+                </div>
+
+                <!-- Semi Monthly Salary -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">Semi Monthly Salary</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="salary.semiMonthly" 
+                      @input="onSalaryInput('Semi Month')"
+                    ></vue-numeric>
+                  </div>
+                </div>
+
+                <!-- Weekly Salary -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">Weekly Salary</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="salary.weekly" 
+                      @input="onSalaryInput('Week')"
+                    ></vue-numeric>
+                  </div>
+                </div>
+
+                <!-- Daily Salary -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">Daily Salary</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="salary.daily" 
+                      @input="onSalaryInput('Day')"
+                    ></vue-numeric>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- ./Grid -->
+            
+            <!-- Grid -->
+            <div>
+              <h4 class="uk-heading-line uk-text-bold uk-text-center@m"><span>Monthly Contributions</span></h4>
+              
+            </div>
+            <!-- ./Grid -->
+
+          </div>
+        </div>
+        <!-- ./Card -->
+
       </div>
     </div>
 
@@ -69,29 +155,82 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import taxCalculator from '@/utils/2018-to-2022-tax-calculator'
 import contributionCalculator from '@/utils/contributions'
+import { convertSalary } from '@/utils/common'
 
 export default {
+  data () {
+    return {
+      salary: {
+        annually: 0,
+        monthly: 0,
+        semiMonthly: 0,
+        weekly: 0,
+        daily: 0,
+      },
+      config: {
+        currency: '₱',
+        precision: 2,
+      },
+    }
+  },
+
+  computed: {
+    ...mapGetters(['workingDaysPerWeek', 'type'])
+  },
+
   methods: {
-    calculateContrubutions(contributions) {
-      
-      const status = 'private employee' // private employee, government employee, self employed
+    onSalaryInput (salaryPeriod) {
+      this.salary = convertSalary(salaryPeriod, this.salary)
+    },
+
+    calculateTotalContrubutions (contributions) {
+      let employeeType = this.type // Private Employee, Government Employee, Self Employed
       const result = Object.keys(contributions)
-        .filter(key => (status === 'government employee') ? key !== 'sss' : key !== 'gsis')
+        .filter(key => (employeeType === 'Government Employee') ? key !== 'sss' : key !== 'gsis')
         .reduce((previous, key) => {
           return previous + contributions[key];
         }, 0);
 
       return result
+    },
+
+    onSalaryBlur () {
+      const monthlySalary = this.salary.monthly,
+            contributions = contributionCalculator(monthlySalary),
+            totalContributions = this.calculateTotalContrubutions(contributions)
+
+      this.$store.dispatch('updateState', {
+        type: this.type,
+        salary: monthlySalary,
+        contributions,
+        totalContributions,
+      })
     }
   },
+
+  // watch: {
+  //   'salary.monthly' (monthlySalary) {
+  //     const contributions = contributionCalculator(monthlySalary),
+  //           totalContributions = this.calculateTotalContrubutions(contributions)
+
+  //     this.$store.dispatch('updateState', {
+  //       type: this.type,
+  //       salary: monthlySalary,
+  //       contributions,
+  //       totalContributions,
+  //     })
+  //   }
+  // },
 
   created () {
     let salary = 30000
 
     // let contributions = contributionCalculator(salary)
     // contributions = this.calculateContrubutions(contributions)
+    
     // const taxable = salary - contributions
     // console.log('contributions: ', contributions) // 1093.8
     // console.log('taxable: ', taxable) // 28906.2
@@ -110,7 +249,7 @@ export default {
     // console.log('total: ',  contributions)
     // console.log(this.calculateContrubutions(contributions))
 
-    console.log(taxCalculator)
+    // console.log(taxCalculator)
   }
 };
 </script>

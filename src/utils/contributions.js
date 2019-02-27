@@ -1,7 +1,6 @@
 import { computationFromTable } from './common'
 
 /**
- * 
  * ------------------------------------------------------
  *  (SSS) Social Security System
  * ------------------------------------------------------
@@ -52,7 +51,6 @@ const sssTable = () => {
 }
 
 /**
- * 
  * ------------------------------------------------------
  *  (GSIS) Government Service Insurance System
  * ------------------------------------------------------
@@ -63,7 +61,6 @@ const sssTable = () => {
 const gsisContribution = (salary) => 0.09 * salary 
 
 /**
- * 
  * ------------------------------------------------------
  *  (PAGIBIG) Pagtutulungan sa Kinabukasan: Ikaw, Bangko, 
  *  Industria at Gobyerno
@@ -83,7 +80,6 @@ const pagibigContribution = (salary) => {
 }
 
 /**
- * 
  * ------------------------------------------------------
  *  (Philhealth) Philippine Health Insurance Corporation
  * ------------------------------------------------------
@@ -105,16 +101,15 @@ const philhealthTable = [
 ]
 
 /**
- * 
- * Calculate all contributions
+ * Caculate each contributions
  * 
  * @param {number} salary 
  */
 const contributions = (salary) => {
-  const sss = computationFromTable(salary, sssTable()),
-        gsis = gsisContribution(salary),
-        pagibig = pagibigContribution(salary),
-        philhealth = computationFromTable(salary, philhealthTable)
+  const sss = computationFromTable(salary, sssTable()).toFixedFloat(2),
+        gsis = gsisContribution(salary).toFixedFloat(2),
+        pagibig = pagibigContribution(salary).toFixedFloat(2),
+        philhealth = computationFromTable(salary, philhealthTable).toFixedFloat(2)
 
   return {
     sss,
