@@ -1,4 +1,5 @@
-import { computation, computationFromTable } from './common'
+import { computation, computationFromTable, convertPeriodically } from './common'
+import store from '@/store'
 
 /**
  * ------------------------------------------------------
@@ -158,34 +159,23 @@ const daliyTaxTable = [
 const selfEmployedTax = salary =>  0.08 * (salary - 250000)
 
 /**
+ * Compute withholding tax for self employed, private or government employee
  * 
- * @param {array} data 
+ * @param {array} monthlySalary 
  */
-const result = (data) => {
-  const { 
-    totalContribution, 
-    annualSalary, 
-    monthlySalary,
-    semiMonthlySalary,
-    weeklySalary,
-    dailySalary 
-  } = data
+const result = (monthlySalary) => {
+
+  const hasContribution = store.getters.hasContribution,
+        monthlyContribution = (hasContribution) ? store.getters.totalContribution : 0,
+        taxableIncome = monthlySalary - monthlyContribution
+
+  const monthlyWithholdingTax = computationFromTable(taxableIncome, monthlyTaxTable).toFixedFloat(2)
   
-  const annually = computationFromTable(annualSalary, annualTaxTable),
-        monthly = computationFromTable(monthlySalary - totalContribution, monthlyTaxTable),
-        semiMonthly = computationFromTable(semiMonthlySalary, semiMonthlyTaxTable),
-        weekly = computationFromTable(weeklySalary, weeklyTaxTable),
-        daily = computationFromTable(dailySalary, daliyTaxTable)
-
-  return {
-    annually,
-    monthly,
-    semiMonthly,
-    weekly,
-    daily,
-  }
+  const selfEmployedMonthlyWithholdingTax = (selfEmployedTax(taxableIncome * 12) / 12).toFixedFloat(2)
+        
+  return (store.getters.type === 'Self Employed')
+    ? convertPeriodically('monthly', { monthly: selfEmployedMonthlyWithholdingTax })
+    : convertPeriodically('monthly', { monthly: monthlyWithholdingTax })
 }
-
-// const result = weeklyTaxTable()
 
 export default result

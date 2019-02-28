@@ -23,98 +23,86 @@
 		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
 			<div class="uk-offcanvas-bar">
 				<button class="uk-offcanvas-close uk-close uk-icon" type="button" data-uk-close></button>
-				<h3>Settings</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <div class="uk-form-stacked">
+          <h4 class="uk-text-bold">Settings</h4>
+
+          <!-- Working Days -->
+          <div class="uk-margin">
+            <label class="uk-form-label" v-text="'No. Working Days per Week'"></label>
+            <div class="uk-form-controls">
+              <input  
+                type="text"
+                name="Working Days"
+                :class="['uk-input', { 'uk-form-danger': errors.has('Working Days') }]"
+                v-validate="'numeric|min_value:1|max_value:7'" 
+                v-model="settings.workingDays"
+              />
+              <span class="uk-text-danger" v-if="errors.has('Working Days')">{{ errors.first('Working Days') }}</span>
+            </div>
+          </div>
+          <!-- ./Working Days -->
+
+          <div class="uk-margin">
+            <button class="uk-button uk-button-primary uk-width-1-1" @click.prevent="applySettings">Apply</button>
+          </div>
+
+        </div>
 			</div>
 		</div>
 		<!-- ./Off Canvas -->
 
     <div class="uk-section uk-section-default">
       <div class="uk-container">
-
-        <div class="uk-margin-large">
-          <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3>
-        </div>
         
         <!-- Card -->
-        <div class="uk-card uk-card-default uk-card-body">
+        <div class="uk-card uk-card-default uk-card-body ">
           <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
             
             <!-- Grid -->
+            <div class="uk-width-1-1">
+              <div class="uk-margin-large">
+                <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3>
+              </div>
+            </div>
+            <!-- ./Grid -->
+            
+            <!-- Grid -->
             <div>
-              <h4 class="uk-heading-line uk-text-bold uk-text-center@m"><span>Salary</span></h4>
-
               <div class="uk-form-horizontal">
-                <!-- Annualy Salary -->
-                <div class="uk-margin">
-                  <label class="uk-form-label uk-text-right@m">Annual Salary</label>
-                  <div class="uk-form-controls">
-                    <vue-numeric 
-                      class="uk-input" 
-                      :currency="config.currency" 
-                      :precision="config.precision" 
-                      v-model="salary.annually" 
-                      @input="onSalaryInput('Annual')"
-                    ></vue-numeric>
+                
+                <!-- Employee Types -->
+                <div class="uk-margin-medium">
+                  <div class="uk-flex-center@m" uk-grid>
+                    <div v-for="(item, key) in types" :key="key">
+                      <label>
+                        <input 
+                          type="radio" 
+                          class="uk-radio" 
+                          v-model="employeeType" 
+                          :value="item"
+                        /> 
+                        <span v-text="` ${item}`"></span>
+                      </label>
+                    </div>
                   </div>
                 </div>
-
-                <!-- Monthly Salary -->
-                <div class="uk-margin">
-                  <label class="uk-form-label uk-text-right@m">Monthly Salary</label>
+                <!-- ./Employee Types -->
+                
+                <!-- Salaries -->
+                <div class="uk-margin" v-for="(item, key) in salary" :key="key">
+                  <label class="uk-form-label uk-text-right@m" v-text="`${toStartCase(key)} Salary`"></label>
                   <div class="uk-form-controls">
                     <vue-numeric 
                       class="uk-input" 
                       :currency="config.currency" 
                       :precision="config.precision" 
-                      v-model="salary.monthly" 
-                      @input="onSalaryInput('Month')"
+                      v-model="salary[key]" 
+                      @input="onSalaryInput(key)"
                       @blur="onSalaryBlur"
                     ></vue-numeric>
                   </div>
                 </div>
-
-                <!-- Semi Monthly Salary -->
-                <div class="uk-margin">
-                  <label class="uk-form-label uk-text-right@m">Semi Monthly Salary</label>
-                  <div class="uk-form-controls">
-                    <vue-numeric 
-                      class="uk-input" 
-                      :currency="config.currency" 
-                      :precision="config.precision" 
-                      v-model="salary.semiMonthly" 
-                      @input="onSalaryInput('Semi Month')"
-                    ></vue-numeric>
-                  </div>
-                </div>
-
-                <!-- Weekly Salary -->
-                <div class="uk-margin">
-                  <label class="uk-form-label uk-text-right@m">Weekly Salary</label>
-                  <div class="uk-form-controls">
-                    <vue-numeric 
-                      class="uk-input" 
-                      :currency="config.currency" 
-                      :precision="config.precision" 
-                      v-model="salary.weekly" 
-                      @input="onSalaryInput('Week')"
-                    ></vue-numeric>
-                  </div>
-                </div>
-
-                <!-- Daily Salary -->
-                <div class="uk-margin">
-                  <label class="uk-form-label uk-text-right@m">Daily Salary</label>
-                  <div class="uk-form-controls">
-                    <vue-numeric 
-                      class="uk-input" 
-                      :currency="config.currency" 
-                      :precision="config.precision" 
-                      v-model="salary.daily" 
-                      @input="onSalaryInput('Day')"
-                    ></vue-numeric>
-                  </div>
-                </div>
+                 <!-- ./Salaries -->
 
               </div>
             </div>
@@ -122,14 +110,108 @@
             
             <!-- Grid -->
             <div>
-              <h4 class="uk-heading-line uk-text-bold uk-text-center@m"><span>Monthly Contributions</span></h4>
-              
+              <div class="uk-margin uk-align-right">
+                <label>
+                  <input class="uk-checkbox" type="checkbox" v-model="withContribution"> With Contributions
+                </label>
+              </div>
+
+              <div class="uk-clearfix"></div>
+              <div class="uk-form-horizontal">
+
+                <!-- GSIS -->
+                <div class="uk-margin uk-animation-slide-right-medium" v-if="type === 'Government Employee'">
+                  <label class="uk-form-label uk-text-right@m" v-text="'GSIS'"></label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="gsis" 
+                      :disabled="!hasContribution"
+                    ></vue-numeric>
+                  </div>
+                </div>
+                <!-- ./GSIS -->
+
+                <div class="uk-margin" v-if="type === 'Government Employee'"></div>
+
+                <!-- SSS -->
+                <div class="uk-margin uk-animation-slide-right-medium" v-if="type !== 'Government Employee'">
+                  <label class="uk-form-label uk-text-right@m" v-text="'SSS'"></label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="sss" 
+                      :disabled="!hasContribution"
+                    ></vue-numeric>
+                  </div>
+                </div>
+                <!-- ./SSS -->
+
+                <!-- PAGIBIG -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m" v-text="'PAGIBIG'"></label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="pagibig" 
+                      :disabled="!hasContribution"
+                    ></vue-numeric>
+                  </div>
+                </div>
+                <!-- ./PAGIBIG -->
+
+                <!-- PHILHEALTH -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m" v-text="'PHILHEALTH'"></label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="philhealth" 
+                      :disabled="!hasContribution"
+                    ></vue-numeric>
+                  </div>
+                </div>
+                <!-- ./PHILHEALTH -->
+
+              </div>
+            </div>
+            <!-- ./Grid -->
+
+            <!-- Grid -->
+            <div class="uk-width-1-1">
+              <div class="uk-flex-center" uk-grid>
+                <!-- Calculate Button -->
+                <div class="uk-width-1-2@m">
+                  <button class="uk-button uk-button-primary uk-width-1-1" @click.prevent="calculate">Calculate</button>
+                </div>
+                <!-- ./Calculate Button -->
+              </div>
             </div>
             <!-- ./Grid -->
 
           </div>
         </div>
         <!-- ./Card -->
+
+        <!-- Card -->
+        <div class="uk-card uk-card-default uk-card-body uk-margin-medium">
+          <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
+            <div>
+              test
+            </div>
+            <div>
+              test
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -151,106 +233,140 @@
 			</div>
 		</footer>
 		<!-- ./Footer -->
+
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { convertPeriodically, toStartCase } from '@/utils/common'
 import taxCalculator from '@/utils/2018-to-2022-tax-calculator'
 import contributionCalculator from '@/utils/contributions'
-import { convertSalary } from '@/utils/common'
 
 export default {
   data () {
     return {
+      config: {
+        currency: '₱',
+        precision: 2,
+      },
+      settings: {
+        workingDays: '',
+      },
       salary: {
-        annually: 0,
+        annual: 0,
         monthly: 0,
         semiMonthly: 0,
         weekly: 0,
         daily: 0,
       },
-      config: {
-        currency: '₱',
-        precision: 2,
-      },
     }
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek', 'type'])
+    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'hasContribution', 'contributions']),
+
+    employeeType: {
+      get () {
+        return this.type
+      },
+      set (val) {
+        this.$store.dispatch('updateType', val)
+      }
+    },
+
+    withContribution: {
+      get () {
+        return this.hasContribution
+      },
+      set (val) {
+        this.$store.dispatch('updateHasContribution', val)
+      }
+    },
+
+    sss: {
+      get () {
+        return (this.hasContribution) ? this.contributions.sss : 0
+      },
+      set (val) {
+        this.$store.dispatch('updateSss', val)
+      }
+    },
+
+    gsis: {
+      get () {
+        return (this.hasContribution) ? this.contributions.gsis : 0
+      },
+      set (val) {
+        this.$store.dispatch('updateGsis', val)
+      }
+    },
+
+    pagibig: {
+      get () {
+        return (this.hasContribution) ? this.contributions.pagibig : 0
+      },
+      set (val) {
+        this.$store.dispatch('updatePagibig', val)
+      }
+    },
+
+    philhealth: {
+      get () {
+        return (this.hasContribution) ? this.contributions.philhealth : 0
+      },
+      set (val) {
+        this.$store.dispatch('updatePhilhealth', val)
+      }
+    },
   },
 
   methods: {
     onSalaryInput (salaryPeriod) {
-      this.salary = convertSalary(salaryPeriod, this.salary)
-    },
-
-    calculateTotalContrubutions (contributions) {
-      let employeeType = this.type // Private Employee, Government Employee, Self Employed
-      const result = Object.keys(contributions)
-        .filter(key => (employeeType === 'Government Employee') ? key !== 'sss' : key !== 'gsis')
-        .reduce((previous, key) => {
-          return previous + contributions[key];
-        }, 0);
-
-      return result
+      this.salary = convertPeriodically(salaryPeriod, { [salaryPeriod]: this.salary[salaryPeriod] })
     },
 
     onSalaryBlur () {
-      const monthlySalary = this.salary.monthly,
-            contributions = contributionCalculator(monthlySalary),
-            totalContributions = this.calculateTotalContrubutions(contributions)
+      if (!!this.salary.monthly) {
+        const monthlySalary = this.salary.monthly,
+              contributions = contributionCalculator(monthlySalary)
 
-      this.$store.dispatch('updateState', {
-        type: this.type,
-        salary: monthlySalary,
-        contributions,
-        totalContributions,
+        this.$store.dispatch('updateContributions', contributions)
+      }
+    },
+
+    toStartCase (str) {
+      return toStartCase(str)
+    },
+
+    applySettings () {
+      this.$validator.validateAll().then(() => {
+        // Check if all fields are valid
+        if (this.errors.items.length === 0) {
+          // Apply new settings
+          this.$store.dispatch('updateWorkingDays', parseFloat(this.settings.workingDays))
+
+          // Recalculate Salaries
+          this.onSalaryInput('monthly')
+          this.$UIkit.offcanvas('#offcanvas-nav').hide()
+        }
       })
-    }
+    },
+
+    calculate () {
+      if (!this.salary.monthly) return false
+      
+      console.log(taxCalculator(this.salary.monthly))
+    },
+
+    initSettings () {
+      this.settings.workingDays = this.workingDaysPerWeek
+    },
   },
 
-  // watch: {
-  //   'salary.monthly' (monthlySalary) {
-  //     const contributions = contributionCalculator(monthlySalary),
-  //           totalContributions = this.calculateTotalContrubutions(contributions)
-
-  //     this.$store.dispatch('updateState', {
-  //       type: this.type,
-  //       salary: monthlySalary,
-  //       contributions,
-  //       totalContributions,
-  //     })
-  //   }
-  // },
-
   created () {
-    let salary = 30000
-
-    // let contributions = contributionCalculator(salary)
-    // contributions = this.calculateContrubutions(contributions)
-    
-    // const taxable = salary - contributions
-    // console.log('contributions: ', contributions) // 1093.8
-    // console.log('taxable: ', taxable) // 28906.2
-
-    // const tax = taxCalculator(taxable) 
-    
-    // console.log('withholding tax: ', tax.toFixedFloat(2)) // 1614.64
-    // console.log( 'net pay: ', (salary - tax) ) // 28385.36
-
-
-    // const data = { from: 166667, to: 666666, adjustement: 500, computation: function () { return this.adjustement } }
-    // console.log(data.computation())
-
-    // let contributions = contributionCalculator(salary)
-    // console.log(contributions)
-    // console.log('total: ',  contributions)
-    // console.log(this.calculateContrubutions(contributions))
-
-    // console.log(taxCalculator)
-  }
+    this.initSettings()
+  },
 };
 </script>
 
