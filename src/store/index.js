@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import main from './modules/main'
+import contributions from './modules/contributions'
 import settings from './modules/settings'
 
 Vue.use(Vuex)
@@ -12,7 +12,7 @@ export default new Vuex.Store({
   // ],
 
   modules: {
-    main,
+    contributions,
     settings,
   }
 })

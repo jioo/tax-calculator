@@ -7,10 +7,16 @@ export default new Router({
   mode: 'history',
   
   routes: [
-    {
+    { 
       path: '/',
-      name: 'home',
-      component: () => import('./pages/index.vue')
+      component: () => import('./layouts/default.vue'),
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: () => import('./pages/index.vue')
+        },
+      ]
     },
   ]
 })
