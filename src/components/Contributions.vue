@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="uk-margin uk-align-right">
+    <div class="uk-margin uk-align-right@m">
       <label>
-        <input class="uk-checkbox" type="checkbox" v-model="withContribution"> With Contributions
+        <input class="uk-checkbox" type="checkbox" v-model="withContribution"> With Monthly Contributions
       </label>
     </div>
 
@@ -105,7 +105,9 @@ export default {
         return (this.hasContribution) ? this.contributions.sss : 0
       },
       set (val) {
-        this.$store.dispatch('updateSss', val)
+        if (this.hasContribution) {
+          this.$store.dispatch('updateSss', val)
+        }
       }
     },
 
@@ -114,7 +116,9 @@ export default {
         return (this.hasContribution) ? this.contributions.gsis : 0
       },
       set (val) {
-        this.$store.dispatch('updateGsis', val)
+        if (this.hasContribution) { 
+          this.$store.dispatch('updateGsis', val)
+        }
       }
     },
 

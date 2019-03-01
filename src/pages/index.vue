@@ -46,7 +46,7 @@
                     :precision="config.precision" 
                     v-model="salary[key]" 
                     @input="onSalaryInput(key)"
-                    @blur="onSalaryBlur"
+                    @blur="updateContributions"
                   ></vue-numeric>
                 </div>
               </div>
@@ -74,7 +74,7 @@
       </div>
       <!-- ./Card -->
 
-      <result />
+      <result id="result" />
     </div>
   </div>
 </template>
@@ -82,7 +82,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { convertPeriodically, toStartCase } from '@/utils/common'
-import taxCalculator from '@/utils/2018-to-2022-tax-calculator'
+import taxCalculator2018 from '@/utils/2018-to-2022-tax-calculator'
+import taxCalculator2023 from '@/utils/2023-tax-calculator'
 import contributionCalculator from '@/utils/contributions'
 import Contributions from '@/components/Contributions'
 import Result from '@/components/Result'
@@ -110,7 +111,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'hasContribution', 'contributions']),
+    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution']),
 
     employeeType: {
       get () {
@@ -118,6 +119,7 @@ export default {
       },
       set (val) {
         this.$store.dispatch('updateType', val)
+        this.updateContributions()
       }
     },
   },
@@ -134,13 +136,13 @@ export default {
       this.salary = convertPeriodically(salaryPeriod, { [salaryPeriod]: this.salary[salaryPeriod] })
     },
 
-    onSalaryBlur () {
+    updateContributions () {
       if (!!this.salary.monthly) {
         const monthlySalary = this.salary.monthly,
               contributions = contributionCalculator(monthlySalary)
 
         this.$store.dispatch('updateContributions', contributions)
-        this.$store.dispatch('updateTotalContributions', contributions)
+        this.$store.dispatch('updateTotalContribution', contributions)
       }
     },
 
@@ -150,17 +152,15 @@ export default {
 
     calculate () {
       if (!this.salary.monthly) return false
-      
-      console.log(taxCalculator(this.salary.monthly))
+
+      const { monthly } = this.salary
+      taxCalculator2018(monthly)
+      taxCalculator2023(monthly)
+
+      document.querySelector('#result')
+        .scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
     },
   },
-};
-</script>
-
-<style lang="scss">
-.header-style {
-  background-color: #fff;
-  border-bottom: 1px solid #f2f2f2;
-  overflow-y: hidden;
+  
 }
-</style>
+</script>

@@ -1,4 +1,4 @@
-import { computation, computationFromTable, convertPeriodically } from './common'
+import { computation, computationFromTable } from './common'
 import store from '@/store'
 
 /**
@@ -154,9 +154,9 @@ const daliyTaxTable = [
  * https://www.pinoymoneytalk.com/8-percent-tax-rate-bir-rmo-23-2018/
  * 
  * 
- * @param {number} salary Annual Salary
+ * @param {number} salary Monthly Salary
  */
-const selfEmployedTax = salary =>  0.08 * (salary - 250000)
+const selfEmployedTax = salary =>  0.08 * (salary - 20833)
 
 /**
  * Compute withholding tax for self employed, private or government employee
@@ -164,18 +164,29 @@ const selfEmployedTax = salary =>  0.08 * (salary - 250000)
  * @param {array} monthlySalary 
  */
 const result = (monthlySalary) => {
-
+  let withholdingTax = 0
   const hasContribution = store.getters.hasContribution,
         monthlyContribution = (hasContribution) ? store.getters.totalContribution : 0,
         taxableIncome = monthlySalary - monthlyContribution
 
-  const monthlyWithholdingTax = computationFromTable(taxableIncome, monthlyTaxTable).toFixedFloat(2)
+  // Compute withholding tax for Private and Government Employee
+  if (store.getters.type !== 'Self Employed')
+    withholdingTax = computationFromTable(taxableIncome, monthlyTaxTable).toFixedFloat(2)
   
-  const selfEmployedMonthlyWithholdingTax = (selfEmployedTax(taxableIncome * 12) / 12).toFixedFloat(2)
-        
-  return (store.getters.type === 'Self Employed')
-    ? convertPeriodically('monthly', { monthly: selfEmployedMonthlyWithholdingTax })
-    : convertPeriodically('monthly', { monthly: monthlyWithholdingTax })
+  // Withholding tax for Self Employed
+  else
+    withholdingTax = ( selfEmployedTax(taxableIncome) ).toFixedFloat(2)
+  
+  // Calculate result
+  const result = {
+    totalContribution: monthlyContribution,
+    taxableIncome: (monthlySalary - monthlyContribution).toFixedFloat(2),
+    withholdingTax,
+    netIncome: (monthlySalary - withholdingTax - monthlyContribution).toFixedFloat(2),
+  }
+
+  // Update 2018 tax result state
+  store.dispatch('update2018Result', result)
 }
 
 export default result

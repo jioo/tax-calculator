@@ -38,7 +38,7 @@ const mutations = {
   UPDATE_TOTAL_CONTRIBUTION (state, payload) {
     const contributions = payload,
           employeeType = state.type
-
+    
     const result = Object.keys(contributions)
         .filter(key => (employeeType === 'Government Employee') ? key !== 'sss' : key !== 'gsis')
         .reduce((previous, key) => {
@@ -53,15 +53,13 @@ const mutations = {
   },
 
   UPDATE_TOTAL_CONTRIBUTION (state, payload) {
-    const contributions = payload,
-          employeeType = state.type
-
+    const { contributions, type } = payload
+    
     const result = Object.keys(contributions)
-        .filter(key => (employeeType === 'Government Employee') ? key !== 'sss' : key !== 'gsis')
+        .filter(key => (type === 'Government Employee') ? key !== 'sss' : key !== 'gsis')
         .reduce((previous, key) => {
           return previous + contributions[key];
         }, 0);
-
     state.totalContribution = result
   },
 
@@ -91,8 +89,9 @@ const actions = {
     commit('UPDATE_CONTRIBUTIONS', payload)
   },
 
-  updateTotalContributions ({ commit }, payload) {
-    commit('UPDATE_TOTAL_CONTRIBUTION', payload)
+  updateTotalContribution ({ commit, rootGetters }, payload) {
+    const type = rootGetters.type
+    commit('UPDATE_TOTAL_CONTRIBUTION', { contributions: payload, type})
   },
 
   updateSss ({ commit }, payload) {

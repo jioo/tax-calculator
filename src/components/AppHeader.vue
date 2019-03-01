@@ -17,8 +17,10 @@
   </header>
 </template>
 
-<script>
-export default {
-  
-}
-</script>
+<style lang="scss">
+  .header-style {
+    background-color: #fff;
+    border-bottom: 1px solid #f2f2f2;
+    overflow-y: hidden;
+  }
+</style>
