@@ -5,7 +5,7 @@
       <div class="uk-form-stacked">
         <h4 class="uk-text-bold">Settings</h4>
 
-        <!-- <div class="uk-margin-medium">
+        <div class="uk-margin-medium">
           <label>
             <input class="uk-checkbox" type="checkbox">  
             <span class="uk-text-bold"> Turn On Precise Calculator</span>(Beta)
@@ -19,7 +19,7 @@
               <li>Customize Working Days</li>
             </ul>
           </label>
-        </div> -->
+        </div>
 
         <!-- Working Days -->
         <div class="uk-margin">

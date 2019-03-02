@@ -58,6 +58,29 @@
           
           <contributions />
 
+          <div>
+            test
+          </div>
+
+          <div>
+            <v-calendar 
+              :attributes="attrs"
+              @dayclick="dayClicked"
+              :from-page.sync="currentCalendar" 
+            ></v-calendar>
+
+            <div class="uk-margin">
+              Working Days: {{ workingDays }}
+            </div>
+
+            <div class="uk-margin" v-for="(item, key) in workingWeekdays" :key="key">
+              <label>
+                <input type="checkbox" class="uk-checkbox" v-model="item.value" />
+                {{ item.label }}
+              </label>
+            </div>
+          </div>
+
           <!-- Grid -->
           <div class="uk-width-1-1">
             <div class="uk-flex-center" uk-grid>
@@ -87,6 +110,7 @@ import taxCalculator2023 from '@/utils/2023-tax-calculator'
 import contributionCalculator from '@/utils/contributions'
 import Contributions from '@/components/Contributions'
 import Result from '@/components/Result'
+import moment from 'moment-business-days'
 
 export default {
   components: {
@@ -96,6 +120,10 @@ export default {
 
   data () {
     return {
+      currentCalendar: {
+        month: parseInt(moment().format('M')),
+        year: parseInt(moment().format('YYYY')),
+      },
       config: {
         currency: '₱',
         precision: 2,
@@ -107,6 +135,24 @@ export default {
         weekly: 0,
         daily: 0,
       },
+      attrs: [
+        {
+          highlight: {
+            backgroundColor: '#ff8080', // red
+          },
+          dates: [],
+        }
+      ],
+      workingDays: 0,
+      workingWeekdays: [
+        { key: 1, label: 'Monday', value: true },
+        { key: 2, label: 'Tuesday', value: true },
+        { key: 3, label: 'Wednesday', value: true },
+        { key: 4, label: 'Thrusday', value: true },
+        { key: 5, label: 'Friday', value: true },
+        { key: 6, label: 'Saturday', value: false },
+        { key: 0, label: 'Sunday', value: false },
+      ],
     }
   },
 
@@ -122,16 +168,46 @@ export default {
         this.updateContributions()
       }
     },
+
+    holidays () {
+      return this.attrs[0].dates.map(m => moment(m).format('YYYY-MM-DD') )
+    },
   },
 
   watch: {
     // Recalculate Salaries when `workingDays` changes
     workingDaysPerWeek () {
       this.onSalaryInput('monthly')
+    },
+
+    holidays () {
+      this.configureMomentBusiness()
+    },
+
+    workingWeekdays: {
+      handler () {
+        this.configureMomentBusiness()
+      },
+      deep: true,
+    },
+
+    currentCalendar () {
+      this.computeWorkingDays()
     }
   },
 
   methods: {
+    configureMomentBusiness () {
+      const currentLocal = moment.locale()
+      moment.updateLocale(currentLocal, {
+        holidays: this.holidays,
+        holidayFormat: 'YYYY-MM-DD',
+        workingWeekdays: this.mapWorkingWeekdays(),
+      });
+
+      this.computeWorkingDays()
+    },
+
     onSalaryInput (salaryPeriod) {
       this.salary = convertPeriodically(salaryPeriod, { [salaryPeriod]: this.salary[salaryPeriod] })
     },
@@ -160,7 +236,40 @@ export default {
       document.querySelector('#result')
         .scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
     },
+
+    dayClicked (date) {
+      const dayClicked = new Date(date.year, date.month - 1, date.day),
+            currentHighlights = this.attrs[0].dates
+
+      /**
+       * Check if `dayClicked` already exists in `currentHighlights`
+       * 
+       * https://stackoverflow.com/questions/27450867/how-to-correctly-use-javascript-indexof-in-a-date-array
+       */
+      const validateDay = currentHighlights.map(Number).indexOf(+dayClicked)
+
+      // Add the `dayClicked` in `currentHighlights`
+      if (validateDay === -1)
+        currentHighlights.push(dayClicked)
+
+      // Remove the selected day in `currentHighlights`
+      else
+        currentHighlights.splice(validateDay, 1)
+    },
+
+    computeWorkingDays () {
+      this.workingDays = moment(`${this.currentCalendar.month}-01-${this.currentCalendar.year}`, 'M-DD-YYYY').monthBusinessDays().length
+    },
+
+    mapWorkingWeekdays () {
+      return this.workingWeekdays
+        .filter(m => m.value === true)
+        .map(m => m.key)
+    },
   },
-  
+
+  mounted () {
+    this.configureMomentBusiness()
+  },
 }
 </script>

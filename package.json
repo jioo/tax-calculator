@@ -8,9 +8,12 @@
   },
   "dependencies": {
     "lodash.startcase": "^4.4.0",
+    "moment": "^2.24.0",
+    "moment-business-days": "^1.1.3",
     "prerender-spa-plugin": "^3.4.0",
     "register-service-worker": "^1.5.2",
     "uikit": "^3.0.3",
+    "v-calendar": "^0.9.7",
     "vee-validate": "^2.1.7",
     "vue": "^2.6.6",
     "vue-analytics": "^5.16.2",
