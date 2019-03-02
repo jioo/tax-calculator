@@ -158,7 +158,7 @@ export default {
       taxCalculator2023(monthly)
 
       document.querySelector('#result')
-        .scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
+        .scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
     },
   },
   
