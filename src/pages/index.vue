@@ -73,6 +73,16 @@
               Working Days: {{ workingDays }}
             </div>
 
+            <div class="uk-margin">
+              1st cutoff 01 - 15
+              <br/> working days: {{ this.cutOffs.first.workingDays }}
+            </div>
+
+            <div class="uk-margin">
+              2nd cutoff 16 - {{ this.lastDayOfCurrentMonth }}
+              <br/> working days: {{ this.cutOffs.second.workingDays }}
+            </div>
+
             <div class="uk-margin" v-for="(item, key) in workingWeekdays" :key="key">
               <label>
                 <input type="checkbox" class="uk-checkbox" v-model="item.value" />
@@ -150,9 +160,19 @@ export default {
         { key: 3, label: 'Wednesday', value: true },
         { key: 4, label: 'Thrusday', value: true },
         { key: 5, label: 'Friday', value: true },
-        { key: 6, label: 'Saturday', value: false },
-        { key: 0, label: 'Sunday', value: false },
+        { key: 6, label: 'Saturday', value: true },
+        { key: 0, label: 'Sunday', value: true },
       ],
+      cutOffs: {
+        first: {
+          salary: 0,
+          workingDays: 0,
+        },
+        second: {
+          salary: 0,
+          workingDays: 0,
+        },
+      },
     }
   },
 
@@ -171,6 +191,10 @@ export default {
 
     holidays () {
       return this.attrs[0].dates.map(m => moment(m).format('YYYY-MM-DD') )
+    },
+
+    lastDayOfCurrentMonth () {
+      return moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-01`, 'YYYY-M-DD').endOf('month').format('DD')
     },
   },
 
@@ -258,13 +282,27 @@ export default {
     },
 
     computeWorkingDays () {
-      this.workingDays = moment(`${this.currentCalendar.month}-01-${this.currentCalendar.year}`, 'M-DD-YYYY').monthBusinessDays().length
+      this.workingDays = moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-01`, 'YYYY-M-DD').monthBusinessDays().length
+      this.computeCutOffWorkingDays()
     },
 
     mapWorkingWeekdays () {
       return this.workingWeekdays
         .filter(m => m.value === true)
         .map(m => m.key)
+    },
+
+    computeCutOffWorkingDays () {
+      // compute the working days between 01-15 of a month
+      const firstCutoff = moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-01`, 'YYYY-M-DD')
+        .businessDiff(moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-16-${this.currentCalendar.year}`,'YYYY-M-DD'))
+
+      // compute the working days between 16 until the end of a month
+      const secondCutOff = moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-16`, 'YYYY-M-DD')
+        .businessDiff(moment(`${this.currentCalendar.year}-${this.currentCalendar.month + 1}-01`,'YYYY-M-DD'))
+
+      this.cutOffs.first.workingDays = firstCutoff
+      this.cutOffs.second.workingDays = secondCutOff
     },
   },
 
