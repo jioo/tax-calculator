@@ -58,36 +58,42 @@
           
           <contributions />
 
-          <div>
-            test
-          </div>
+          <div class="uk-text-center@m">
 
-          <div>
+            <h4>Total Working Days: {{ workingDays }}</h4>  
+
             <v-calendar 
               :attributes="attrs"
               @dayclick="dayClicked"
               :from-page.sync="currentCalendar" 
             ></v-calendar>
 
-            <div class="uk-margin">
-              Working Days: {{ workingDays }}
-            </div>
+          </div>
 
-            <div class="uk-margin">
-              1st cutoff 01 - 15
-              <br/> working days: {{ this.cutOffs.first.workingDays }}
-            </div>
+          <div class="uk-text-center@m">
 
-            <div class="uk-margin">
-              2nd cutoff 16 - {{ this.lastDayOfCurrentMonth }}
-              <br/> working days: {{ this.cutOffs.second.workingDays }}
-            </div>
+            <h4>Working Weekdays</h4>  
 
             <div class="uk-margin" v-for="(item, key) in workingWeekdays" :key="key">
               <label>
                 <input type="checkbox" class="uk-checkbox" v-model="item.value" />
                 {{ item.label }}
               </label>
+            </div>
+
+          </div>
+
+          <div class="uk-text-center@m">
+            <div class="uk-margin uk-tile uk-tile-muted">
+              {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
+              <br/> Working Days: {{ this.cutOffs.second.workingDays }}
+            </div>
+          </div>
+
+          <div class="uk-text-center@m">
+            <div class="uk-margin uk-tile uk-tile-muted">
+              {{ currentCalendar.monthLabel }} 01 - 15
+              <br/> Working Days: {{ this.cutOffs.first.workingDays }}
             </div>
           </div>
 
@@ -133,6 +139,7 @@ export default {
       currentCalendar: {
         month: parseInt(moment().format('M')),
         year: parseInt(moment().format('YYYY')),
+        monthLabel: moment().format('MMMM'),
       },
       config: {
         currency: '₱',
@@ -296,10 +303,14 @@ export default {
       // compute the working days between 01-15 of a month
       const firstCutoff = moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-01`, 'YYYY-M-DD')
         .businessDiff(moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-16-${this.currentCalendar.year}`,'YYYY-M-DD'))
-
+  
+      let businessDiffDate = (this.currentCalendar.month !== 12)
+        ? `${this.currentCalendar.year}-${this.currentCalendar.month + 1}-01`
+        : `${this.currentCalendar.year + 1}-01-01`
+        
       // compute the working days between 16 until the end of a month
       const secondCutOff = moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-16`, 'YYYY-M-DD')
-        .businessDiff(moment(`${this.currentCalendar.year}-${this.currentCalendar.month + 1}-01`,'YYYY-M-DD'))
+        .businessDiff(moment(businessDiffDate,'YYYY-M-DD'))
 
       this.cutOffs.first.workingDays = firstCutoff
       this.cutOffs.second.workingDays = secondCutOff
