@@ -100,8 +100,6 @@ const result = (monthlySalary) => {
     netIncome: (monthlySalary - withholdingTax - monthlyContribution).toFixedFloat(2),
   }
 
-  console.log(result)
-
   // Update 2023 tax result state
   store.dispatch('update2023Result', result)
 }

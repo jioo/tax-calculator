@@ -20,6 +20,13 @@
             v-model="gsis" 
             :disabled="!hasContribution"
           ></vue-numeric>
+
+          <vue-slider :value="gsisPercent" :lazy="true" @change="gsisPercentChange"></vue-slider>
+          <div class="uk-child-width-1-2" uk-grid>
+            <div>{{ '1st Cutoff: ' + gsisPercent + '%' }}</div>
+            <div>{{ '2nd Cutoff: ' + (100 - gsisPercent) + '%' }}</div>
+          </div>
+
         </div>
       </div>
       <!-- ./GSIS -->
@@ -38,12 +45,14 @@
             :disabled="!hasContribution"
           ></vue-numeric>
 
-          <vue-slider :value="value" :lazy="true" @change="sssRange"></vue-slider>
-          <div class="uk-child-width-1-2" uk-grid>
-            <div>{{ '1st Cutoff: ' + value + '%' }}</div>
-            <div>{{ '2nd Cutoff: ' + (100 - value) + '%' }}</div>
-          </div>
+        </div>
 
+        <div class="uk-form-controls">
+          <vue-slider :value="sssPercent" :lazy="true" @change="sssPercentChange"></vue-slider>
+          <div class="uk-child-width-1-2" uk-grid>
+            <div>{{ '1st Cutoff: ' + sssPercent + '%' }}</div>
+            <div>{{ '2nd Cutoff: ' + (100 - sssPercent) + '%' }}</div>
+          </div>
         </div>
       </div>
       <!-- ./SSS -->
@@ -59,6 +68,15 @@
             v-model="pagibig" 
             :disabled="!hasContribution"
           ></vue-numeric>
+
+        </div>
+
+        <div class="uk-form-controls">
+          <vue-slider :value="pagibigPercent" :lazy="true" @change="pagibigPercentChange"></vue-slider>
+          <div class="uk-child-width-1-2" uk-grid>
+            <div>{{ '1st Cutoff: ' + pagibigPercent + '%' }}</div>
+            <div>{{ '2nd Cutoff: ' + (100 - pagibigPercent) + '%' }}</div>
+          </div>
         </div>
       </div>
       <!-- ./PAGIBIG -->
@@ -74,6 +92,15 @@
             v-model="philhealth" 
             :disabled="!hasContribution"
           ></vue-numeric>
+
+        </div>
+
+        <div class="uk-form-controls">
+          <vue-slider :value="philhealthPercent" :lazy="true" @change="philhealthPercentChange"></vue-slider>
+          <div class="uk-child-width-1-2" uk-grid>
+            <div>{{ '1st Cutoff: ' + philhealthPercent + '%' }}</div>
+            <div>{{ '2nd Cutoff: ' + (100 - philhealthPercent) + '%' }}</div>
+          </div>
         </div>
       </div>
       <!-- ./PHILHEALTH -->
@@ -97,7 +124,6 @@ export default {
         currency: '₱',
         precision: 2,
       },
-      value: 50,
     }
   },
 
@@ -115,7 +141,7 @@ export default {
 
     sss: {
       get () {
-        return (this.hasContribution) ? this.contributions.sss : 0
+        return (this.hasContribution) ? this.contributions.sss.value : 0
       },
       set (val) {
         if (this.hasContribution) {
@@ -124,9 +150,13 @@ export default {
       }
     },
 
+    sssPercent() {
+      return this.contributions.sss.percent
+    },
+
     gsis: {
       get () {
-        return (this.hasContribution) ? this.contributions.gsis : 0
+        return (this.hasContribution) ? this.contributions.gsis.value : 0
       },
       set (val) {
         if (this.hasContribution) { 
@@ -135,30 +165,53 @@ export default {
       }
     },
 
+    gsisPercent() {
+      return this.contributions.gsis.percent
+    },
+
     pagibig: {
       get () {
-        return (this.hasContribution) ? this.contributions.pagibig : 0
+        return (this.hasContribution) ? this.contributions.pagibig.value : 0
       },
       set (val) {
         this.$store.dispatch('updatePagibig', val)
       }
     },
 
+    pagibigPercent () {
+      return this.contributions.pagibig.percent
+    },
+
     philhealth: {
       get () {
-        return (this.hasContribution) ? this.contributions.philhealth : 0
+        return (this.hasContribution) ? this.contributions.philhealth.value : 0
       },
       set (val) {
         this.$store.dispatch('updatePhilhealth', val)
       }
     },
+
+    philhealthPercent () {
+      return this.contributions.philhealth.percent
+    },
   },
 
   methods: {
-    sssRange (value) {
-      console.log(value)
-      this.value = value
-    }
+    sssPercentChange (value) {
+      this.$store.dispatch('updateSssPercent', value)
+    },
+
+    gsisPercentChange (value) {
+      this.$store.dispatch('updateGsisPercent', value)
+    },
+
+    pagibigPercentChange (value) {
+      this.$store.dispatch('updatePagibigPercent', value)
+    },
+
+    philhealthPercentChange (value) {
+      this.$store.dispatch('updatePhilhealthPercent', value)
+    },
   }
 }
 </script>

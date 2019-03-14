@@ -1,10 +1,10 @@
 const state = {
   hasContribution: true,
   contributions: {
-    sss: 0,
-    gsis: 0,
-    pagibig: 0,
-    philhealth: 0,
+    sss: { value: 0, percent: 50 },
+    gsis: { value: 0, percent: 50 },
+    pagibig: { value: 0, percent: 50 },
+    philhealth: { value: 0, percent: 50 },
   },
   totalContribution: 0,
 }
@@ -35,21 +35,11 @@ const mutations = {
     state.hasContribution = payload
   },
 
-  UPDATE_TOTAL_CONTRIBUTION (state, payload) {
-    const contributions = payload,
-          employeeType = state.type
-    
-    const result = Object.keys(contributions)
-        .filter(key => (employeeType === 'Government Employee') ? key !== 'sss' : key !== 'gsis')
-        .reduce((previous, key) => {
-          return previous + contributions[key];
-        }, 0);
-
-    state.totalContribution = result
-  },
-
   UPDATE_CONTRIBUTIONS (state, payload) {
-    state.contributions = payload
+    state.contributions.sss.value = payload.sss
+    state.contributions.gsis.value = payload.gsis
+    state.contributions.pagibig.value = payload.pagibig
+    state.contributions.philhealth.value = payload.philhealth
   },
 
   UPDATE_TOTAL_CONTRIBUTION (state, payload) {
@@ -64,19 +54,35 @@ const mutations = {
   },
 
   UPDATE_SSS (state, payload) {
-    state.contributions.sss = payload
+    state.contributions.sss.value = payload
+  },
+
+  UPDATE_SSS_PERCENT (state, payload) {
+    state.contributions.sss.percent = payload
   },
 
   UPDATE_GSIS (state, payload) {
-    state.contributions.gsis = payload
+    state.contributions.gsis.value = payload
+  },
+
+  UPDATE_GSIS_PERCENT (state, payload) {
+    state.contributions.gsis.percent = payload
   },
 
   UPDATE_PAGIBIG (state, payload) {
-    state.contributions.pagibig = payload
+    state.contributions.pagibig.value = payload
+  },
+
+  UPDATE_PAGIBIG_PERCENT (state, payload) {
+    state.contributions.pagibig.percent = payload
   },
 
   UPDATE_PHILHEALTH (state, payload) {
-    state.contributions.philhealth = payload
+    state.contributions.philhealth.value = payload
+  },
+
+  UPDATE_PHILHEALTH_PERCENT (state, payload) {
+    state.contributions.philhealth.percent = payload
   },
 }
 
@@ -98,16 +104,33 @@ const actions = {
     commit('UPDATE_SSS', payload)
   },
 
+  updateSssPercent ({ commit }, payload) {
+    console.log(payload)
+    commit('UPDATE_SSS_PERCENT', payload)
+  },
+
   updateGsis ({ commit }, payload) {
     commit('UPDATE_GSIS', payload)
+  },
+
+  updateGsisPercent ({ commit }, payload) {
+    commit('UPDATE_GSIS_PERCENT', payload)
   },
 
   updatePagibig ({ commit }, payload) {
     commit('UPDATE_PAGIBIG', payload)
   },
 
+  updatePagibigPercent ({ commit }, payload) {
+    commit('UPDATE_PAGIBIG_PERCENT', payload)
+  },
+
   updatePhilhealth ({ commit }, payload) {
     commit('UPDATE_PHILHEALTH', payload)
+  },
+
+  updatePhilhealthPercent ({ commit }, payload) {
+    commit('UPDATE_PHILHEALTH_PERCENT', payload)
   },
 }
 

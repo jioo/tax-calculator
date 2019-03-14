@@ -37,7 +37,7 @@
               <!-- ./Employee Types -->
               
               <!-- Salaries -->
-              <div class="uk-margin" v-for="(item, key) in salary" :key="key">
+              <!-- <div class="uk-margin" v-for="(item, key) in salary" :key="key">
                 <label class="uk-form-label uk-text-right@m" v-text="`${toStartCase(key)} Salary`"></label>
                 <div class="uk-form-controls">
                   <vue-numeric 
@@ -49,39 +49,57 @@
                     @blur="updateContributions"
                   ></vue-numeric>
                 </div>
+              </div> -->
+              <!-- ./Salaries -->
+
+              <!-- Monthly Salary (For Precise calculator) -->
+              <div class="uk-margin">
+                <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
+                <div class="uk-form-controls">
+                  <vue-numeric 
+                    class="uk-input" 
+                    :currency="config.currency" 
+                    :precision="config.precision" 
+                    v-model="salary.monthly" 
+                    @input="onSalaryInput('monthly')"
+                    @blur="updateContributions"
+                  ></vue-numeric>
+                </div>
               </div>
-                <!-- ./Salaries -->
+              <!-- ./Monthly Salary -->
+          
+              <contributions />
 
             </div>
           </div>
           <!-- ./Grid -->
-          
-          <contributions />
 
-          <div class="uk-text-center@m">
-
-            <h4>Total Working Days: {{ workingDays }}</h4>  
-
-            <v-calendar 
-              :attributes="attrs"
-              @dayclick="dayClicked"
-              :from-page.sync="currentCalendar" 
-            ></v-calendar>
-
-          </div>
-
-          <div class="uk-text-center@m">
-
-            <h4>Working Weekdays</h4>  
-
-            <div class="uk-margin" v-for="(item, key) in workingWeekdays" :key="key">
-              <label>
-                <input type="checkbox" class="uk-checkbox" v-model="item.value" />
-                {{ item.label }}
-              </label>
+          <!-- Grid -->
+          <div class="uk-child-width-1-2@m" uk-grid>
+            <div class="uk-text-center@m">
+              <h5>Working Weekdays</h5>  
+              <ul class="uk-list uk-list-divider">
+                <li v-for="(item, key) in workingWeekdays" :key="key">
+                  <label>
+                    <input type="checkbox" class="uk-checkbox" v-model="item.value" />
+                    {{ item.label }}
+                  </label>
+                </li>
+              </ul>
             </div>
 
+            <div>
+              <div class="uk-text-center@m">
+                <h5>Total Working Days: <b>{{ workingDays }}</b></h5>  
+                <v-calendar 
+                  :attributes="attrs"
+                  @dayclick="dayClicked"
+                  :from-page.sync="currentCalendar" 
+                ></v-calendar>
+              </div>
+            </div>
           </div>
+          <!-- ./Grid -->
 
           <div class="uk-text-center@m">
             <div class="uk-margin uk-tile uk-tile-muted">
