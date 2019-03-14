@@ -8,7 +8,7 @@
         <div class="uk-margin-medium">
           <label>
             <input class="uk-checkbox" type="checkbox">  
-            <span class="uk-text-bold"> Turn On Precise Calculator</span>(Beta)
+            <span class="uk-text-bold"> Precise Tax Calculator</span>(Beta)
           </label>
 
           <label class="uk-text-meta">

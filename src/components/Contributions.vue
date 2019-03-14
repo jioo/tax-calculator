@@ -37,6 +37,13 @@
             v-model="sss" 
             :disabled="!hasContribution"
           ></vue-numeric>
+
+          <vue-slider :value="value" :lazy="true" @change="sssRange"></vue-slider>
+          <div class="uk-child-width-1-2" uk-grid>
+            <div>{{ '1st Cutoff: ' + value + '%' }}</div>
+            <div>{{ '2nd Cutoff: ' + (100 - value) + '%' }}</div>
+          </div>
+
         </div>
       </div>
       <!-- ./SSS -->
@@ -71,6 +78,11 @@
       </div>
       <!-- ./PHILHEALTH -->
 
+      <div class="uk-margin">
+        <div class="uk-form-controls">
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -85,6 +97,7 @@ export default {
         currency: '₱',
         precision: 2,
       },
+      value: 50,
     }
   },
 
@@ -140,5 +153,12 @@ export default {
       }
     },
   },
+
+  methods: {
+    sssRange (value) {
+      console.log(value)
+      this.value = value
+    }
+  }
 }
 </script>
