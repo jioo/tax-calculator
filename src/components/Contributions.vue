@@ -21,7 +21,7 @@
             :disabled="!hasContribution"
           ></vue-numeric>
 
-          <vue-slider :value="gsisPercent" :lazy="true" @change="gsisPercentChange"></vue-slider>
+          <vue-slider :value="gsisPercent" :lazy="true" @change="gsisPercentChange" :interval="10"></vue-slider>
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + gsisPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - gsisPercent) + '%' }}</div>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="uk-form-controls">
-          <vue-slider :value="sssPercent" :lazy="true" @change="sssPercentChange"></vue-slider>
+          <vue-slider :value="sssPercent" :lazy="true" @change="sssPercentChange" :interval="10"></vue-slider>
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + sssPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - sssPercent) + '%' }}</div>
@@ -72,7 +72,7 @@
         </div>
 
         <div class="uk-form-controls">
-          <vue-slider :value="pagibigPercent" :lazy="true" @change="pagibigPercentChange"></vue-slider>
+          <vue-slider :value="pagibigPercent" :lazy="true" @change="pagibigPercentChange" :interval="10"></vue-slider>
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + pagibigPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - pagibigPercent) + '%' }}</div>
@@ -83,7 +83,7 @@
 
       <!-- PHILHEALTH -->
       <div class="uk-margin">
-        <label class="uk-form-label uk-text-right@m" v-text="'PHILHEALTH'"></label>
+        <label class="uk-form-label uk-text-right@m" v-text="'PHILHEALTH'" :interval="10"></label>
         <div class="uk-form-controls">
           <vue-numeric 
             class="uk-input" 
@@ -96,7 +96,7 @@
         </div>
 
         <div class="uk-form-controls">
-          <vue-slider :value="philhealthPercent" :lazy="true" @change="philhealthPercentChange"></vue-slider>
+          <vue-slider :value="philhealthPercent" :lazy="true" @change="philhealthPercentChange" :interval="10"></vue-slider>
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + philhealthPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - philhealthPercent) + '%' }}</div>

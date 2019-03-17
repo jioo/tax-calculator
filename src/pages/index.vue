@@ -105,6 +105,12 @@
             <div class="uk-margin uk-tile uk-tile-muted">
               {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
               <br/> Working Days: {{ this.cutOffs.second.workingDays }}
+              <ul class="uk-list">
+                <li v-for="(item, key) in contributions" :key="key">
+                  {{ key.toUpperCase() }}: {{ ( item.value * (item.percent / 100) ).toFixed(2) }}
+                </li>
+              </ul>
+
             </div>
           </div>
 
@@ -112,6 +118,11 @@
             <div class="uk-margin uk-tile uk-tile-muted">
               {{ currentCalendar.monthLabel }} 01 - 15
               <br/> Working Days: {{ this.cutOffs.first.workingDays }}
+              <ul class="uk-list">
+                <li v-for="(item, key) in contributions" :key="key">
+                  {{ key.toUpperCase() }}: {{ ( item.value * ((100 - item.percent) / 100) ).toFixed(2) }}
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -185,8 +196,8 @@ export default {
         { key: 3, label: 'Wednesday', value: true },
         { key: 4, label: 'Thrusday', value: true },
         { key: 5, label: 'Friday', value: true },
-        { key: 6, label: 'Saturday', value: true },
-        { key: 0, label: 'Sunday', value: true },
+        { key: 6, label: 'Saturday', value: false },
+        { key: 0, label: 'Sunday', value: false },
       ],
       cutOffs: {
         first: {
@@ -202,7 +213,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution']),
+    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions']),
 
     employeeType: {
       get () {
