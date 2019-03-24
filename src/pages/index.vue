@@ -215,19 +215,12 @@ export default {
     ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions']),
 
     filteredContributions () {
-      let contributions = Object.assign({}, this.contributions),
-          indexToRemove;
-    
-      /**
-       * Remove sss property if current type is
-       * equal to `Government Employee`
-       */
-      for(let property in contributions) {
-        if (this.type == this.types[1])
+      let contributions = Object.assign({}, this.contributions)
+      
+      if (this.type == this.types[1])
           delete contributions['sss']
-        else
-          delete contributions['gsis']
-      }
+      else
+        delete contributions['gsis']
 
       return contributions
     },

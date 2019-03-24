@@ -48,8 +48,8 @@ const mutations = {
     const result = Object.keys(contributions)
         .filter(key => (type === 'Government Employee') ? key !== 'sss' : key !== 'gsis')
         .reduce((previous, key) => {
-          return previous + contributions[key];
-        }, 0);
+          return previous + contributions[key]
+        }, 0)
     state.totalContribution = result
   },
 

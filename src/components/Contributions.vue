@@ -21,7 +21,13 @@
             :disabled="!hasContribution"
           ></vue-numeric>
 
-          <vue-slider :value="gsisPercent" :lazy="true" @change="gsisPercentChange" :interval="10"></vue-slider>
+          <vue-slider 
+            :value="gsisPercent" 
+            :lazy="true" @change="gsisPercentChange" 
+            :interval="10"
+            :disabled="!hasContribution"
+          ></vue-slider>
+
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + gsisPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - gsisPercent) + '%' }}</div>
@@ -48,7 +54,14 @@
         </div>
 
         <div class="uk-form-controls">
-          <vue-slider :value="sssPercent" :lazy="true" @change="sssPercentChange" :interval="10"></vue-slider>
+
+          <vue-slider 
+            :value="sssPercent" 
+            :lazy="true" @change="sssPercentChange" 
+            :interval="10"
+            :disabled="!hasContribution"
+          ></vue-slider>
+
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + sssPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - sssPercent) + '%' }}</div>
@@ -72,7 +85,13 @@
         </div>
 
         <div class="uk-form-controls">
-          <vue-slider :value="pagibigPercent" :lazy="true" @change="pagibigPercentChange" :interval="10"></vue-slider>
+          <vue-slider 
+            :value="pagibigPercent" 
+            :lazy="true" @change="pagibigPercentChange" 
+            :interval="10"
+            :disabled="!hasContribution"
+          ></vue-slider>
+
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + pagibigPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - pagibigPercent) + '%' }}</div>
@@ -96,7 +115,13 @@
         </div>
 
         <div class="uk-form-controls">
-          <vue-slider :value="philhealthPercent" :lazy="true" @change="philhealthPercentChange" :interval="10"></vue-slider>
+          <vue-slider 
+            :value="philhealthPercent" 
+            :lazy="true" @change="philhealthPercentChange" 
+            :interval="10"
+            :disabled="!hasContribution"
+          ></vue-slider>
+
           <div class="uk-child-width-1-2" uk-grid>
             <div>{{ '1st Cutoff: ' + philhealthPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - philhealthPercent) + '%' }}</div>

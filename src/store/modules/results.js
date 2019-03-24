@@ -1,15 +1,50 @@
 const state = {
   resultIn2018: {
-    totalContribution: 0,
-    taxableIncome: 0,
-    withholdingTax: 0,
-    netIncome: 0,
+    monthly: {
+      totalContribution: 0,
+      taxableIncome: 0,
+      withholdingTax: 0,
+      netIncome: 0,
+    },
+
+    semiMonthly: [
+      {
+        totalContribution: 0,
+        taxableIncome: 0,
+        withholdingTax: 0,
+        netIncome: 0,
+      },
+      {
+        totalContribution: 0,
+        taxableIncome: 0,
+        withholdingTax: 0,
+        netIncome: 0,
+      },
+    ]
   },
+
   resultIn2023 : {
-    totalContribution: 0,
-    taxableIncome: 0,
-    withholdingTax: 0,
-    netIncome: 0,
+    monthly: {
+      totalContribution: 0,
+      taxableIncome: 0,
+      withholdingTax: 0,
+      netIncome: 0,
+    },
+
+    semiMonthly: [
+      {
+        totalContribution: 0,
+        taxableIncome: 0,
+        withholdingTax: 0,
+        netIncome: 0,
+      },
+      {
+        totalContribution: 0,
+        taxableIncome: 0,
+        withholdingTax: 0,
+        netIncome: 0,
+      },
+    ]
   },
 }
 
@@ -27,11 +62,17 @@ const getters = {
 
 const mutations = {
   UPDATE_2018_RESULT (state, payload) {
-    state.resultIn2018 = payload
+    const { periodType } = payload
+    delete payload[periodType]
+
+    state.resultIn2018[periodType] = payload
   },
 
   UPDATE_2023_RESULT (state, payload) {
-    state.resultIn2023 = payload
+    const { periodType } = payload
+    delete payload[periodType]
+
+    state.resultIn2023[periodType] = payload
   },
 }
 
