@@ -106,11 +106,10 @@
               {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
               <br/> Working Days: {{ this.cutOffs.second.workingDays }}
               <ul class="uk-list">
-                <li v-for="(item, key) in contributions" :key="key">
+                <li v-for="(item, key) in filteredContributions" :key="key">
                   {{ key.toUpperCase() }}: {{ ( item.value * (item.percent / 100) ).toFixed(2) }}
                 </li>
               </ul>
-
             </div>
           </div>
 
@@ -119,7 +118,7 @@
               {{ currentCalendar.monthLabel }} 01 - 15
               <br/> Working Days: {{ this.cutOffs.first.workingDays }}
               <ul class="uk-list">
-                <li v-for="(item, key) in contributions" :key="key">
+                <li v-for="(item, key) in filteredContributions" :key="key">
                   {{ key.toUpperCase() }}: {{ ( item.value * ((100 - item.percent) / 100) ).toFixed(2) }}
                 </li>
               </ul>
@@ -214,6 +213,24 @@ export default {
 
   computed: {
     ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions']),
+
+    filteredContributions () {
+      let contributions = Object.assign({}, this.contributions),
+          indexToRemove;
+    
+      /**
+       * Remove sss property if current type is
+       * equal to `Government Employee`
+       */
+      for(let property in contributions) {
+        if (this.type == this.types[1])
+          delete contributions['sss']
+        else
+          delete contributions['gsis']
+      }
+
+      return contributions
+    },
 
     employeeType: {
       get () {
