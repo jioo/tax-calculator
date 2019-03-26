@@ -63,16 +63,16 @@ const getters = {
 const mutations = {
   UPDATE_2018_RESULT (state, payload) {
     const { periodType } = payload
-    delete payload[periodType]
-
-    state.resultIn2018[periodType] = payload
+    delete payload['periodType']
+    
+    state.resultIn2018[periodType] = payload[periodType]
   },
 
   UPDATE_2023_RESULT (state, payload) {
     const { periodType } = payload
-    delete payload[periodType]
+    delete payload['periodType']
 
-    state.resultIn2023[periodType] = payload
+    state.resultIn2023[periodType] = payload[periodType]
   },
 }
 

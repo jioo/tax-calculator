@@ -103,8 +103,11 @@
 
           <div class="uk-text-center@m">
             <div class="uk-margin uk-tile uk-tile-muted">
-              {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
-              <br/> Working Days: {{ this.cutOffs.second.workingDays }}
+              <h5 class="uk-text-center@s">1st Cutoff</h5>
+              <hr class="uk-divider-icon">
+
+              {{ currentCalendar.monthLabel }} 01 - 15 
+              <br/> Working Days: {{ this.cutOffs[0].workingDays }}
               <ul class="uk-list">
                 <li v-for="(item, key) in filteredContributions" :key="key">
                   {{ key.toUpperCase() }}: {{ ( item.value * (item.percent / 100) ).toFixed(2) }}
@@ -115,8 +118,11 @@
 
           <div class="uk-text-center@m">
             <div class="uk-margin uk-tile uk-tile-muted">
-              {{ currentCalendar.monthLabel }} 01 - 15
-              <br/> Working Days: {{ this.cutOffs.first.workingDays }}
+              <h5 class="uk-text-center@s">2nd Cutoff</h5>
+              <hr class="uk-divider-icon">
+
+              {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
+              <br/> Working Days: {{ this.cutOffs[1].workingDays }}
               <ul class="uk-list">
                 <li v-for="(item, key) in filteredContributions" :key="key">
                   {{ key.toUpperCase() }}: {{ ( item.value * ((100 - item.percent) / 100) ).toFixed(2) }}
@@ -149,8 +155,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { convertPeriodically, toStartCase } from '@/utils/common'
-import taxCalculator2018 from '@/utils/2018-to-2022-tax-calculator'
-import taxCalculator2023 from '@/utils/2023-tax-calculator'
+import taxCalculator from '@/utils/tax-calculator'
 import contributionCalculator from '@/utils/contributions'
 import Contributions from '@/components/Contributions'
 import Result from '@/components/Result'
@@ -198,16 +203,16 @@ export default {
         { key: 6, label: 'Saturday', value: false },
         { key: 0, label: 'Sunday', value: false },
       ],
-      cutOffs: {
-        first: {
+      cutOffs: [
+        {
           salary: 0,
           workingDays: 0,
         },
-        second: {
+        {
           salary: 0,
           workingDays: 0,
-        },
-      },
+        }
+      ]
     }
   },
 
@@ -297,11 +302,12 @@ export default {
     },
 
     calculate () {
-      if (!this.salary.monthly) return false
+      // if (!this.salary.monthly) return false
 
       const { monthly } = this.salary
-      taxCalculator2018(monthly)
-      taxCalculator2023(monthly)
+
+      // taxCalculator({ periodType: 'monthly', value: { monthly } })
+      taxCalculator({ value: { semiMonthly: [15000, 15000] } })
 
       document.querySelector('#result')
         .scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
@@ -351,8 +357,8 @@ export default {
       const secondCutOff = moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-16`, 'YYYY-M-DD')
         .businessDiff(moment(businessDiffDate,'YYYY-M-DD'))
 
-      this.cutOffs.first.workingDays = firstCutoff
-      this.cutOffs.second.workingDays = secondCutOff
+      this.cutOffs[0].workingDays = firstCutoff
+      this.cutOffs[1].workingDays = secondCutOff
     },
   },
 

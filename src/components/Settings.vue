@@ -8,16 +8,7 @@
         <div class="uk-margin-medium">
           <label>
             <input class="uk-checkbox" type="checkbox">  
-            <span class="uk-text-bold"> Precise Tax Calculator</span>(Beta)
-          </label>
-
-          <label class="uk-text-meta">
-            <ul class="uk-list uk-list-bullet uk-margin-top">
-              <li>Detect No. of Working Days</li>
-              <li>Additional Fields: Other Income, Deductions</li>
-              <li>Input Holidays / Non-Working Days</li>
-              <li>Customize Working Days</li>
-            </ul>
+            <span class="uk-text-bold"> Turn On Simple Calculator</span>
           </label>
         </div>
 

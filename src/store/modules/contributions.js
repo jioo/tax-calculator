@@ -105,7 +105,6 @@ const actions = {
   },
 
   updateSssPercent ({ commit }, payload) {
-    console.log(payload)
     commit('UPDATE_SSS_PERCENT', payload)
   },
 

@@ -1,12 +1,9 @@
 import { computationFromTable } from './common'
 import store from '@/store'
 import * as tax2018to2022 from './2018-to-2022-tax'
-import * as tax2023 from './2023-tax-tax'
+import * as tax2023 from './2023-tax'
 import * as selfEmployedTax from './self-employed-tax'
 
-/**
- * 
- */
 const calculate = ({
   periodType,
   deductions,
@@ -34,11 +31,7 @@ const calculate = ({
   value = value || {}
   if (!value) throw new Error('Incorrect object value')
 
-  /**
-   * 
-   */
   let result = {}
-
   switch (periodType) {
     case 'monthly':
       result = calculateMonthly(value)
@@ -68,7 +61,8 @@ const calculate = ({
  */
 const calculateMonthly = (value) => {
 
-  let withholdingTax2018 = withholdingTax2023 = 0
+  let withholdingTax2018 = 0,
+      withholdingTax2023 = 0
 
   const monthlySalary = value['monthly'],
         hasContribution = store.getters.hasContribution,
@@ -83,7 +77,8 @@ const calculateMonthly = (value) => {
 
   // Withholding tax for Self Employed
   else {
-    withholdingTax2018 = withholdingTax2023 = ( selfEmployedTax['monthlyTax'](taxableIncome) ).toFixedFloat(2)
+    withholdingTax2018 = ( selfEmployedTax['monthlyTax'](taxableIncome) ).toFixedFloat(2)
+    withholdingTax2023 = ( selfEmployedTax['monthlyTax'](taxableIncome) ).toFixedFloat(2)
   }
 
   const otherInfo = {
@@ -109,36 +104,41 @@ const calculateMonthly = (value) => {
  * @param {Object} value 
  */
 const calculateSemiMonthly = (value) => {
-  let withholdingTax2018 = withholdingTax2023 = []
+  let withholdingTax2018 = [],
+      withholdingTax2023 = []
 
   const salaries = [ value['semiMonthly'][0], value['semiMonthly'][1] ],
         hasContribution = store.getters.hasContribution,
         totalContribution = (hasContribution) ? semiMonthlyContributions() : [0, 0],
+        // totalContribution = [539.60, 549.60],
         taxableIncome = salaries.map((salary, index) => {
-          (salary - totalContribution[index]).toFixedFloat(2)
+          return (salary - totalContribution[index]).toFixedFloat(2)
         })
-
   // Compute withholding tax for Private and Government Employee
   if (store.getters.type !== 'Self Employed') {
     withholdingTax2018 = taxableIncome.map(income => {
-      return computationFromTable(income, tax2023['semiMonthlyTaxTable']).toFixedFloat(2)
+      return computationFromTable(income, tax2018to2022['semiMonthlyTaxTable']).toFixedFloat(2)
     })
 
-    withholdingTax2018 = taxableIncome.map(income => {
+    withholdingTax2023 = taxableIncome.map(income => {
       return computationFromTable(income, tax2023['semiMonthlyTaxTable']).toFixedFloat(2)
     })
   }
 
   // Withholding tax for Self Employed
   else {
-    withholdingTax2018 = withholdingTax2023 = taxableIncome.map(income => {
+    const selfEmployedResult = taxableIncome.map(income => {
       return ( selfEmployedTax['semiMonthlyTax'](income) ).toFixedFloat(2)
     })
+
+    withholdingTax2018 = selfEmployedResult
+    withholdingTax2023 = selfEmployedResult
   }
 
   const result2018 = withholdingTax2018.map((withholdingTax, index) => {
     return {
       totalContribution: totalContribution[index],
+      taxableIncome: taxableIncome[index],
       withholdingTax,
       netIncome: (salaries[index] - withholdingTax - totalContribution[index]).toFixedFloat(2),
     }
@@ -147,6 +147,7 @@ const calculateSemiMonthly = (value) => {
   const result2023 = withholdingTax2023.map((withholdingTax, index) => {
     return {
       totalContribution: totalContribution[index],
+      taxableIncome: taxableIncome[index],
       withholdingTax,
       netIncome: (salaries[index] - withholdingTax - totalContribution[index]).toFixedFloat(2),
     }
@@ -159,8 +160,9 @@ const calculateSemiMonthly = (value) => {
 }
 
 const semiMonthlyContributions = () => {
-  let firstCutoff = secondCutoff = 0
-  const contributions = store.getters.contributions,
+  let firstCutoff = 0,
+      secondCutoff = 0
+  const contributions = Object.assign({}, store.getters.contributions),
         type = store.getters.type
 
   /**
@@ -175,10 +177,11 @@ const semiMonthlyContributions = () => {
    * Compute contributions for 1st and 2nd cutoff
    */
   for (let contribution in contributions) {
-    firstCutoff += contribution.value * (contribution.percent / 100)
-    secondCutoff += contribution.value * ((100 - contribution.percent) / 100)
+    let data = contributions[contribution]
+    
+    firstCutoff += data.value * (data.percent / 100)
+    secondCutoff += data.value * ((100 - data.percent) / 100)
   }
-  
   return [firstCutoff, secondCutoff]
 }
 
