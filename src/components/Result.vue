@@ -38,7 +38,7 @@
         <div class="uk-child-width-1-2@m" uk-grid>
           <div>
             <h5 class="uk-text-center@s">1st Cutoff</h5>
-            <hr class="uk-divider-icon">
+            <hr>
 
             <div class="uk-grid-small" uk-grid v-for="(item, key) in resultIn2018.semiMonthly[0]" :key="key">
               <div class="uk-width-expand@s" uk-leader="media: @s" v-text="toStartCase(key)"></div>
@@ -54,7 +54,7 @@
           
           <div>
             <h5 class="uk-text-center@s">2nd Cutoff</h5>
-            <hr class="uk-divider-icon">
+            <hr>
             
             <div class="uk-grid-small" uk-grid v-for="(item, key) in resultIn2018.semiMonthly[1]" :key="key">
               <div class="uk-width-expand@s" uk-leader="media: @s" v-text="toStartCase(key)"></div>
@@ -75,7 +75,7 @@
         <div class="uk-child-width-1-2@m" uk-grid>
           <div>
             <h5 class="uk-text-center@s">1st Cutoff</h5>
-            <hr class="uk-divider-icon">
+            <hr>
 
             <div class="uk-grid-small" uk-grid v-for="(item, key) in resultIn2023.semiMonthly[0]" :key="key">
               <div class="uk-width-expand@s" uk-leader="media: @s" v-text="toStartCase(key)"></div>
@@ -90,7 +90,7 @@
           
           <div>
             <h5 class="uk-text-center@s">2nd Cutoff</h5>
-            <hr class="uk-divider-icon">
+            <hr>
 
             <div class="uk-grid-small" uk-grid v-for="(item, key) in resultIn2023.semiMonthly[1]" :key="key">
               <div class="uk-width-expand@s" uk-leader="media: @s" v-text="toStartCase(key)"></div>

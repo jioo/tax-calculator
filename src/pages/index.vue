@@ -15,7 +15,7 @@
           <!-- ./Grid -->
           
           <!-- Grid -->
-          <div>
+          <div class="uk-grid-match">
             <div class="uk-form-horizontal">
               
               <!-- Employee Types -->
@@ -52,7 +52,7 @@
               </div> -->
               <!-- ./Salaries -->
 
-              <!-- Monthly Salary (For Precise calculator) -->
+              <!-- Monthly Salary -->
               <div class="uk-margin">
                 <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
                 <div class="uk-form-controls">
@@ -75,9 +75,25 @@
           <!-- ./Grid -->
 
           <!-- Grid -->
-          <div class="uk-child-width-1-2@m" uk-grid>
-            <div class="uk-text-center@m">
-              <h5>Working Weekdays</h5>  
+          <div class="uk-child-width-1-2@l" uk-grid>
+
+            <div class="uk-flex">
+              <div class="uk-text-center@m">
+                <h5>Total Working Days: <b>{{ workingDays }}</b></h5> 
+                <div class="uk-alert-primary" uk-alert>
+                  <p>Toggle holidays by clicking any day in the calendar.</p>
+                </div>
+
+                <v-calendar 
+                  :attributes="attrs"
+                  @dayclick="dayClicked"
+                  :from-page.sync="currentCalendar" 
+                ></v-calendar>
+              </div>
+            </div>
+
+            <div>
+              <h5 class="uk-text-center@m">Working Weekdays</h5>  
               <ul class="uk-list uk-list-divider">
                 <li v-for="(item, key) in workingWeekdays" :key="key">
                   <label>
@@ -88,23 +104,13 @@
               </ul>
             </div>
 
-            <div>
-              <div class="uk-text-center@m">
-                <h5>Total Working Days: <b>{{ workingDays }}</b></h5>  
-                <v-calendar 
-                  :attributes="attrs"
-                  @dayclick="dayClicked"
-                  :from-page.sync="currentCalendar" 
-                ></v-calendar>
-              </div>
-            </div>
           </div>
           <!-- ./Grid -->
 
           <div class="uk-text-center@m">
             <div class="uk-margin uk-tile uk-tile-muted">
               <h5 class="uk-text-center@s">1st Cutoff</h5>
-              <hr class="uk-divider-icon">
+              <hr>
 
               {{ currentCalendar.monthLabel }} 01 - 15 
               <br/> Working Days: {{ this.cutOffs[0].workingDays }}
@@ -119,7 +125,7 @@
           <div class="uk-text-center@m">
             <div class="uk-margin uk-tile uk-tile-muted">
               <h5 class="uk-text-center@s">2nd Cutoff</h5>
-              <hr class="uk-divider-icon">
+              <hr>
 
               {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
               <br/> Working Days: {{ this.cutOffs[1].workingDays }}
@@ -285,6 +291,10 @@ export default {
 
     onSalaryInput (salaryPeriod) {
       this.salary = convertPeriodically(salaryPeriod, { [salaryPeriod]: this.salary[salaryPeriod] })
+
+      const semiMonthlySalary = (this.salary.monthly / 2).toFixedFloat(2)
+      this.cutOffs[0].salary = semiMonthlySalary
+      this.cutOffs[1].salary = semiMonthlySalary
     },
 
     updateContributions () {
@@ -307,7 +317,7 @@ export default {
       const { monthly } = this.salary
 
       // taxCalculator({ periodType: 'monthly', value: { monthly } })
-      taxCalculator({ value: { semiMonthly: [15000, 15000] } })
+      taxCalculator({ value: { semiMonthly: [this.cutOffs[0].salary, this.cutOffs[1].salary] } })
 
       document.querySelector('#result')
         .scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})

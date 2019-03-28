@@ -1,16 +1,20 @@
 <template>
   <div>
-    <div class="uk-margin uk-align-right@m">
+
+    <div class="uk-alert-primary" uk-alert>
+      <p>You can change the distribution by adjusting the input range at the contribution box.</p>
+    </div>
+
+    <div class="uk-align-right@m">
       <label>
         <input class="uk-checkbox" type="checkbox" v-model="withContribution"> With Monthly Contributions
       </label>
     </div>
-
     <div class="uk-clearfix"></div>
 
     <div class="uk-form-horizontal">
       <!-- GSIS -->
-      <div class="uk-margin uk-animation-slide-right-medium" v-if="type === 'Government Employee'">
+      <div class="uk-margin-medium uk-animation-slide-right-medium" v-if="type === 'Government Employee'">
         <label class="uk-form-label uk-text-right@m" v-text="'GSIS'"></label>
         <div class="uk-form-controls">
           <vue-numeric 
@@ -40,7 +44,7 @@
       <div class="uk-margin" v-if="type === 'Government Employee'"></div>
 
       <!-- SSS -->
-      <div class="uk-margin uk-animation-slide-right-medium" v-if="type !== 'Government Employee'">
+      <div class="uk-margin-medium uk-animation-slide-right-medium" v-if="type !== 'Government Employee'">
         <label class="uk-form-label uk-text-right@m" v-text="'SSS'"></label>
         <div class="uk-form-controls">
           <vue-numeric 
@@ -71,7 +75,7 @@
       <!-- ./SSS -->
 
       <!-- PAGIBIG -->
-      <div class="uk-margin">
+      <div class="uk-margin-medium">
         <label class="uk-form-label uk-text-right@m" v-text="'PAGIBIG'"></label>
         <div class="uk-form-controls">
           <vue-numeric 
@@ -101,7 +105,7 @@
       <!-- ./PAGIBIG -->
 
       <!-- PHILHEALTH -->
-      <div class="uk-margin">
+      <div class="uk-margin-medium">
         <label class="uk-form-label uk-text-right@m" v-text="'PHILHEALTH'" :interval="10"></label>
         <div class="uk-form-controls">
           <vue-numeric 
