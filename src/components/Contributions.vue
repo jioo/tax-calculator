@@ -14,7 +14,7 @@
 
     <div class="uk-form-horizontal">
       <!-- GSIS -->
-      <div class="uk-margin-medium uk-animation-slide-right-medium" v-if="type === 'Government Employee'">
+      <div class="uk-margin uk-animation-slide-right-medium" v-if="type === 'Government Employee'">
         <label class="uk-form-label uk-text-right@m" v-text="'GSIS'"></label>
         <div class="uk-form-controls">
           <vue-numeric 
@@ -44,7 +44,7 @@
       <div class="uk-margin" v-if="type === 'Government Employee'"></div>
 
       <!-- SSS -->
-      <div class="uk-margin-medium uk-animation-slide-right-medium" v-if="type !== 'Government Employee'">
+      <div class="uk-margin uk-animation-slide-right-medium" v-if="type !== 'Government Employee'">
         <label class="uk-form-label uk-text-right@m" v-text="'SSS'"></label>
         <div class="uk-form-controls">
           <vue-numeric 
@@ -75,7 +75,7 @@
       <!-- ./SSS -->
 
       <!-- PAGIBIG -->
-      <div class="uk-margin-medium">
+      <div class="uk-margin">
         <label class="uk-form-label uk-text-right@m" v-text="'PAGIBIG'"></label>
         <div class="uk-form-controls">
           <vue-numeric 
@@ -105,7 +105,7 @@
       <!-- ./PAGIBIG -->
 
       <!-- PHILHEALTH -->
-      <div class="uk-margin-medium">
+      <div class="uk-margin">
         <label class="uk-form-label uk-text-right@m" v-text="'PHILHEALTH'" :interval="10"></label>
         <div class="uk-form-controls">
           <vue-numeric 

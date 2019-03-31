@@ -3,7 +3,7 @@
     <div class="uk-container">
       
       <!-- Card -->
-      <div class="uk-card uk-card-default uk-card-body ">
+      <div class="">
         <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
           
           <!-- Grid -->
@@ -17,24 +17,45 @@
           <!-- Grid -->
           <div class="uk-grid-match">
             <div class="uk-form-horizontal">
+
+              <div class="uk-card uk-card-body uk-card-default uk-margin-medium">
               
-              <!-- Employee Types -->
-              <div class="uk-margin-medium">
-                <div class="uk-flex-center@m" uk-grid>
-                  <div v-for="(item, key) in types" :key="key">
-                    <label>
-                      <input 
-                        type="radio" 
-                        class="uk-radio" 
-                        v-model="employeeType" 
-                        :value="item"
-                      /> 
-                      <span v-text="` ${item}`"></span>
-                    </label>
+                <!-- Employee Types -->
+                <div class="uk-margin-medium">
+                  <div class="uk-flex-center@m" uk-grid>
+                    <div v-for="(item, key) in types" :key="key">
+                      <label>
+                        <input 
+                          type="radio" 
+                          class="uk-radio" 
+                          v-model="employeeType" 
+                          :value="item"
+                        /> 
+                        <span v-text="` ${item}`"></span>
+                      </label>
+                    </div>
                   </div>
                 </div>
+                <!-- ./Employee Types -->
+
+
+                <!-- Monthly Salary -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="salary.monthly" 
+                      @input="onSalaryInput('monthly')"
+                      @blur="updateContributions"
+                    ></vue-numeric>
+                  </div>
+                </div>
+                <!-- ./Monthly Salary -->
+
               </div>
-              <!-- ./Employee Types -->
               
               <!-- Salaries -->
               <!-- <div class="uk-margin" v-for="(item, key) in salary" :key="key">
@@ -52,32 +73,32 @@
               </div> -->
               <!-- ./Salaries -->
 
-              <!-- Monthly Salary -->
-              <div class="uk-margin">
-                <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
-                <div class="uk-form-controls">
-                  <vue-numeric 
-                    class="uk-input" 
-                    :currency="config.currency" 
-                    :precision="config.precision" 
-                    v-model="salary.monthly" 
-                    @input="onSalaryInput('monthly')"
-                    @blur="updateContributions"
-                  ></vue-numeric>
-                </div>
+
+              <div class="uk-card uk-card-default uk-card-body">
+                <contributions />
               </div>
-              <!-- ./Monthly Salary -->
-          
-              <contributions />
 
             </div>
           </div>
           <!-- ./Grid -->
 
           <!-- Grid -->
-          <div class="uk-child-width-1-2@l" uk-grid>
+          <div class="uk-align-center uk-text-center" uk-grid>
 
-            <div class="uk-flex">
+            <div class="uk-card uk-card-default uk-card-body">
+              <h5 class="uk-text-center@m">Working Weekdays</h5>  
+
+              <div class="uk-column-1-2">
+                <div v-for="(item, key) in workingWeekdays" :key="key" class="uk-margin">
+                  <label>
+                    <input type="checkbox" class="uk-checkbox" v-model="item.value" />
+                    {{ item.label }}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="uk-card uk-card-default uk-card-body">
               <div class="uk-text-center@m">
                 <h5>Total Working Days: <b>{{ workingDays }}</b></h5> 
                 <div class="uk-alert-primary" uk-alert>
@@ -90,18 +111,6 @@
                   :from-page.sync="currentCalendar" 
                 ></v-calendar>
               </div>
-            </div>
-
-            <div>
-              <h5 class="uk-text-center@m">Working Weekdays</h5>  
-              <ul class="uk-list uk-list-divider">
-                <li v-for="(item, key) in workingWeekdays" :key="key">
-                  <label>
-                    <input type="checkbox" class="uk-checkbox" v-model="item.value" />
-                    {{ item.label }}
-                  </label>
-                </li>
-              </ul>
             </div>
 
           </div>
@@ -229,7 +238,7 @@ export default {
       let contributions = Object.assign({}, this.contributions)
       
       if (this.type == this.types[1])
-          delete contributions['sss']
+        delete contributions['sss']
       else
         delete contributions['gsis']
 
