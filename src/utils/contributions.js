@@ -5,49 +5,32 @@ import { computationFromTable } from './common'
  *  (SSS) Social Security System
  * ------------------------------------------------------
  * 
- * https://www.sss.gov.ph/sss/appmanager/pages.jsp?page=scheduleofcontribution
+ * https://www.sss.gov.ph/sss/DownloadContent?fileName=2019_Contribution_Schedule.pdf
  * 
  */
 const sssTable = () => {
 
-  let table = [], 
-      baseContribution = 54.50,
-      loopCounter = 2
+  let resultTable = [],
+      baseContribution = 100
 
-  const CONTRIBUTION_INC = 18.2,
-        RANGE_INC = 500
-  
-  /**
-   *  
-   * the Range of Compensation increments by 500 from above ₱1,250.
-   * 
-   * contribution starts from 36.30 then increments by (18.2), but for every 3rd 
-   * row the increment value is changed from (18.1).
-   * 
-   */
-  for (let range = 1250; range < 15750; range += RANGE_INC) {
+  const contributionIncrement = 20,
+        rangeIncrement = 500
 
-    table.push({ 
+  for (let range = 2250; range < 19750; range += rangeIncrement) {
+    resultTable.push({ 
       from: range, 
-      to: range + (RANGE_INC - 0.1), 
+      to: range + (rangeIncrement - 0.1), 
       computation: baseContribution.toFixedFloat(2) 
     })
-    
-    if (loopCounter === 3) {
-      loopCounter = 0
-      baseContribution += (CONTRIBUTION_INC - 0.1)
-    } 
-    else
-      baseContribution += CONTRIBUTION_INC
-    
-    loopCounter++
+
+    baseContribution += contributionIncrement
   }
 
-  // manually add the first and last Range of Compensation.
-  table.unshift({ from: 0, to: 1249.99, computation: 36.30 })
-  table.push({ from: 15750, to: Number.MAX_SAFE_INTEGER, computation: 581.30 })
+  // Manually add the first and last Range of Compensation.
+  resultTable.unshift({ from: 0, to: 2249.99, computation: 80 })
+  resultTable.push({ from: 19750, to: Number.MAX_SAFE_INTEGER, computation: 800 })
 
-  return table
+  return resultTable
 }
 
 /**
