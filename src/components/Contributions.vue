@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="uk-alert-primary" uk-alert>
+    <div class="uk-alert-primary" uk-alert v-show="!isSimpleCalculator">
       <p>You can change the distribution by adjusting the input range at the contribution box.</p>
     </div>
 
@@ -30,9 +30,10 @@
             :lazy="true" @change="gsisPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
+            v-show="!isSimpleCalculator"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid>
+          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
             <div>{{ '1st Cutoff: ' + gsisPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - gsisPercent) + '%' }}</div>
           </div>
@@ -64,9 +65,10 @@
             :lazy="true" @change="sssPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
+            v-show="!isSimpleCalculator"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid>
+          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
             <div>{{ '1st Cutoff: ' + sssPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - sssPercent) + '%' }}</div>
           </div>
@@ -94,9 +96,10 @@
             :lazy="true" @change="pagibigPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
+             v-show="!isSimpleCalculator"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid>
+          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
             <div>{{ '1st Cutoff: ' + pagibigPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - pagibigPercent) + '%' }}</div>
           </div>
@@ -106,7 +109,7 @@
 
       <!-- PHILHEALTH -->
       <div class="uk-margin">
-        <label class="uk-form-label uk-text-right@m" v-text="'PHILHEALTH'" :interval="10"></label>
+        <label class="uk-form-label uk-text-right@m" v-text="'PHILHEALTH'"></label>
         <div class="uk-form-controls">
           <vue-numeric 
             class="uk-input" 
@@ -124,9 +127,10 @@
             :lazy="true" @change="philhealthPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
+            v-show="!isSimpleCalculator"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid>
+          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
             <div>{{ '1st Cutoff: ' + philhealthPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - philhealthPercent) + '%' }}</div>
           </div>
@@ -157,7 +161,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['type', 'hasContribution', 'contributions']),
+    ...mapGetters(['type', 'hasContribution', 'contributions', 'isSimpleCalculator']),
 
     withContribution: {
       get () {
@@ -241,6 +245,25 @@ export default {
     philhealthPercentChange (value) {
       this.$store.dispatch('updatePhilhealthPercent', value)
     },
+
+    resetContributions () {
+      this.$store.dispatch('updateSss', 0)
+      this.$store.dispatch('updateGsis', 0)
+      this.$store.dispatch('updatePhilhealth', 0)
+      this.$store.dispatch('updatePagibig', 0)
+
+      this.sssPercentChange(50)
+      this.gsisPercentChange(50)
+      this.pagibigPercentChange(50)
+      this.philhealthPercentChange(50)
+    }
+  },
+
+  // Resets value when changing app settings
+  watch: {
+    isSimpleCalculator () {
+      this.resetContributions()
+    }
   }
 }
 </script>

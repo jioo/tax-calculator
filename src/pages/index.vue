@@ -2,63 +2,58 @@
   <div class="uk-section uk-section-default">
     <div class="uk-container">
       
-      <!-- Card -->
-      <div class="">
-        <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
-          
-          <!-- Grid -->
-          <div class="uk-width-1-1">
-            <div class="uk-margin-large">
-              <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3>
-            </div>
+      <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
+        
+        <!-- Grid -->
+        <div class="uk-width-1-1">
+          <div class="uk-margin-large">
+            <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3>
           </div>
-          <!-- ./Grid -->
-          
-          <!-- Grid -->
-          <div class="uk-grid-match">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-card uk-card-body uk-card-default uk-margin-medium">
-              
-                <!-- Employee Types -->
-                <div class="uk-margin-medium">
-                  <div class="uk-flex-center@m" uk-grid>
-                    <div v-for="(item, key) in types" :key="key">
-                      <label>
-                        <input 
-                          type="radio" 
-                          class="uk-radio" 
-                          v-model="employeeType" 
-                          :value="item"
-                        /> 
-                        <span v-text="` ${item}`"></span>
-                      </label>
-                    </div>
+        </div>
+        <!-- ./Grid -->
+        
+        <!-- Grid -->
+        <div>
+          <div class="uk-form-horizontal">
+            <div class="uk-card uk-card-body uk-card-default uk-margin-medium">
+            
+              <!-- Employee Types -->
+              <div class="uk-margin-medium">
+                <div class="uk-flex-center@m" uk-grid>
+                  <div v-for="(item, key) in types" :key="key">
+                    <label>
+                      <input 
+                        type="radio" 
+                        class="uk-radio" 
+                        v-model="employeeType" 
+                        :value="item"
+                      /> 
+                      <span v-text="` ${item}`"></span>
+                    </label>
                   </div>
                 </div>
-                <!-- ./Employee Types -->
-
-
-                <!-- Monthly Salary -->
-                <div class="uk-margin">
-                  <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
-                  <div class="uk-form-controls">
-                    <vue-numeric 
-                      class="uk-input" 
-                      :currency="config.currency" 
-                      :precision="config.precision" 
-                      v-model="salary.monthly" 
-                      @input="onSalaryInput('monthly')"
-                      @blur="updateContributions"
-                    ></vue-numeric>
-                  </div>
-                </div>
-                <!-- ./Monthly Salary -->
-
               </div>
-              
+              <!-- ./Employee Types -->
+
+              <!-- Monthly Salary -->
+              <div class="uk-margin" v-show="!isSimpleCalculator">
+                <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
+                <div class="uk-form-controls">
+                  <vue-numeric 
+                    class="uk-input" 
+                    :currency="config.currency" 
+                    :precision="config.precision" 
+                    v-model="salary.monthly" 
+                    @input="onSalaryInput('monthly')"
+                    @blur="updateContributions"
+                    @keyup.enter.native="onInputEnter"
+                  ></vue-numeric>
+                </div>
+              </div>
+              <!-- ./Monthly Salary -->
+
               <!-- Salaries -->
-              <!-- <div class="uk-margin" v-for="(item, key) in salary" :key="key">
+              <div class="uk-margin" v-for="(item, key) in salary" :key="key" v-show="isSimpleCalculator">
                 <label class="uk-form-label uk-text-right@m" v-text="`${toStartCase(key)} Salary`"></label>
                 <div class="uk-form-controls">
                   <vue-numeric 
@@ -68,99 +63,115 @@
                     v-model="salary[key]" 
                     @input="onSalaryInput(key)"
                     @blur="updateContributions"
+                    @keyup.enter.native="onInputEnter"
                   ></vue-numeric>
                 </div>
-              </div> -->
+              </div>
               <!-- ./Salaries -->
-
-
-              <div class="uk-card uk-card-default uk-card-body">
-                <contributions />
-              </div>
-
             </div>
+
+            <!-- Contributions -->
+            <div class="uk-card uk-card-default uk-card-body" v-show="!isSimpleCalculator">
+              <contributions />
+            </div>
+            <!-- ./Contributions -->
+
           </div>
-          <!-- ./Grid -->
+        </div>
+        <!-- ./Grid -->
 
-          <!-- Grid -->
-          <div class="uk-align-center uk-text-center" uk-grid>
+        <!-- Grid -->
+        <div class="uk-align-center uk-text-center" uk-grid>
 
-            <div class="uk-card uk-card-default uk-card-body">
-              <h5 class="uk-text-center@m">Working Weekdays</h5>  
+          <!-- Contributions (Simple Calculator) -->
+          <div class="uk-card uk-card-default uk-card-body uk-text-left" v-show="isSimpleCalculator">
+            <contributions />
+          </div>
+          <!-- ./Contributions (Simple Calculator) -->
 
-              <div class="uk-column-1-2">
-                <div v-for="(item, key) in workingWeekdays" :key="key" class="uk-margin">
-                  <label>
-                    <input type="checkbox" class="uk-checkbox" v-model="item.value" />
-                    {{ item.label }}
-                  </label>
-                </div>
-              </div>
-            </div>
+          <!-- Working Days -->
+          <div class="uk-card uk-card-default uk-card-body" v-show="!isSimpleCalculator">
+            <h5 class="uk-text-center@m">Working Weekdays</h5>  
 
-            <div class="uk-card uk-card-default uk-card-body">
-              <div class="uk-text-center@m">
-                <h5>Total Working Days: <b>{{ workingDays }}</b></h5> 
-                <div class="uk-alert-primary" uk-alert>
-                  <p>Toggle holidays by clicking any day in the calendar.</p>
-                </div>
-
-                <v-calendar 
-                  :attributes="attrs"
-                  @dayclick="dayClicked"
-                  :from-page.sync="currentCalendar" 
-                ></v-calendar>
+            <div class="uk-column-1-2">
+              <div v-for="(item, key) in workingWeekdays" :key="key" class="uk-margin">
+                <label>
+                  <input type="checkbox" class="uk-checkbox" v-model="item.value" />
+                  {{ item.label }}
+                </label>
               </div>
             </div>
-
           </div>
-          <!-- ./Grid -->
+          <!-- ./Working Days -->
 
-          <div class="uk-text-center@m">
-            <div class="uk-margin uk-tile uk-tile-muted">
-              <h5 class="uk-text-center@s">1st Cutoff</h5>
-              <hr>
-
-              {{ currentCalendar.monthLabel }} 01 - 15 
-              <br/> Working Days: {{ this.cutOffs[0].workingDays }}
-              <ul class="uk-list">
-                <li v-for="(item, key) in filteredContributions" :key="key">
-                  {{ key.toUpperCase() }}: {{ ( item.value * (item.percent / 100) ).toFixed(2) }}
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="uk-text-center@m">
-            <div class="uk-margin uk-tile uk-tile-muted">
-              <h5 class="uk-text-center@s">2nd Cutoff</h5>
-              <hr>
-
-              {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
-              <br/> Working Days: {{ this.cutOffs[1].workingDays }}
-              <ul class="uk-list">
-                <li v-for="(item, key) in filteredContributions" :key="key">
-                  {{ key.toUpperCase() }}: {{ ( item.value * ((100 - item.percent) / 100) ).toFixed(2) }}
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Grid -->
-          <div class="uk-width-1-1">
-            <div class="uk-flex-center" uk-grid>
-              <!-- Calculate Button -->
-              <div class="uk-width-1-2@m">
-                <button class="uk-button uk-button-primary uk-width-1-1" @click.prevent="calculate">Calculate</button>
+          <!-- Calendar -->
+          <div class="uk-card uk-card-default uk-card-body" v-show="!isSimpleCalculator">
+            <div class="uk-text-center@m">
+              <h5>Total Working Days: <b>{{ workingDays }}</b></h5> 
+              <div class="uk-alert-primary" uk-alert>
+                <p>Toggle holidays by clicking any day in the calendar.</p>
               </div>
-              <!-- ./Calculate Button -->
+
+              <v-calendar 
+                :attributes="attrs"
+                @dayclick="dayClicked"
+                :from-page.sync="currentCalendar" 
+              ></v-calendar>
             </div>
           </div>
-          <!-- ./Grid -->
+          <!-- ./Calendar -->
 
         </div>
+        <!-- ./Grid -->
+
+        <!-- 1st Cutoff -->
+        <div class="uk-text-center@m" v-show="!isSimpleCalculator">
+          <div class="uk-margin uk-tile uk-tile-muted">
+            <h5 class="uk-text-center@s">1st Cutoff</h5>
+            <hr>
+
+            {{ currentCalendar.monthLabel }} 01 - 15 
+            <br/> Working Days: {{ this.cutOffs[0].workingDays }}
+            <ul class="uk-list">
+              <li v-for="(item, key) in filteredContributions" :key="key">
+                {{ key.toUpperCase() }}: {{ ( item.value * (item.percent / 100) ).toFixed(2) }}
+              </li>
+            </ul>
+            
+          </div>
+        </div>
+        <!-- ./1st Cutoff -->
+
+        <!-- 2nd Cutoff -->
+        <div class="uk-text-center@m" v-show="!isSimpleCalculator">
+          <div class="uk-margin uk-tile uk-tile-muted">
+            <h5 class="uk-text-center@s">2nd Cutoff</h5>
+            <hr>
+
+            {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
+            <br/> Working Days: {{ this.cutOffs[1].workingDays }}
+            <ul class="uk-list">
+              <li v-for="(item, key) in filteredContributions" :key="key">
+                {{ key.toUpperCase() }}: {{ ( item.value * ((100 - item.percent) / 100) ).toFixed(2) }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- ./2nd Cutoff -->
+
+        <!-- Grid -->
+        <div class="uk-width-1-1">
+          <div class="uk-flex-center" uk-grid>
+            <!-- Calculate Button -->
+            <div class="uk-width-1-2@m">
+              <button class="uk-button uk-button-primary uk-width-1-1" @click.prevent="calculate">Calculate</button>
+            </div>
+            <!-- ./Calculate Button -->
+          </div>
+        </div>
+        <!-- ./Grid -->
+
       </div>
-      <!-- ./Card -->
 
       <result id="result" />
     </div>
@@ -232,7 +243,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions']),
+    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions', 'isSimpleCalculator']),
 
     filteredContributions () {
       let contributions = Object.assign({}, this.contributions)
@@ -262,28 +273,6 @@ export default {
     lastDayOfCurrentMonth () {
       return moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-01`, 'YYYY-M-DD').endOf('month').format('DD')
     },
-  },
-
-  watch: {
-    // Recalculate Salaries when `workingDays` changes
-    workingDaysPerWeek () {
-      this.onSalaryInput('monthly')
-    },
-
-    holidays () {
-      this.configureMomentBusiness()
-    },
-
-    workingWeekdays: {
-      handler () {
-        this.configureMomentBusiness()
-      },
-      deep: true,
-    },
-
-    currentCalendar () {
-      this.computeWorkingDays()
-    }
   },
 
   methods: {
@@ -321,12 +310,14 @@ export default {
     },
 
     calculate () {
-      // if (!this.salary.monthly) return false
+      if (!this.salary.monthly) return false
 
-      const { monthly } = this.salary
-
-      // taxCalculator({ periodType: 'monthly', value: { monthly } })
-      taxCalculator({ value: { semiMonthly: [this.cutOffs[0].salary, this.cutOffs[1].salary] } })
+      if(this.isSimpleCalculator) {
+        const { monthly } = this.salary
+        taxCalculator({ periodType: 'monthly', value: { monthly } })
+      } else {
+        taxCalculator({ value: { semiMonthly: [this.cutOffs[0].salary, this.cutOffs[1].salary] } })
+      }
 
       document.querySelector('#result')
         .scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
@@ -378,6 +369,47 @@ export default {
 
       this.cutOffs[0].workingDays = firstCutoff
       this.cutOffs[1].workingDays = secondCutOff
+    },
+
+    resetSalary () {
+      this.salary = {
+        annual: 0,
+        monthly: 0,
+        semiMonthly: 0,
+        weekly: 0,
+        daily: 0,
+      }
+    },
+
+    onInputEnter () {
+      document.activeElement.blur()
+    }
+  },
+
+  watch: {
+    // Recalculate Salaries when `workingDays` changes
+    workingDaysPerWeek () {
+      this.onSalaryInput('monthly')
+    },
+
+    holidays () {
+      this.configureMomentBusiness()
+    },
+
+    workingWeekdays: {
+      handler () {
+        this.configureMomentBusiness()
+      },
+      deep: true,
+    },
+
+    currentCalendar () {
+      this.computeWorkingDays()
+    },
+
+    // Resets value when changing app settings
+    isSimpleCalculator () {
+      this.resetSalary()
     },
   },
 

@@ -7,13 +7,13 @@
 
         <div class="uk-margin-medium">
           <label>
-            <input class="uk-checkbox" type="checkbox">  
-            <span class="uk-text-bold"> Turn On Simple Calculator</span>
+            <input class="uk-checkbox" type="checkbox" v-model="settings.isSimple">  
+            <span class="uk-text-bold"> Simple Calculator</span>
           </label>
         </div>
 
         <!-- Working Days -->
-        <div class="uk-margin">
+        <div class="uk-margin" v-show="settings.isSimple">
           <label class="uk-form-label" v-text="'No. Working Days per Week'"></label>
           <div class="uk-form-controls">
             <input  
@@ -45,12 +45,20 @@ export default {
     return {
       settings: {
         workingDays: '',
+        isSimple: false,
       },
     }
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek'])
+    ...mapGetters(['workingDaysPerWeek', 'isSimpleCalculator']),
+  },
+
+  watch: {
+    isSimpleCalculator (newValue, oldValue) {
+      this.$store.dispatch('updateWorkingDays', 5)
+      this.settings.workingDays = 5
+    },
   },
 
   methods: {
@@ -58,8 +66,9 @@ export default {
       this.$validator.validateAll().then(() => {
         // Check if all fields are valid
         if (this.errors.items.length === 0) {
-          // Apply new settings
+
           this.$store.dispatch('updateWorkingDays', parseFloat(this.settings.workingDays))
+          this.$store.dispatch('updateIsSimpleCalculator', this.settings.isSimple)
           this.$UIkit.offcanvas('#offcanvas-nav').hide()
         }
       })
@@ -67,11 +76,12 @@ export default {
 
     initSettings () {
       this.settings.workingDays = this.workingDaysPerWeek
+      this.settings.isSimple = this.isSimpleCalculator
     },
   },
 
   created () {
     this.initSettings()
-  }
+  },
 }
 </script>

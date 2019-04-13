@@ -1,6 +1,6 @@
 <template>
   <div class="uk-card uk-card-default uk-card-body uk-margin-medium">
-    <div class="uk-flex-around uk-child-width-1-3@m" uk-grid>
+    <div class="uk-flex-around uk-child-width-1-3@m" uk-grid v-show="isSimpleCalculator">
 
       <div>
         <h4 class="uk-text-center@s">2018-2022 Tax Result</h4>
@@ -32,7 +32,7 @@
 
     </div>
 
-    <div class="uk-flex-around uk-child-width-1-1@m" uk-grid>
+    <div class="uk-flex-around uk-child-width-1-1@m" uk-grid v-show="!isSimpleCalculator">
       <div>
         <h4 class="uk-text-center@s">2018-2022 Tax Result</h4>
         <div class="uk-child-width-1-2@m" uk-grid>
@@ -121,15 +121,57 @@ export default {
       },
     }
   },
+  
+  computed: {
+    ...mapGetters(['resultIn2018', 'resultIn2023', 'isSimpleCalculator']),
+  },
 
   methods: {
     toStartCase (str) {
       return toStartCase(str)
     },
+
+    resetResults () {
+      const defaultValue = {
+        totalContribution: 0,
+        taxableIncome: 0,
+        withholdingTax: 0,
+        netIncome: 0,
+      }
+
+      const periodTypes = [
+        {
+          name: 'semiMonthly',
+          value: [defaultValue, defaultValue],
+        },
+        
+        {
+          name: 'monthly',
+          value: defaultValue,
+        }
+      ]
+
+      periodTypes.forEach((type) => {
+        const { name, value } = type
+
+        this.$store.dispatch('update2018Result', { 
+          periodType: name, 
+          [name]: value,
+        })
+
+        this.$store.dispatch('update2023Result', { 
+          periodType: name, 
+          [name]: value,
+        })
+      })
+    }
   },
 
-  computed: {
-    ...mapGetters(['resultIn2018', 'resultIn2023']),
-  }
+  // Resets value when changing app settings
+  watch: {
+    isSimpleCalculator () {
+      this.resetResults()
+    }
+  },
 }
 </script>

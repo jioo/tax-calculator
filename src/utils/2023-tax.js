@@ -79,36 +79,3 @@ export const semiMonthlyTaxTable = [
   { from: 83333, to: 333332, taxableCompensation: 16770.83, percentage: 30, excessOver: 83333, computation, },
   { from: 333333, to: Number.MAX_SAFE_INTEGER, taxableCompensation: 91770.67, percentage: 35, excessOver: 333333, computation, },
 ]
-
-// /**
-//  * Compute withholding tax for self employed, private or government employee
-//  * 
-//  * @param {array} monthlySalary 
-//  */
-// const result = (monthlySalary) => {
-//   let withholdingTax = 0
-//   const hasContribution = store.getters.hasContribution,
-//         monthlyContribution = (hasContribution) ? store.getters.totalContribution : 0,
-//         taxableIncome = monthlySalary - monthlyContribution
-
-//   // Compute withholding tax for Private and Government Employee
-//   if (store.getters.type !== 'Self Employed')
-//     withholdingTax = computationFromTable(taxableIncome, monthlyTaxTable).toFixedFloat(2)
-  
-//   // Withholding tax for Self Employed
-//   else
-//     withholdingTax = ( selfEmployedTax(taxableIncome) ).toFixedFloat(2)
-  
-//   // Calculate result
-//   const result = {
-//     totalContribution: monthlyContribution,
-//     taxableIncome: (monthlySalary - monthlyContribution).toFixedFloat(2),
-//     withholdingTax,
-//     netIncome: (monthlySalary - withholdingTax - monthlyContribution).toFixedFloat(2),
-//   }
-
-//   // Update 2023 tax result state
-//   store.dispatch('update2023Result', result)
-// }
-
-// export default result
