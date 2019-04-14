@@ -1,50 +1,19 @@
+const defaultValue = {
+  totalContribution: 0,
+  taxableIncome: 0,
+  withholdingTax: 0,
+  netIncome: 0,
+}
+
 const state = {
   resultIn2018: {
-    monthly: {
-      totalContribution: 0,
-      taxableIncome: 0,
-      withholdingTax: 0,
-      netIncome: 0,
-    },
-
-    semiMonthly: [
-      {
-        totalContribution: 0,
-        taxableIncome: 0,
-        withholdingTax: 0,
-        netIncome: 0,
-      },
-      {
-        totalContribution: 0,
-        taxableIncome: 0,
-        withholdingTax: 0,
-        netIncome: 0,
-      },
-    ]
+    monthly: defaultValue,
+    semiMonthly: [ defaultValue, defaultValue ]
   },
 
   resultIn2023 : {
-    monthly: {
-      totalContribution: 0,
-      taxableIncome: 0,
-      withholdingTax: 0,
-      netIncome: 0,
-    },
-
-    semiMonthly: [
-      {
-        totalContribution: 0,
-        taxableIncome: 0,
-        withholdingTax: 0,
-        netIncome: 0,
-      },
-      {
-        totalContribution: 0,
-        taxableIncome: 0,
-        withholdingTax: 0,
-        netIncome: 0,
-      },
-    ]
+    monthly: defaultValue,
+    semiMonthly: [ defaultValue, defaultValue ]
   },
 }
 
