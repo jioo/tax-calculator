@@ -21,12 +21,9 @@ const calculate = ({
    * Note: currently applicable only for `Semi Monthly` type
    */
   deductions = deductions || [0, 0]
-  
+
   /**
    * Dynamic value for different kind of period type
-   * 
-   * For Monthly: { monthly: 30000 }
-   * For Semi Monthly: { semiMonthly: [15000, 15000] }
    */
   value = value || {}
   if (!value) throw new Error('Incorrect object value')
@@ -45,13 +42,13 @@ const calculate = ({
       throw new Error('Invalid period type')
   }
 
-  store.dispatch('update2018Result', { 
-    periodType, 
+  store.dispatch('update2018Result', {
+    periodType,
     [periodType]: result.result2018,
   })
 
-  store.dispatch('update2023Result', { 
-    periodType, 
+  store.dispatch('update2023Result', {
+    periodType,
     [periodType]: result.result2023,
   })
 }
@@ -61,13 +58,12 @@ const calculate = ({
  */
 const calculateMonthly = (value) => {
 
-  let withholdingTax2018 = 0,
-      withholdingTax2023 = 0
+  let withholdingTax2018 = 0, withholdingTax2023 = 0
 
-  const monthlySalary = value['monthly'],
-        hasContribution = store.getters.hasContribution,
-        totalContribution = (hasContribution) ? store.getters.totalContribution : 0,
-        taxableIncome = (monthlySalary - totalContribution).toFixedFloat(2)
+  const monthlySalary = value['monthly']
+  const hasContribution = store.getters.hasContribution
+  const totalContribution = (hasContribution) ? store.getters.totalContribution : 0
+  const taxableIncome = (monthlySalary - totalContribution).toFixedFloat(2)
 
   // Compute withholding tax for Private and Government Employee
   if (store.getters.type !== 'Self Employed') {
@@ -77,8 +73,8 @@ const calculateMonthly = (value) => {
 
   // Withholding tax for Self Employed
   else {
-    withholdingTax2018 = ( selfEmployedTax['monthlyTax'](taxableIncome) ).toFixedFloat(2)
-    withholdingTax2023 = ( selfEmployedTax['monthlyTax'](taxableIncome) ).toFixedFloat(2)
+    withholdingTax2018 = (selfEmployedTax['monthlyTax'](taxableIncome)).toFixedFloat(2)
+    withholdingTax2023 = (selfEmployedTax['monthlyTax'](taxableIncome)).toFixedFloat(2)
   }
 
   const otherInfo = {
@@ -88,12 +84,12 @@ const calculateMonthly = (value) => {
 
   return {
     result2018: {
-      ...otherInfo, 
+      ...otherInfo,
       withholdingTax: withholdingTax2018,
       netIncome: (monthlySalary - withholdingTax2018 - totalContribution).toFixedFloat(2),
     },
     result2023: {
-      ...otherInfo, 
+      ...otherInfo,
       withholdingTax: withholdingTax2023,
       netIncome: (monthlySalary - withholdingTax2023 - totalContribution).toFixedFloat(2),
     }
@@ -101,19 +97,23 @@ const calculateMonthly = (value) => {
 }
 
 /**
- * @param {Object} value 
+ * @param {Object} cutOffs 
  */
-const calculateSemiMonthly = (value) => {
-  let withholdingTax2018 = [],
-      withholdingTax2023 = []
+const calculateSemiMonthly = (cutOffs) => {
+  let withholdingTax2018 = [], withholdingTax2023 = []
 
-  const salaries = [ value['semiMonthly'][0], value['semiMonthly'][1] ],
-        hasContribution = store.getters.hasContribution,
-        totalContribution = (hasContribution) ? semiMonthlyContributions() : [0, 0],
-        // totalContribution = [539.60, 549.60],
-        taxableIncome = salaries.map((salary, index) => {
-          return (salary - totalContribution[index]).toFixedFloat(2)
-        })
+  const hasContribution = store.getters.hasContribution
+  const totalContribution = (hasContribution) ? semiMonthlyContributions() : [0, 0]
+
+  // Compute the taxable income of salaries by subtrating total deductions to total income
+  const taxableIncome = cutOffs.map((value, index) => {
+    const { salary, otherIncome, otherDeduction, absentDeduction, lateDeduction } = value
+    let totalIncome = salary + otherIncome
+    let totalDeduction = otherDeduction + absentDeduction + lateDeduction + totalContribution[index]
+
+    return (totalIncome - totalDeduction).toFixedFloat(2)
+  })
+
   // Compute withholding tax for Private and Government Employee
   if (store.getters.type !== 'Self Employed') {
     withholdingTax2018 = taxableIncome.map(income => {
@@ -128,7 +128,7 @@ const calculateSemiMonthly = (value) => {
   // Withholding tax for Self Employed
   else {
     const selfEmployedResult = taxableIncome.map(income => {
-      return ( selfEmployedTax['semiMonthlyTax'](income) ).toFixedFloat(2)
+      return (selfEmployedTax['semiMonthlyTax'](income)).toFixedFloat(2)
     })
 
     withholdingTax2018 = selfEmployedResult
@@ -136,20 +136,30 @@ const calculateSemiMonthly = (value) => {
   }
 
   const result2018 = withholdingTax2018.map((withholdingTax, index) => {
+    const { salary, otherIncome, otherDeduction, absentDeduction, lateDeduction } = cutOffs[index]
+
     return {
+      basicPay: salary,
+      otherIncome: otherIncome,
+      totalDeduction: otherDeduction + absentDeduction + lateDeduction,
       totalContribution: totalContribution[index],
       taxableIncome: taxableIncome[index],
       withholdingTax,
-      netIncome: (salaries[index] - withholdingTax - totalContribution[index]).toFixedFloat(2),
+      netIncome: (taxableIncome[index] - withholdingTax).toFixedFloat(2),
     }
   })
 
   const result2023 = withholdingTax2023.map((withholdingTax, index) => {
+    const { salary, otherIncome, otherDeduction, absentDeduction, lateDeduction } = cutOffs[index]
+
     return {
+      basicPay: salary,
+      otherIncome: otherIncome,
+      totalDeduction: otherDeduction + absentDeduction + lateDeduction,
       totalContribution: totalContribution[index],
       taxableIncome: taxableIncome[index],
       withholdingTax,
-      netIncome: (salaries[index] - withholdingTax - totalContribution[index]).toFixedFloat(2),
+      netIncome: (taxableIncome[index] - withholdingTax).toFixedFloat(2),
     }
   })
 
@@ -160,10 +170,9 @@ const calculateSemiMonthly = (value) => {
 }
 
 const semiMonthlyContributions = () => {
-  let firstCutoff = 0,
-      secondCutoff = 0
-  const contributions = Object.assign({}, store.getters.contributions),
-        type = store.getters.type
+  let firstCutoff = 0, secondCutoff = 0
+  const contributions = Object.assign({}, store.getters.contributions)
+  const type = store.getters.type
 
   /**
    * Remove a contribution depending on current employee type
@@ -178,7 +187,7 @@ const semiMonthlyContributions = () => {
    */
   for (let contribution in contributions) {
     let data = contributions[contribution]
-    
+
     firstCutoff += data.value * (data.percent / 100)
     secondCutoff += data.value * ((100 - data.percent) / 100)
   }

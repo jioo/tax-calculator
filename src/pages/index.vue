@@ -520,7 +520,8 @@ export default {
         const { monthly } = this.salary
         taxCalculator({ periodType: 'monthly', value: { monthly } })
       } else {
-        taxCalculator({ value: { semiMonthly: [this.cutOffs[0].salary, this.cutOffs[1].salary] } })
+        // taxCalculator({ value: { semiMonthly: [this.cutOffs[0].salary, this.cutOffs[1].salary] } })
+        taxCalculator({ value: this.cutOffs })
       }
 
       document.querySelector('#result')
@@ -586,6 +587,21 @@ export default {
         weekly: 0,
         daily: 0,
       }
+    },
+
+    resetCutOffs () {
+      const defaultValue = {
+        salary: 0,
+        workingDays: 0,
+        otherIncome: 0,
+        otherDeduction: 0,
+        absent: 0,
+        absentDeduction: 0,
+        late: 0,
+        lateDeduction: 0,
+      }
+
+      this.cutOffs = [ defaultValue, defaultValue ]
     },
 
     onInputEnter () {
@@ -656,9 +672,11 @@ export default {
       this.computeWorkingDays()
     },
 
-    // Resets value when changing app settings
+    // Resets all value when changing settings
     isSimpleCalculator () {
       this.resetSalary()
+      this.resetCutOffs()
+      this.computeWorkingDays()
     },
   },
 

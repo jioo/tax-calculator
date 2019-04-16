@@ -5,15 +5,25 @@ const defaultValue = {
   netIncome: 0,
 }
 
+const defaultSemiMonthly = {
+  basicPay: 0,
+  otherIncome: 0,
+  totalDeduction: 0,
+  totalContribution: 0,
+  taxableIncome: 0,
+  withholdingTax: 0,
+  netIncome: 0,
+}
+
 const state = {
   resultIn2018: {
     monthly: defaultValue,
-    semiMonthly: [ defaultValue, defaultValue ]
+    semiMonthly: [ defaultSemiMonthly, defaultSemiMonthly ]
   },
 
   resultIn2023 : {
     monthly: defaultValue,
-    semiMonthly: [ defaultValue, defaultValue ]
+    semiMonthly: [ defaultSemiMonthly, defaultSemiMonthly ]
   },
 }
 
@@ -52,6 +62,35 @@ const actions = {
 
   update2023Result ({ commit }, payload) {
     commit('UPDATE_2023_RESULT', payload)
+  },
+
+  resetResults ({ commit }) {
+    const periodTypes = [
+      {
+        name: 'semiMonthly',
+        value: [defaultSemiMonthly, defaultSemiMonthly],
+      },
+
+      {
+        name: 'monthly',
+        value: defaultValue,
+      }
+    ]
+
+    periodTypes.forEach((type) => {
+      const { name, value } = type
+      
+      commit('UPDATE_2018_RESULT', { 
+        periodType: name, 
+        [name]: value,
+      })
+
+      commit('UPDATE_2023_RESULT', { 
+        periodType: name, 
+        [name]: value,
+      })
+      
+    })
   },
 }
 

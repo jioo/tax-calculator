@@ -132,38 +132,7 @@ export default {
     },
 
     resetResults () {
-      const defaultValue = {
-        totalContribution: 0,
-        taxableIncome: 0,
-        withholdingTax: 0,
-        netIncome: 0,
-      }
-
-      const periodTypes = [
-        {
-          name: 'semiMonthly',
-          value: [defaultValue, defaultValue],
-        },
-        
-        {
-          name: 'monthly',
-          value: defaultValue,
-        }
-      ]
-
-      periodTypes.forEach((type) => {
-        const { name, value } = type
-
-        this.$store.dispatch('update2018Result', { 
-          periodType: name, 
-          [name]: value,
-        })
-
-        this.$store.dispatch('update2023Result', { 
-          periodType: name, 
-          [name]: value,
-        })
-      })
+      this.$store.dispatch('resetResults')
     }
   },
 
