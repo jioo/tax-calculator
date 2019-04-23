@@ -1,5 +1,4 @@
-import { computation, computationFromTable } from './common'
-import store from '@/store'
+import { computation } from './common'
 
 /**
  * ------------------------------------------------------
@@ -20,7 +19,7 @@ import store from '@/store'
  * | 6       	| Above ₱8,000,001               	| ₱2,202,500 + 35% of the excess over ₱8,000,000 	|
  * 
  */
-const annualTaxTable = [
+export const annualTaxTable = [
   { from: 0,  to: 250000,  taxableCompensation: 0, percentage: 0, excessOver: 0, computation, },
   { from: 250001, to: 400000, taxableCompensation: 0, percentage: 15, excessOver: 250000, computation, },
   { from: 400001, to: 800000, taxableCompensation: 22500, percentage: 20, excessOver: 400000, computation, },
@@ -34,21 +33,19 @@ const annualTaxTable = [
  *  Monthly Tax Table
  * ------------------------------------------------------
  * 
- * https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/
- * 
  * Table Result:
  * 
  * | Bracket 	| Taxable Income per year 	| Income Tax Rate                               	|
  * |---------	|-------------------------	|-----------------------------------------------	|
  * | 1       	| ₱20,833 and below       	| 0%                                            	|
  * | 2       	| ₱20,833 to ₱33,332      	| 15% of the excess over ₱20,833                	|
- * | 3       	| ₱33,333 to ₱66,666      	| ₱1,875 + 25% of the excess over ₱33,333       	|
+ * | 3       	| ₱33,333 to ₱66,666      	| ₱1,875 + 20% of the excess over ₱33,333       	|
  * | 4       	| ₱66,667 to ₱166,666     	| ₱8,541.66 + 25% of the excess over ₱66,667   	  |
  * | 5       	| ₱166,667 to ₱666,666    	| ₱33,541.66 + 30% of the excess over ₱166,667  	|
  * | 6       	| Above ₱666,667          	| ₱183,541.66 + 35% of the excess over ₱666,667 	|
  * 
  */
-const monthlyTaxTable = [
+export const monthlyTaxTable = [
   { from: 0,  to: 20833,  taxableCompensation: 0, percentage: 0, excessOver: 0, computation, },
   { from: 20833, to: 33332, taxableCompensation: 0, percentage: 15, excessOver: 20833, computation, },
   { from: 33333, to: 66666, taxableCompensation: 1875, percentage: 20, excessOver: 33333, computation, },
@@ -59,51 +56,26 @@ const monthlyTaxTable = [
 
 /**
  * ------------------------------------------------------
- *  8% Withholding Tax for Self-employed and Professionals
+ *  Semi Monthly Tax Table
  * ------------------------------------------------------
  * 
- * The 8% withholding tax rate replaces the two-tier rate of 10% 
- * (for self-employed and professionals earning less than P720,000 income every year) 
- * or 15% (for those earning more than P720,000 per year).
+ * Table Result:
  * 
- * https://www.pinoymoneytalk.com/8-percent-tax-rate-bir-rmo-23-2018/
+ * | Bracket 	| Compensation Range  	| Income Tax Rate                            	  |
+ * |---------	|---------------------	|---------------------------------------------- |
+ * | 1       	| ₱10,417 and below   	| 0%                                         	  |
+ * | 2       	| ₱10,417 to ₱16,666  	| 15% of the excess over ₱10,417             	  |
+ * | 3       	| ₱16,667 to ₱33,332  	| ₱937.5 + 20% of the excess over ₱16,667    	  |
+ * | 4       	| ₱33,333 to ₱83,332  	| ₱4,270.83 + 25% of the excess over ₱33,333    |
+ * | 5       	| ₱83,333 to ₱333,332 	| ₱16,770.83 + 30% of the excess over ₱83,333   |
+ * | 6       	| Above ₱333,333      	| ₱91,770.67 + 35% of the excess over ₱333,333  |
  * 
- * 
- * @param {number} salary Monthly Salary
  */
-const selfEmployedTax = salary =>  0.08 * (salary - 20833)
-
-/**
- * Compute withholding tax for self employed, private or government employee
- * 
- * @param {array} monthlySalary 
- */
-const result = (monthlySalary) => {
-  let withholdingTax = 0
-  const hasContribution = store.getters.hasContribution,
-        monthlyContribution = (hasContribution) ? store.getters.totalContribution : 0,
-        taxableIncome = monthlySalary - monthlyContribution
-
-  // Compute withholding tax for Private and Government Employee
-  if (store.getters.type !== 'Self Employed')
-    withholdingTax = computationFromTable(taxableIncome, monthlyTaxTable).toFixedFloat(2)
-  
-  // Withholding tax for Self Employed
-  else
-    withholdingTax = ( selfEmployedTax(taxableIncome) ).toFixedFloat(2)
-  
-  // Calculate result
-  const result = {
-    totalContribution: monthlyContribution,
-    taxableIncome: (monthlySalary - monthlyContribution).toFixedFloat(2),
-    withholdingTax,
-    netIncome: (monthlySalary - withholdingTax - monthlyContribution).toFixedFloat(2),
-  }
-
-  console.log(result)
-
-  // Update 2023 tax result state
-  store.dispatch('update2023Result', result)
-}
-
-export default result
+export const semiMonthlyTaxTable = [
+  { from: 0,  to: 10417,  taxableCompensation: 0, percentage: 0, excessOver: 0, computation, },
+  { from: 10417, to: 16666, taxableCompensation: 0, percentage: 15, excessOver: 10417, computation, },
+  { from: 16667, to: 33332, taxableCompensation: 937.5, percentage: 20, excessOver: 16667, computation, },
+  { from: 33333, to: 83332, taxableCompensation: 4270.83, percentage: 25, excessOver: 33333, computation, },
+  { from: 83333, to: 333332, taxableCompensation: 16770.83, percentage: 30, excessOver: 83333, computation, },
+  { from: 333333, to: Number.MAX_SAFE_INTEGER, taxableCompensation: 91770.67, percentage: 35, excessOver: 333333, computation, },
+]

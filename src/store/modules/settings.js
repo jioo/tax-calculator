@@ -1,4 +1,5 @@
 const state = {
+  isSimpleCalculator: false,
   type: 'Private Employee',
   types: [
     'Private Employee',
@@ -9,6 +10,12 @@ const state = {
 }
 
 const getters = {
+
+  /**
+   * App settings
+   */
+  isSimpleCalculator: state => state.isSimpleCalculator,
+
   /**
    * Employee Type: 'Private Employee', 'Government Employee', 'Self Employed'
    */
@@ -26,6 +33,10 @@ const getters = {
 }
 
 const mutations = {
+  UPDATE_IS_SIMPLE_CALCULATOR (state, payload) {
+    state.isSimpleCalculator = payload
+  },
+
   UPDATE_TYPE (state, payload) {
     state.type = payload
   },
@@ -36,6 +47,10 @@ const mutations = {
 } 
 
 const actions = {
+  updateIsSimpleCalculator ({ commit }, payload) {
+    commit('UPDATE_IS_SIMPLE_CALCULATOR', payload)
+  },
+
   updateType ({ commit }, payload) {
     commit('UPDATE_TYPE', payload)
   },
