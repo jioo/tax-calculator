@@ -1,5 +1,5 @@
 const state = {
-  isSimpleCalculator: false,
+  isSimpleCalculator: true,
   type: 'Private Employee',
   types: [
     'Private Employee',
