@@ -10,8 +10,8 @@ export default {
     return {
       title: `${new Date().getFullYear()} Philippines Tax Calculator`,
       description: '',
-      pageUrl: 'https://jioo.github.io/tax-calculator/',
-      imageUrl: 'https://jioo.github.io/tax-calculator/img/logo-200x200.png',
+      pageUrl: 'https://www.tax-ph.com',
+      imageUrl: 'https://www.tax-ph.com/img/logo-200x200.png',
       imageType: 'image/png',
       imageWidth: '200',
       imageHeight: '200',

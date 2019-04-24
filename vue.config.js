@@ -4,11 +4,6 @@ const currentVersion = require('./package.json').version
 const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
 module.exports = {
-  // https://cli.vuejs.org/guide/deployment.html#github-pages
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/tax-calculator/'
-    : '/',
-
   css: {
     loaderOptions: {
       // import sass file in every component
@@ -57,11 +52,11 @@ module.exports = {
       // To match cross-origin requests, use a RegExp that matches
       // the start of the origin:
       runtimeCaching: [{
-        urlPattern: new RegExp('^https://jioo\.github\.io/tax-calculator/'),
+        urlPattern: new RegExp('^https://www\.tax-ph\.com'),
         handler: 'staleWhileRevalidate',
         options: {
           // Use a custom cache name for this route.
-          cacheName: 'tax-calculator',
+          cacheName: 'tax-ph',
           // Configure custom cache expiration.
           expiration: {
             maxEntries: 60,

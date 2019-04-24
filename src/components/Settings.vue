@@ -1,5 +1,5 @@
 <template>
-  <div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
+  <div id="settings-nav" data-uk-offcanvas="flip: true; overlay: true">
     <div class="uk-offcanvas-bar">
       <button class="uk-offcanvas-close uk-close uk-icon" type="button" data-uk-close></button>
       <div class="uk-form-stacked">
@@ -69,7 +69,7 @@ export default {
 
           this.$store.dispatch('updateWorkingDays', parseFloat(this.settings.workingDays))
           this.$store.dispatch('updateIsSimpleCalculator', this.settings.isSimple)
-          this.$UIkit.offcanvas('#offcanvas-nav').hide()
+          this.$UIkit.offcanvas('#settings-nav').hide()
         }
       })
     },
