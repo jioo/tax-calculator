@@ -28,12 +28,13 @@
               </ul>
             </div>
           </div>
+          
         </nav>
       </div>
     </header>
 
     <!-- Off Canvas -->
-    <div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
+    <div id="offcanvas-nav" ref="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
       <div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
         <button class="uk-offcanvas-close uk-close" type="button" data-uk-close></button>
         <ul class="uk-nav uk-nav-default">
@@ -57,3 +58,15 @@
     <!-- ./Off Canvas -->
   </div>
 </template>
+
+<script>
+export default {
+  watch:{
+    // close the off canvas nav when changing route
+    $route (to, from){
+      const canvas = this.$refs['offcanvas-nav']
+      UIkit.offcanvas(canvas).hide();
+    }
+  } 
+}
+</script>
