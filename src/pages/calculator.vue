@@ -1,5 +1,5 @@
 <template>
-  <div class="uk-section uk-section-default">
+  <div id="top-section" class="uk-section uk-section-default">
     <div class="uk-container">
       
       <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
@@ -8,7 +8,7 @@
         <div class="uk-width-1-1">
           <div class="uk-margin-large">
             <!-- <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3> -->
-            <h3 class="uk-text-center" v-text="'Tax Calculator'"></h3>
+            <h3 class="uk-text-center" v-text="(isSimpleCalculator) ? 'Tax Calculator' : 'Payroll Calculator'"></h3>
           </div>
         </div>
         <!-- ./Grid -->
@@ -23,7 +23,7 @@
                 <a data-uk-toggle href="#settings-nav" uk-icon="icon: settings"></a>
               </div>
               
-              <settings />
+              <settings ref="settingsComponent" />
               <!-- Settings -->
 
               <!-- Employee Types -->
@@ -361,7 +361,7 @@
           <div class="uk-flex-center" uk-grid>
             <!-- Calculate Button -->
             <div class="uk-width-1-2@m">
-              <button class="uk-button uk-button-primary uk-width-1-1" @click.prevent="calculate">Calculate</button>
+              <button class="uk-button uk-button-primary uk-button-large uk-width-1-1 " @click.prevent="calculate">Calculate</button>
             </div>
             <!-- ./Calculate Button -->
           </div>
@@ -375,9 +375,22 @@
       <!-- ./Result -->
 
       <!-- Grid -->
-      <div class="uk-width-1-1 uk-margin-medium" v-show="isSimpleCalculator">
+      <div class="uk-width-1-1 uk-margin-large" v-show="isSimpleCalculator">
         <div class="uk-flex-center" uk-grid>
-          <a class="uk-button uk-button-primary uk-button-large uk-width-2-3 uk-width-auto@s">Try out the Other Calculator!</a>
+
+          <div  class="uk-width-1-2@m uk-margin-small">
+            <div class="uk-card uk-card-default uk-card-body">
+              <h4 class="uk-text-center@m">Payroll Calculator</h4>
+              <ul class="uk-list uk-list-bullet">
+                <li>Detect No. of Working Days</li>
+                <li>Additional Fields: Other Income, Deductions</li>
+                <li>Input Holidays / Non-Working Days</li>
+                <li>Customize Working Days</li>
+              </ul>
+              <a class="uk-button uk-button-primary uk-align-center uk-width-1-1 uk-width-auto@s" @click.prevent="switchToPayroll">Try It!</a>
+            </div>
+          </div>
+
         </div>
       </div>
       <!-- ./Grid -->
@@ -648,6 +661,23 @@ export default {
     resetData () {
       Object.assign(this.$data, this.$options.data())
     },
+
+    switchToPayroll () {
+      // Update the state in vuex
+      this.$store.dispatch('updateIsSimpleCalculator', false)
+
+      /**
+       * Update the local data in `settings`
+       * by calling the function in child component
+       */
+      this.$refs.settingsComponent.updateIsSimple(false)
+
+      // Scoll to top
+      document.querySelector('#top-section')
+        .scrollIntoView({behavior: "smooth"})
+
+
+    }
   },
 
   watch: {

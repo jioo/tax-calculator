@@ -78,6 +78,10 @@ export default {
       this.settings.workingDays = this.workingDaysPerWeek
       this.settings.isSimple = this.isSimpleCalculator
     },
+
+    updateIsSimple (val) {
+      this.settings.isSimple = val
+    }
   },
 
   created () {

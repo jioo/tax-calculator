@@ -24,4 +24,8 @@ export default {
     border-bottom: 1px solid #f2f2f2;
     overflow-y: hidden;
   }
+
+  h4, h5 {
+    color: $global-secondary-background
+  }
 </style>

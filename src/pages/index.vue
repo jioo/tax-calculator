@@ -1,17 +1,10 @@
 <template>
   <div>
-    <!-- <div class="uk-light uk-background-norepeat uk-background-cover uk-background-center-center uk-cover-container uk-background-secondary">
-      <img data-src="/img/bg.jpg" alt="" data-uk-cover data-uk-img>
-      <div class="uk-container uk-container-small uk-flex-auto uk-text-center uk-margin-large" data-uk-scrollspy="target: > .animate; cls: uk-animation-slide-bottom-small uk-invisible; delay: 300">
-        <h1 class="uk-heading-primary animate uk-invisible" style="font-weight: 600;" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h1>
-      </div>
-    </div> -->
-
     <div class="uk-section">
       <div class="uk-container uk-container-xsmall uk-text-center">
         <h1 class="uk-heading-medium" style="font-weight: 600;" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h1>
 				<p class="uk-margin-remove uk-h3">
-          <span class="primary">TAX PH</span> is designed to help Filipino employees understand the breakdown of their taxes and how it is calculated.
+          <span class="uk-text-primary">TAX PH</span> is designed to help Filipino employees understand the breakdown of their taxes and how it is calculated.
         </p>
         <router-link 
             :to="'/calculator'"
@@ -29,7 +22,7 @@
 					<div class="uk-text-center">
 						<span uk-icon="icon: world; ratio: 3.5"></span>
 						<h4 class="uk-margin-small-bottom uk-margin-top uk-margin-remove-adjacent">Offline Mode</h4>
-						<p>No data is required after using the web app once.</p>
+						<p>No data is required after using the calculator once.</p>
 					</div>
 					<div class="uk-text-center">
 						<span uk-icon="icon: bolt; ratio: 3.5"></span>
@@ -46,19 +39,4 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  data () {
-    return {
-    }
-  }
-}
-</script>
-
-<style lang="scss" scoped>
-  .primary {
-    color: $global-primary-background
-  }
-</style>
 
