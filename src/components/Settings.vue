@@ -5,15 +5,18 @@
       <div class="uk-form-stacked">
         <h4 class="uk-text-bold">Settings</h4>
 
-        <div class="uk-margin-medium">
-          <label>
-            <input class="uk-checkbox" type="checkbox" v-model="settings.isSimple">  
-            <span class="uk-text-bold"> Simple Calculator</span>
-          </label>
+        <!-- Calculator Type -->
+        <div class="uk-margin-small">
+          <label class="uk-form-label">Calculator Type:</label>
+          <select class="uk-select" v-model="settings.calculatorType">
+            <option value="tax">Tax Calculator</option>
+            <option value="payroll">Payroll Calculator</option>
+          </select>
         </div>
+        <!-- ./Calculator Type -->
 
         <!-- Working Days -->
-        <div class="uk-margin" v-show="settings.isSimple">
+        <div class="uk-margin" v-show="settings.calculatorType === 'tax'">
           <label class="uk-form-label" v-text="'No. Working Days per Week'"></label>
           <div class="uk-form-controls">
             <input  
@@ -21,6 +24,7 @@
               name="Working Days"
               :class="['uk-input', { 'uk-form-danger': errors.has('Working Days') }]"
               v-validate="'numeric|min_value:1|max_value:7'" 
+              :disabled="settings.calculatorType !== 'tax'" 
               v-model="settings.workingDays"
             />
             <span class="uk-text-danger" v-if="errors.has('Working Days')">{{ errors.first('Working Days') }}</span>
@@ -45,17 +49,18 @@ export default {
     return {
       settings: {
         workingDays: '',
-        isSimple: false,
+        calculatorType: 'tax',
       },
     }
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek', 'isSimpleCalculator']),
+    ...mapGetters(['workingDaysPerWeek', 'calculator']),
   },
 
   watch: {
-    isSimpleCalculator (newValue, oldValue) {
+    // Reset value when calculator type setting is updated
+    calculator (newValue, oldValue) {
       this.$store.dispatch('updateWorkingDays', 5)
       this.settings.workingDays = 5
     },
@@ -66,21 +71,21 @@ export default {
       this.$validator.validateAll().then(() => {
         // Check if all fields are valid
         if (this.errors.items.length === 0) {
+          this.$UIkit.offcanvas('#settings-nav').hide()
 
           this.$store.dispatch('updateWorkingDays', parseFloat(this.settings.workingDays))
-          this.$store.dispatch('updateIsSimpleCalculator', this.settings.isSimple)
-          this.$UIkit.offcanvas('#settings-nav').hide()
+          this.$store.dispatch('updateCalculator', this.settings.calculatorType)
         }
       })
     },
 
     initSettings () {
       this.settings.workingDays = this.workingDaysPerWeek
-      this.settings.isSimple = this.isSimpleCalculator
+      this.settings.calculatorType = this.calculator
     },
 
-    updateIsSimple (val) {
-      this.settings.isSimple = val
+    updateCalculator (val) {
+      this.settings.calculatorType = val
     }
   },
 

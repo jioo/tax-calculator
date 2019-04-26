@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="uk-alert-primary" uk-alert v-show="!isSimpleCalculator">
+    <div class="uk-alert-primary" uk-alert v-show="isPayroll">
       <p>You can change the distribution by adjusting the input range at the contribution box.</p>
     </div>
 
@@ -30,10 +30,10 @@
             :lazy="true" @change="gsisPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
-            v-show="!isSimpleCalculator"
+            v-show="isPayroll"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
+          <div class="uk-child-width-1-2" uk-grid v-show="isPayroll">
             <div>{{ '1st Cutoff: ' + gsisPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - gsisPercent) + '%' }}</div>
           </div>
@@ -65,10 +65,10 @@
             :lazy="true" @change="sssPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
-            v-show="!isSimpleCalculator"
+            v-show="isPayroll"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
+          <div class="uk-child-width-1-2" uk-grid v-show="isPayroll">
             <div>{{ '1st Cutoff: ' + sssPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - sssPercent) + '%' }}</div>
           </div>
@@ -96,10 +96,10 @@
             :lazy="true" @change="pagibigPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
-             v-show="!isSimpleCalculator"
+             v-show="isPayroll"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
+          <div class="uk-child-width-1-2" uk-grid v-show="isPayroll">
             <div>{{ '1st Cutoff: ' + pagibigPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - pagibigPercent) + '%' }}</div>
           </div>
@@ -127,10 +127,10 @@
             :lazy="true" @change="philhealthPercentChange" 
             :interval="10"
             :disabled="!hasContribution"
-            v-show="!isSimpleCalculator"
+            v-show="isPayroll"
           ></vue-slider>
 
-          <div class="uk-child-width-1-2" uk-grid v-show="!isSimpleCalculator">
+          <div class="uk-child-width-1-2" uk-grid v-show="isPayroll">
             <div>{{ '1st Cutoff: ' + philhealthPercent + '%' }}</div>
             <div>{{ '2nd Cutoff: ' + (100 - philhealthPercent) + '%' }}</div>
           </div>
@@ -161,7 +161,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['type', 'hasContribution', 'contributions', 'isSimpleCalculator']),
+    ...mapGetters(['type', 'hasContribution', 'contributions', 'calculator', 'isPayroll']),
 
     withContribution: {
       get () {
@@ -261,7 +261,7 @@ export default {
 
   // Resets value when changing app settings
   watch: {
-    isSimpleCalculator () {
+    calculator () {
       this.resetContributions()
     }
   }

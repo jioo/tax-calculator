@@ -8,7 +8,7 @@
         <div class="uk-width-1-1">
           <div class="uk-margin-large">
             <!-- <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3> -->
-            <h3 class="uk-text-center" v-text="(isSimpleCalculator) ? 'Tax Calculator' : 'Payroll Calculator'"></h3>
+            <h3 class="uk-text-center" v-text="(isTax) ? 'Tax Calculator' : 'Payroll Calculator'"></h3>
           </div>
         </div>
         <!-- ./Grid -->
@@ -45,7 +45,7 @@
               <!-- ./Employee Types -->
 
               <!-- Monthly Salary -->
-              <div class="uk-margin" v-show="!isSimpleCalculator">
+              <div class="uk-margin" v-show="isPayroll">
                 <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
                 <div class="uk-form-controls">
                   <vue-numeric 
@@ -62,7 +62,7 @@
               <!-- ./Monthly Salary -->
 
               <!-- Salaries -->
-              <div class="uk-margin" v-for="(item, key) in salary" :key="key" v-show="isSimpleCalculator">
+              <div class="uk-margin" v-for="(item, key) in salary" :key="key" v-show="isTax">
                 <label class="uk-form-label uk-text-right@m" v-text="`${toStartCase(key)} Salary`"></label>
                 <div class="uk-form-controls">
                   <vue-numeric 
@@ -80,7 +80,7 @@
             </div>
 
             <!-- Contributions -->
-            <div class="uk-card uk-card-default uk-card-body" v-show="!isSimpleCalculator">
+            <div class="uk-card uk-card-default uk-card-body" v-show="isPayroll">
               <contributions />
             </div>
             <!-- ./Contributions -->
@@ -93,13 +93,13 @@
         <div class="uk-align-center uk-text-center" uk-grid>
 
           <!-- Contributions (Simple Calculator) -->
-          <div class="uk-card uk-card-default uk-card-body uk-text-left" v-show="isSimpleCalculator">
+          <div class="uk-card uk-card-default uk-card-body uk-text-left" v-show="isTax">
             <contributions />
           </div>
           <!-- ./Contributions (Simple Calculator) -->
 
           <!-- Working Days -->
-          <div class="uk-card uk-card-default uk-card-body" v-show="!isSimpleCalculator">
+          <div class="uk-card uk-card-default uk-card-body" v-show="isPayroll">
             <h5 class="uk-text-center@m">Working Weekdays</h5>  
 
             <div class="uk-column-1-2">
@@ -114,7 +114,7 @@
           <!-- ./Working Days -->
 
           <!-- Calendar -->
-          <div class="uk-card uk-card-default uk-card-body" v-show="!isSimpleCalculator">
+          <div class="uk-card uk-card-default uk-card-body" v-show="isPayroll">
             <div class="uk-text-center@m">
               <h5>Total Working Days: <b>{{ workingDays }}</b></h5> 
               <div class="uk-alert-primary" uk-alert>
@@ -134,7 +134,7 @@
         <!-- ./Grid -->
 
         <!-- 1st Cutoff -->
-        <div class="uk-text-center@m" v-show="!isSimpleCalculator">
+        <div class="uk-text-center@m" v-show="isPayroll">
           <div class="uk-margin uk-tile uk-tile-muted">
             <h5 class="uk-text-center@s">1st Cutoff</h5>
             <hr>
@@ -246,7 +246,7 @@
         <!-- ./1st Cutoff -->
 
         <!-- 2nd Cutoff -->
-        <div class="uk-text-center@m" v-show="!isSimpleCalculator">
+        <div class="uk-text-center@m" v-show="isPayroll">
           <div class="uk-margin uk-tile uk-tile-muted">
             <h5 class="uk-text-center@s">2nd Cutoff</h5>
             <hr>
@@ -375,7 +375,7 @@
       <!-- ./Result -->
 
       <!-- Grid -->
-      <div class="uk-width-1-1 uk-margin-large" v-show="isSimpleCalculator">
+      <div class="uk-width-1-1 uk-margin-large" v-show="isTax">
         <div class="uk-flex-center" uk-grid>
 
           <div  class="uk-width-1-2@m uk-margin-small">
@@ -478,7 +478,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions', 'isSimpleCalculator']),
+    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions', 'calculator', 'isPayroll', 'isTax']),
 
     filteredContributions () {
       let contributions = Object.assign({}, this.contributions)
@@ -549,7 +549,7 @@ export default {
     calculate () {
       if (!this.salary.monthly) return false
 
-      if(this.isSimpleCalculator) {
+      if(this.isTax) {
         const { monthly } = this.salary
         taxCalculator({ periodType: 'monthly', value: { monthly } })
       } else {
@@ -664,13 +664,13 @@ export default {
 
     switchToPayroll () {
       // Update the state in vuex
-      this.$store.dispatch('updateIsSimpleCalculator', false)
+      this.$store.dispatch('updateCalculator', 'payroll')
 
       /**
        * Update the local data in `settings`
        * by calling the function in child component
        */
-      this.$refs.settingsComponent.updateIsSimple(false)
+      this.$refs.settingsComponent.updateCalculator('payroll')
 
       // Scoll to top
       document.querySelector('#top-section')
@@ -702,7 +702,7 @@ export default {
     },
 
     // Resets all value when changing settings
-    isSimpleCalculator () {
+    calculator () {
       this.resetData()
       this.computeWorkingDays()
     },

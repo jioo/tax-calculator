@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="uk-card uk-card-default uk-card-body" v-show="isSimpleCalculator">
+    <div class="uk-card uk-card-default uk-card-body" v-show="isTax">
       <div class="uk-flex-around uk-child-width-1-3@m" uk-grid>
 
         <div>
@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-card-body" v-if="!isSimpleCalculator">
+    <div class="uk-card uk-card-default uk-card-body" v-if="isPayroll">
       <div class="uk-flex-around uk-child-width-1-1@m" uk-grid>
         <div>
           <h4 class="uk-text-center@s">2018-2022 Tax Result</h4>
@@ -126,7 +126,7 @@ export default {
   },
   
   computed: {
-    ...mapGetters(['resultIn2018', 'resultIn2023', 'isSimpleCalculator']),
+    ...mapGetters(['resultIn2018', 'resultIn2023', 'calculator', 'isPayroll', 'isTax']),
   },
 
   methods: {
@@ -141,7 +141,7 @@ export default {
 
   // Resets value when changing app settings
   watch: {
-    isSimpleCalculator () {
+    calculator () {
       this.resetResults()
     }
   },

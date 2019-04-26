@@ -1,12 +1,12 @@
 <template>
   <div>
-    <header class="header-style" data-uk-sticky="show-on-up: true; animation: uk-animation-slide-top">
+    <header class="header-style" uk-sticky="show-on-up: true; animation: uk-animation-slide-top">
       <div class="uk-container">
-        <nav id="navbar" data-uk-navbar>
+        <nav id="navbar" uk-navbar>
           
           <div class="uk-navbar-left">
             <router-link class="uk-navbar-item uk-logo" :to="{ name: 'home' }" >
-              <img class="uk-margin uk-margin-top" :data-src="require('@/assets/img/logo.png')" width="115" alt="Logo" uk-img>
+              <img class="uk-margin uk-margin-top" :src="require('@/assets/img/logo.png')" width="115" alt="Logo" uk-img>
             </router-link>
           </div>
 
@@ -24,7 +24,7 @@
 
                 <li><a href="#" class="uk-visible@m">Share</a></li>
 
-                <li><a class="uk-navbar-toggle uk-hidden@m" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav"></a></li>
+                <li><a class="uk-navbar-toggle uk-hidden@m" uk-toggle uk-navbar-toggle-icon href="#offcanvas-nav"></a></li>
               </ul>
             </div>
           </div>
@@ -34,13 +34,13 @@
     </header>
 
     <!-- Off Canvas -->
-    <div id="offcanvas-nav" ref="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
+    <div id="offcanvas-nav" ref="offcanvas-nav" uk-offcanvas="flip: true; overlay: true">
       <div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
-        <button class="uk-offcanvas-close uk-close" type="button" data-uk-close></button>
+        <button class="uk-offcanvas-close uk-close" type="button" uk-close></button>
         <ul class="uk-nav uk-nav-default">
 
           <router-link class="uk-navbar-item uk-logo" :to="{ name: 'home' }" >
-            <img class="uk-margin uk-margin-top uk-margin-left" :data-src="require('@/assets/img/logo.png')" alt="Logo" uk-img>
+            <img class="uk-margin uk-margin-top uk-margin-left" :src="require('@/assets/img/logo.png')" alt="Logo" uk-img>
           </router-link>
 
           <router-link tag="li" to="/calculator">
