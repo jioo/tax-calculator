@@ -5,6 +5,7 @@ import store from '@/store'
 import './registerServiceWorker'
 import './plugins'
 import './prototypes'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false
 

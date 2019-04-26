@@ -22,8 +22,6 @@
                   <a class="uk-visible@m" v-text="'FAQ'"></a>
                 </router-link>
 
-                <li><a href="#" class="uk-visible@m">Share</a></li>
-
                 <li><a class="uk-navbar-toggle uk-hidden@m" uk-toggle uk-navbar-toggle-icon href="#offcanvas-nav"></a></li>
               </ul>
             </div>
@@ -50,8 +48,6 @@
           <router-link tag="li" to="/faq">
             <a v-text="'FAQ'"></a>
           </router-link>
-
-          <li><a href="#">Share</a></li>
         </ul>
       </div>
     </div>

@@ -20,7 +20,7 @@
 
               <!-- Settings -->
               <div class="uk-margin-medium uk-text-right">
-                <a data-uk-toggle href="#settings-nav" uk-icon="icon: settings"></a>
+                <a data-uk-toggle href="#settings-nav" uk-icon="icon: settings" uk-tooltip="Settings"></a>
               </div>
               
               <settings ref="settingsComponent" />
@@ -383,9 +383,9 @@
               <h4 class="uk-text-center@m">Payroll Calculator</h4>
               <ul class="uk-list uk-list-bullet">
                 <li>Detect No. of Working Days</li>
-                <li>Additional Fields: Other Income, Deductions</li>
-                <li>Input Holidays / Non-Working Days</li>
                 <li>Customize Working Days</li>
+                <li>Additional Fields: Income, Deductions, No. of Absent, Tardiness</li>
+                <li>Input Holidays / Non-Working Days</li>
               </ul>
               <a class="uk-button uk-button-primary uk-align-center uk-width-1-1 uk-width-auto@s" @click.prevent="switchToPayroll">Try It!</a>
             </div>
