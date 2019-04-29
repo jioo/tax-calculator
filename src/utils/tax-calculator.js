@@ -78,6 +78,7 @@ const calculateMonthly = (value) => {
   }
 
   const otherInfo = {
+    monthlyBasicPay: monthlySalary,
     totalContribution,
     taxableIncome,
   }

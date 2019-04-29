@@ -27,18 +27,15 @@
 
               <!-- Employee Types -->
               <div class="uk-margin-medium">
-                <div class="uk-flex-center@m" uk-grid>
-                  <div v-for="(item, key) in types" :key="key">
-                    <label>
-                      <input 
-                        type="radio" 
-                        class="uk-radio" 
-                        v-model="employeeType" 
-                        :value="item"
-                      /> 
-                      <span v-text="` ${item}`"></span>
-                    </label>
-                  </div>
+                <label class="uk-form-label uk-text-right@m">Employee Type</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" v-model="employeeType" >
+                    <option 
+                      v-for="(item, key) in types" :key="key" 
+                      :value="item"
+                      v-text="` ${item}`"
+                    ></option>
+                  </select>
                 </div>
               </div>
               <!-- ./Employee Types -->
@@ -121,7 +118,7 @@
               </div>
 
               <v-calendar 
-                :attributes="attrs"
+                :attributes="calendarAttributes"
                 @dayclick="dayClicked"
                 :from-page.sync="currentCalendar" 
               ></v-calendar>
@@ -433,14 +430,6 @@ export default {
         weekly: 0,
         daily: 0,
       },
-      attrs: [
-        {
-          highlight: {
-            backgroundColor: '#ff8080', // red
-          },
-          dates: [],
-        }
-      ],
       workingDays: 0,
       workingWeekdays: [
         { key: 1, label: 'Monday', value: true },
@@ -477,7 +466,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['workingDaysPerWeek', 'type', 'types', 'totalContribution', 'contributions', 'calculator', 'isPayroll', 'isTax']),
+    ...mapGetters([
+      'workingDaysPerWeek', 
+      'type', 
+      'types', 
+      'totalContribution', 
+      'contributions', 
+      'calculator', 
+      'isPayroll', 
+      'isTax', 
+      'calendarAttributes', 
+      'holidays'
+    ]),
 
     filteredContributions () {
       let contributions = Object.assign({}, this.contributions)
@@ -498,10 +498,6 @@ export default {
         this.$store.dispatch('updateType', val)
         this.updateContributions()
       }
-    },
-
-    holidays () {
-      return this.attrs[0].dates.map(m => moment(m).format('YYYY-MM-DD') )
     },
 
     lastDayOfCurrentMonth () {
@@ -552,7 +548,6 @@ export default {
         const { monthly } = this.salary
         taxCalculator({ periodType: 'monthly', value: { monthly } })
       } else {
-        // taxCalculator({ value: { semiMonthly: [this.cutOffs[0].salary, this.cutOffs[1].salary] } })
         taxCalculator({ value: this.cutOffs })
       }
 
@@ -562,7 +557,7 @@ export default {
 
     dayClicked (date) {
       const dayClicked = new Date(date.year, date.month - 1, date.day),
-            currentHighlights = this.attrs[0].dates
+            currentHighlights = this.calendarAttributes[0].dates
 
       /**
        * Check if `dayClicked` already exists in `currentHighlights`
@@ -573,11 +568,11 @@ export default {
 
       // Add the `dayClicked` in `currentHighlights`
       if (validateDay === -1)
-        currentHighlights.push(dayClicked)
+        this.$store.dispatch('addHoliday', dayClicked)
 
       // Remove the selected day in `currentHighlights`
       else
-        currentHighlights.splice(validateDay, 1)
+        this.$store.dispatch('removeHoliday', validateDay)
       
       // Recompute deductions after clicking day in calendar
       this.recomputeDeductions()
@@ -674,8 +669,6 @@ export default {
       // Scoll to top
       document.querySelector('#top-section')
         .scrollIntoView({behavior: "smooth"})
-
-
     }
   },
 

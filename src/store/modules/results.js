@@ -1,4 +1,5 @@
 const defaultValue = {
+  monthlyBasicPay: 0,
   totalContribution: 0,
   taxableIncome: 0,
   withholdingTax: 0,
