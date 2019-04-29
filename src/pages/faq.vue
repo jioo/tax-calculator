@@ -38,6 +38,14 @@ export default {
     return {
       items: [
         {
+          title: 'How can I use the calculator in Offline mode?',
+          content: `
+          Just load the App once and you can use it without Internet / Data. <br/><br/>
+
+          More info: <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers" target="_blank">Link</a>
+          `,
+        },
+        {
           title: 'How did you calculate Annual, Monthly, Semi Monthly, Weekly & Daily Salary?',
           content: `
           <h4>Annual Salary</h4>
@@ -73,7 +81,7 @@ export default {
           <p><button class="uk-button uk-button-primary">Open PAGIBIG Table</button></p>
           
           <h4> Philippine Health Insurance Corporation (PhilHealth)</h4>
-          Source: <a class="default-link" href="https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf" target="_blank">https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf</a>
+          Source: <a class="default-link" href="https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf" target="_blank">PDF Link</a>
           <p><button class="uk-button uk-button-primary">Open Philhealth Table</button></p>
           `,
         },
@@ -93,9 +101,9 @@ export default {
           title: 'How to calculate Withholding Tax?',
           content: `
           <h4>1.) Determine your Taxable Income</h4>
-          <b>Taxable Income</b> = (Monthly Basic Pay + Overtime Pay + Holiday Pay + Night Differential) – (SSS/PAGIBIG/PhilHealth deductions – Tardiness – Absences)
-
-          <h5>For Example:</h5>
+          <b>Taxable Income</b> = (Monthly Basic Pay + Overtime Pay + Holiday Pay + Night Differential) – (SSS/PAGIBIG/PhilHealth deductions – Tardiness – Absences) <br/><br/>
+          
+          <b>For Example:</b> <br/>
           <u>Monthly Basic Pay:</u> ₱55,000.00<br/>
           <u>Late Deduction:</u> ₱487.23<br/>
           <u>SSS Contribution:</u> ₱800.00<br/>
@@ -116,6 +124,16 @@ export default {
           = ₱2,500 + (₱19,729.77 * 0.25) <br/>
           = ₱2,500 +  ₱4,932.44 <br/>
           = <b>₱7,432.44</b>
+          `,
+        },
+        {
+          title: 'How did you calculate the deductions for Absences & Tardiness? (Payroll Calculator)',
+          content: `
+          <h4>Absences</h4>
+          <p>(Monthly Salary / No. of Working Days) * No. of Absents</p>
+
+          <h4>Tardiness</h4>
+          <p>((Monthly Salary / No. of Working Days) / 24 Hours / 60 Minutes) * Minutes of late(Tardiness)</p>
           `,
         },
       ]
