@@ -7,7 +7,6 @@
         <!-- Grid -->
         <div class="uk-width-1-1">
           <div class="uk-margin-large">
-            <!-- <h3 class="uk-text-center@m" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h3> -->
             <h3 class="uk-text-center" v-text="(isTax) ? 'Tax Calculator' : 'Payroll Calculator'"></h3>
           </div>
         </div>

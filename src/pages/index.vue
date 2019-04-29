@@ -27,7 +27,7 @@
 					<div class="uk-text-center">
 						<span uk-icon="icon: bolt; ratio: 3.5"></span>
 						<h4 class="uk-margin-small-bottom uk-margin-top uk-margin-remove-adjacent">Fast &amp; Lightweight</h4>
-						<p>Instant calculations. Less than 7MB of data is needed to use this web app.</p>
+						<p>Instant calculations. Less than 7MB of data is needed to use the Calculator.</p>
 					</div>
 					<div class="uk-text-center">
 						<span uk-icon="icon: check; ratio: 3.5"></span>

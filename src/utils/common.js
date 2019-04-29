@@ -34,7 +34,7 @@ export const computationFromTable = (salary, table) => {
  * Periodical number converter
  * 
  * - Annual = Monthly * 12 months
- * - Monthly = Annuall / 12 months
+ * - Monthly = Annual / 12 months
  * - Semi Monthly = Monthly / 2
  * - Weekly = Annual / 52 weeks
  * - Daily = Weekly / No. of working days per week
