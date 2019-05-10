@@ -136,7 +136,16 @@
             <hr>
 
             {{ currentCalendar.monthLabel }} 01 - 15 
+            <br/> Basic Pay:
+            <vue-numeric 
+              :currency="config.currency" 
+              :precision="config.precision" 
+              :value="cutOffs[0].salary" 
+              read-only
+            ></vue-numeric>
+
             <br/> Working Days: {{ this.cutOffs[0].workingDays }}
+
             <ul class="uk-list">
               <li v-for="(item, key) in filteredContributions" :key="key">
                 <strong>{{ key.toUpperCase() }}</strong> {{  `(${item.percent}%)` }}: 
@@ -248,6 +257,14 @@
             <hr>
 
             {{ currentCalendar.monthLabel }} 16 - {{ this.lastDayOfCurrentMonth }}
+            <br/> Basic Pay:
+            <vue-numeric 
+              :currency="config.currency" 
+              :precision="config.precision" 
+              :value="cutOffs[1].salary" 
+              read-only
+            ></vue-numeric>
+
             <br/> Working Days: {{ this.cutOffs[1].workingDays }}
             <ul class="uk-list">
               <li v-for="(item, key) in filteredContributions" :key="key">
@@ -518,13 +535,27 @@ export default {
     },
 
     onSalaryInput (salaryPeriod) {
-      this.salary = convertPeriodically(salaryPeriod, { [salaryPeriod]: this.salary[salaryPeriod] })
 
-      const semiMonthlySalary = (this.salary.monthly / 2).toFixedFloat(2)
-      this.cutOffs[0].salary = semiMonthlySalary
-      this.cutOffs[1].salary = semiMonthlySalary
+      // Payroll Calculator
+      if (this.isPayroll) {
+        this.computeSemiMonthlySalary()
+        this.recomputeDeductions()
+      }
 
-      this.recomputeDeductions()
+      // Tax Calcualtor
+      else {
+        this.salary = convertPeriodically(salaryPeriod, { [salaryPeriod]: this.salary[salaryPeriod] })
+      } 
+    },
+
+    computeSemiMonthlySalary() {
+      console.log('working days: ', this.workingDays)
+      const salaryPerDay = (this.salary.monthly / this.workingDays).toFixedFloat(2)
+      if (isNaN(salaryPerDay)) return false 
+
+      console.log('salary per day: ', salaryPerDay)
+      this.cutOffs[0].salary = (salaryPerDay * this.cutOffs[0].workingDays).toFixedFloat(2)
+      this.cutOffs[1].salary = (salaryPerDay * this.cutOffs[1].workingDays).toFixedFloat(2)
     },
 
     updateContributions () {
@@ -604,6 +635,8 @@ export default {
 
       this.cutOffs[0].workingDays = firstCutoff
       this.cutOffs[1].workingDays = secondCutOff
+
+      this.computeSemiMonthlySalary()
     },
 
     onInputEnter () {
@@ -685,6 +718,7 @@ export default {
     workingWeekdays: {
       handler () {
         this.configureMomentBusiness()
+        this.computeSemiMonthlySalary()
       },
       deep: true,
     },
