@@ -3,7 +3,7 @@
     <div class="uk-container">
       
       <div class="uk-flex-center uk-child-width-1-2@m" uk-grid>
-        
+
         <!-- Grid -->
         <div class="uk-width-1-1">
           <div class="uk-margin-large">
@@ -122,6 +122,12 @@
                 @dayclick="dayClicked"
                 :from-page.sync="currentCalendar" 
               ></v-calendar>
+              
+              <!-- Official Holidays -->
+              <br/><br/>
+              <button type="button" class="uk-button uk-button-primary" @click="openModal()">See All Official Holidays</button>
+              <holiday-modal ref="holidayModal"></holiday-modal>
+              <!-- ./Official Holidays -->
             </div>
           </div>
           <!-- ./Calendar -->
@@ -420,6 +426,7 @@ import contributionCalculator from '@/utils/contributions'
 import Contributions from '@/components/Contributions'
 import Settings from '@/components/Settings'
 import Result from '@/components/Result'
+import HolidayModal from '@/components/HolidayListModal'
 import moment from 'moment-business-days'
 
 export default {
@@ -427,6 +434,7 @@ export default {
     Contributions,
     Result,
     Settings,
+    HolidayModal,
   },
 
   data () {
@@ -549,11 +557,9 @@ export default {
     },
 
     computeSemiMonthlySalary() {
-      console.log('working days: ', this.workingDays)
       const salaryPerDay = (this.salary.monthly / this.workingDays).toFixedFloat(2)
       if (isNaN(salaryPerDay)) return false 
 
-      console.log('salary per day: ', salaryPerDay)
       this.cutOffs[0].salary = (salaryPerDay * this.cutOffs[0].workingDays).toFixedFloat(2)
       this.cutOffs[1].salary = (salaryPerDay * this.cutOffs[1].workingDays).toFixedFloat(2)
     },
@@ -572,6 +578,7 @@ export default {
       return toStartCase(str)
     },
 
+    // Calculate Withholding Tax and other computations
     calculate () {
       if (!this.salary.monthly) return false
 
@@ -586,6 +593,7 @@ export default {
         .scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
     },
 
+    // Click event in Calendar
     dayClicked (date) {
       const dayClicked = new Date(date.year, date.month - 1, date.day),
             currentHighlights = this.calendarAttributes[0].dates
@@ -608,7 +616,7 @@ export default {
       // Recompute deductions after clicking day in calendar
       this.recomputeDeductions()
     },
-
+    
     computeWorkingDays () {
       this.workingDays = moment(`${this.currentCalendar.year}-${this.currentCalendar.month}-01`, 'YYYY-M-DD').monthBusinessDays().length
       this.computeCutOffWorkingDays()
@@ -702,6 +710,10 @@ export default {
       // Scoll to top
       document.querySelector('#top-section')
         .scrollIntoView({behavior: "smooth"})
+    },
+
+    openModal() {
+      this.$refs.holidayModal.openModal()
     }
   },
 

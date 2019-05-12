@@ -36,6 +36,7 @@
 export default {
   data() {
     return {
+      image: require('@/assets/img/logo.png'),
       items: [
         {
           title: 'How can I use the calculator in Offline mode?',
@@ -69,7 +70,6 @@ export default {
           content: `
           <h4>Social Security System (SSS)</h4>
           Source: <a class="default-link" href="https://philpad.com/new-sss-contribution-table/" target="_blank">https://philpad.com/new-sss-contribution-table/</a>
-          <p><button class="uk-button uk-button-primary">Open SSS Table</button></p>
 
           <h4>Government Service Insurance System (GSIS)</h4>
           Source: <a class="default-link" href="https://www.gsis.gov.ph/active-members/contributions/" target="_blank">https://www.gsis.gov.ph/active-members/contributions/</a>
@@ -78,11 +78,9 @@ export default {
 
           <h4>Pagtutulungan sa Kinabukasan: Ikaw, Bangko, Industria at Gobyerno (PAGIBIG)</h4>
           Source: <a class="default-link" href="https://powerpinoys.com/new-pagibig-contribution-table/" target="_blank">https://powerpinoys.com/new-pagibig-contribution-table/</a>
-          <p><button class="uk-button uk-button-primary">Open PAGIBIG Table</button></p>
           
           <h4> Philippine Health Insurance Corporation (PhilHealth)</h4>
           Source: <a class="default-link" href="https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf" target="_blank">PDF Link</a>
-          <p><button class="uk-button uk-button-primary">Open Philhealth Table</button></p>
           `,
         },
         {
@@ -90,11 +88,9 @@ export default {
           content: `
           <h4>Withholding Tax Table (January 1, 2018 to December 31, 2022 )</h4>
           Source: <a class="default-link" href="https://www.bir.gov.ph/images/bir_files/internal_communications_2/RMCs/2018/WT%20table.pdf" target="_blank">PDF Link</a>
-          <p><button class="uk-button uk-button-primary">2018-2022 BIR Tax Table</button></p>
 
           <h4>Withholding Tax Table (January 1, 2023 onwards)</h4>
           Source: <a class="default-link" href="https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/" target="_blank">https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/</a>
-          <p><button class="uk-button uk-button-primary">2023 BIR Tax Table</button></p>
           `,
         },
         {
@@ -134,6 +130,14 @@ export default {
 
           <h4>Tardiness</h4>
           <p>((Monthly Salary / No. of Working Days) / 24 Hours / 60 Minutes) * Minutes of late(Tardiness)</p>
+          `,
+        },
+        {
+          title: 'Official Holidays Source?',
+          content: `
+          Sources: 
+          <a class="default-link" href="https://www.officeholidays.com/countries/philippines/index.php" target="_blank">2019</a>
+          <a class="default-link" href="https://publicholidays.ph/2020-dates/" target="_blank">2020</a>
           `,
         },
       ]

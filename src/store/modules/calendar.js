@@ -1,5 +1,7 @@
-import { holidaysIn2019 } from '@/utils/official-holidays'
+import holidays from '@/utils/official-holidays'
 import moment from 'moment-business-days'
+
+const currentHolidays = holidays[new Date().getFullYear()]
 
 const state = {
   calendarAttributes: [
@@ -8,7 +10,7 @@ const state = {
         backgroundColor: '#ff8080', // red
       },
       dates: [
-        ...holidaysIn2019.map(m => m.date)
+        ...currentHolidays.map(m => m.date)
       ],
     }
   ],
