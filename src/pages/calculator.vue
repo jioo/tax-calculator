@@ -137,7 +137,7 @@
 
         <!-- 1st Cutoff -->
         <div class="uk-text-center@m" v-show="isPayroll">
-          <div class="uk-margin uk-tile uk-tile-muted">
+          <div class="uk-card uk-card-body uk-card-default uk-margin-medium">
             <h5 class="uk-text-center@s">1st Cutoff</h5>
             <hr>
 
@@ -160,105 +160,117 @@
             </ul>
 
             <hr>
-
-            <div class="uk-form-horizontal">
-              
-              <!-- Other Income -->
-              <div class="uk-margin">
-                <label class="uk-form-label uk-text-right@m">Other Income</label>
-                <div class="uk-form-controls">
-                  <vue-numeric 
-                    class="uk-input uk-text-success" 
-                    :currency="config.currency" 
-                    :precision="config.precision" 
-                    v-model="cutOffs[0].otherIncome"
-                  ></vue-numeric>
-                </div>
-              </div>
-              <!-- ./Other Income -->
-
-              <!-- Other Deduction -->
-              <div class="uk-margin">
-                <label class="uk-form-label uk-text-right@m ">Other Deduction</label>
-                <div class="uk-form-controls">
-                  <vue-numeric 
-                    class="uk-input uk-text-danger" 
-                    :currency="config.currency" 
-                    :precision="config.precision"
-                    v-model="cutOffs[0].otherDeduction" 
-                  ></vue-numeric>
-                </div>
-              </div>
-              <!-- ./Other Deduction -->
-
-              <!-- No. Absent (Days) -->
-              <div class="uk-margin">
-                <label class="uk-form-label uk-text-right@m">No. of Absent (Days)</label>
-                <div class="uk-form-controls uk-text-left">
-                  <input 
-                    type="text"
-                    name="absent1"
-                    :data-vv-as="'No. Absent'"
-                    :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('absent1') }]"
-                    v-validate="`numeric|min_value:0|max_value:${this.cutOffs[0].workingDays}`" 
-                    v-model="cutOffs[0].absent"
-                    @blur="computeDeduction(0, 'absentDeduction', 'absent1')" 
-                  />
-                  <span class="uk-text-danger" v-if="errors.has('absent1')">{{ errors.first('absent1') }}</span>
-                  <div>
-                    Deduction: 
-                    <span class="uk-text-danger">
-                      <vue-numeric 
-                        :currency="config.currency" 
-                        :precision="config.precision" 
-                        :value="cutOffs[0].absentDeduction" 
-                        read-only
-                      ></vue-numeric>
-                    </span>
+            
+            <transition 
+              enter-active-class="uk-animation-slide-top-small"
+              leave-active-class="uk-animation-slide-top-small uk-animation-reverse"
+            >
+              <div class="uk-form-horizontal" v-if="advanceOptions.firstCutoff">
+                
+                <!-- Other Income -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">Other Income</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input uk-text-success" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="cutOffs[0].otherIncome"
+                    ></vue-numeric>
                   </div>
                 </div>
-              </div>
-              <!-- ./No. Absent (Days) -->
+                <!-- ./Other Income -->
 
-              <!-- No. Hours Late -->
-              <div>
-                <label class="uk-form-label uk-text-right@m">Tardiness (Minutes)</label>
-                <div class="uk-form-controls uk-text-left">
-                  <input 
-                    type="text"
-                    name="late1"
-                    :data-vv-as="'Tardiness'"
-                    :data-vv-message="{ max_value: 'Test message' }"
-                    :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('late1') }]"
-                    v-validate="`numeric|min_value:0|max_value:${this.cutOffs[0].workingDays * 24}`" 
-                    v-model="cutOffs[0].late" 
-                    @blur="computeDeduction(0, 'lateDeduction', 'late1')"
-                  />
-                  <span class="uk-text-danger" v-if="errors.has('late1')">{{ errors.first('late1') }}</span>
-                  <div>
-                    Deduction: 
-                    <span class="uk-text-danger">
-                      <vue-numeric 
-                        :currency="config.currency" 
-                        :precision="config.precision" 
-                        :value="cutOffs[0].lateDeduction" 
-                        read-only
-                      ></vue-numeric>
-                    </span>
+                <!-- Other Deduction -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m ">Other Deduction</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input uk-text-danger" 
+                      :currency="config.currency" 
+                      :precision="config.precision"
+                      v-model="cutOffs[0].otherDeduction" 
+                    ></vue-numeric>
                   </div>
                 </div>
-              </div>  
-              <!-- ./No. Hours Late -->
+                <!-- ./Other Deduction -->
 
-            </div>
+                <!-- No. Absent (Days) -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">No. of Absent (Days)</label>
+                  <div class="uk-form-controls uk-text-left">
+                    <input 
+                      type="text"
+                      name="absent1"
+                      :data-vv-as="'No. Absent'"
+                      :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('absent1') }]"
+                      v-validate="`numeric|min_value:0|max_value:${this.cutOffs[0].workingDays}`" 
+                      v-model="cutOffs[0].absent"
+                      @blur="computeDeduction(0, 'absentDeduction', 'absent1')" 
+                    />
+                    <span class="uk-text-danger" v-if="errors.has('absent1')">{{ errors.first('absent1') }}</span>
+                    <div>
+                      Deduction: 
+                      <span class="uk-text-danger">
+                        <vue-numeric 
+                          :currency="config.currency" 
+                          :precision="config.precision" 
+                          :value="cutOffs[0].absentDeduction" 
+                          read-only
+                        ></vue-numeric>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- ./No. Absent (Days) -->
 
+                <!-- No. Hours Late -->
+                <div>
+                  <label class="uk-form-label uk-text-right@m">Tardiness (Minutes)</label>
+                  <div class="uk-form-controls uk-text-left">
+                    <input 
+                      type="text"
+                      name="late1"
+                      :data-vv-as="'Tardiness'"
+                      :data-vv-message="{ max_value: 'Test message' }"
+                      :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('late1') }]"
+                      v-validate="`numeric|min_value:0|max_value:${this.cutOffs[0].workingDays * 24}`" 
+                      v-model="cutOffs[0].late" 
+                      @blur="computeDeduction(0, 'lateDeduction', 'late1')"
+                    />
+                    <span class="uk-text-danger" v-if="errors.has('late1')">{{ errors.first('late1') }}</span>
+                    <div>
+                      Deduction: 
+                      <span class="uk-text-danger">
+                        <vue-numeric 
+                          :currency="config.currency" 
+                          :precision="config.precision" 
+                          :value="cutOffs[0].lateDeduction" 
+                          read-only
+                        ></vue-numeric>
+                      </span>
+                    </div>
+                  </div>
+                </div>  
+                <!-- ./No. Hours Late -->
+
+              </div>
+            </transition>
+
+            <button 
+              type="button" 
+              class="uk-button uk-align-right uk-margin uk-button-primary" 
+              @click="toggleAdvanceOptions('firstCutoff')"
+              v-text="(advanceOptions.firstCutoff) ? 'Hide Options': 'Advance Options'"
+            >
+            </button>
           </div>
         </div>
         <!-- ./1st Cutoff -->
 
         <!-- 2nd Cutoff -->
         <div class="uk-text-center@m" v-show="isPayroll">
-          <div class="uk-margin uk-tile uk-tile-muted">
+          <div class="uk-card uk-card-body uk-card-default uk-margin-medium">
             <h5 class="uk-text-center@s">2nd Cutoff</h5>
             <hr>
 
@@ -281,102 +293,115 @@
 
             <hr>
 
-            <div class="uk-form-horizontal">
-              
-              <!-- Other Income -->
-              <div class="uk-margin">
-                <label class="uk-form-label uk-text-right@m">Other Income</label>
-                <div class="uk-form-controls">
-                  <vue-numeric 
-                    class="uk-input uk-text-success" 
-                    :currency="config.currency" 
-                    :precision="config.precision" 
-                    v-model="cutOffs[1].otherIncome"
-                  ></vue-numeric>
-                </div>
-              </div>
-              <!-- ./Other Income -->
-
-              <!-- Other Deduction -->
-              <div class="uk-margin">
-                <label class="uk-form-label uk-text-right@m ">Other Deduction</label>
-                <div class="uk-form-controls">
-                  <vue-numeric 
-                    class="uk-input uk-text-danger" 
-                    :currency="config.currency" 
-                    :precision="config.precision"
-                    v-model="cutOffs[1].otherDeduction" 
-                  ></vue-numeric>
-                </div>
-              </div>
-              <!-- ./Other Deduction -->
-
-              <!-- No. Absent (Days) -->
-              <div class="uk-margin">
-                <label class="uk-form-label uk-text-right@m">No. of Absent (Days)</label>
-                <div class="uk-form-controls uk-text-left">
-                  <input 
-                    type="text"
-                    name="absent2"
-                    :data-vv-as="'No. Absent'"
-                    :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('absent2') }]"
-                    v-validate="`numeric|min_value:0|max_value:${this.cutOffs[1].workingDays}`" 
-                    v-model="cutOffs[1].absent"
-                    @blur="computeDeduction(1, 'absentDeduction', 'absent2')" 
-                  />
-                  <span class="uk-text-danger" v-if="errors.has('absent2')">{{ errors.first('absent2') }}</span>
-                  <div>
-                    Deduction: 
-                    <span class="uk-text-danger">
-                      <vue-numeric 
-                        :currency="config.currency" 
-                        :precision="config.precision" 
-                        :value="cutOffs[1].absentDeduction" 
-                        read-only
-                      ></vue-numeric>
-                    </span>
+            <transition 
+              enter-active-class="uk-animation-slide-top-small"
+              leave-active-class="uk-animation-slide-top-small uk-animation-reverse"
+            >
+              <div class="uk-form-horizontal" v-if="advanceOptions.secondCutoff">
+                
+                <!-- Other Income -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">Other Income</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input uk-text-success" 
+                      :currency="config.currency" 
+                      :precision="config.precision" 
+                      v-model="cutOffs[1].otherIncome"
+                    ></vue-numeric>
                   </div>
                 </div>
-              </div>
-              <!-- ./No. Absent (Days) -->
+                <!-- ./Other Income -->
 
-              <!-- No. Hours Late -->
-              <div>
-                <label class="uk-form-label uk-text-right@m">Tardiness (Minutes)</label>
-                <div class="uk-form-controls uk-text-left">
-                  <input 
-                    type="text"
-                    name="late2"
-                    :data-vv-as="'Tardiness'"
-                    :data-vv-message="{ max_value: 'Test message' }"
-                    :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('late2') }]"
-                    v-validate="`numeric|min_value:0|max_value:${this.cutOffs[1].workingDays * 24}`" 
-                    v-model="cutOffs[1].late" 
-                    @blur="computeDeduction(1, 'lateDeduction', 'late2')"
-                  />
-                  <span class="uk-text-danger" v-if="errors.has('late2')">{{ errors.first('late2') }}</span>
-                  <div>
-                    Deduction: 
-                    <span class="uk-text-danger">
-                      <vue-numeric 
-                        :currency="config.currency" 
-                        :precision="config.precision" 
-                        :value="cutOffs[1].lateDeduction" 
-                        read-only
-                      ></vue-numeric>
-                    </span>
+                <!-- Other Deduction -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m ">Other Deduction</label>
+                  <div class="uk-form-controls">
+                    <vue-numeric 
+                      class="uk-input uk-text-danger" 
+                      :currency="config.currency" 
+                      :precision="config.precision"
+                      v-model="cutOffs[1].otherDeduction" 
+                    ></vue-numeric>
                   </div>
                 </div>
-              </div>  
-              <!-- ./No. Hours Late -->
+                <!-- ./Other Deduction -->
 
-            </div>
+                <!-- No. Absent (Days) -->
+                <div class="uk-margin">
+                  <label class="uk-form-label uk-text-right@m">No. of Absent (Days)</label>
+                  <div class="uk-form-controls uk-text-left">
+                    <input 
+                      type="text"
+                      name="absent2"
+                      :data-vv-as="'No. Absent'"
+                      :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('absent2') }]"
+                      v-validate="`numeric|min_value:0|max_value:${this.cutOffs[1].workingDays}`" 
+                      v-model="cutOffs[1].absent"
+                      @blur="computeDeduction(1, 'absentDeduction', 'absent2')" 
+                    />
+                    <span class="uk-text-danger" v-if="errors.has('absent2')">{{ errors.first('absent2') }}</span>
+                    <div>
+                      Deduction: 
+                      <span class="uk-text-danger">
+                        <vue-numeric 
+                          :currency="config.currency" 
+                          :precision="config.precision" 
+                          :value="cutOffs[1].absentDeduction" 
+                          read-only
+                        ></vue-numeric>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- ./No. Absent (Days) -->
+
+                <!-- No. Hours Late -->
+                <div>
+                  <label class="uk-form-label uk-text-right@m">Tardiness (Minutes)</label>
+                  <div class="uk-form-controls uk-text-left">
+                    <input 
+                      type="text"
+                      name="late2"
+                      :data-vv-as="'Tardiness'"
+                      :data-vv-message="{ max_value: 'Test message' }"
+                      :class="['uk-input uk-text-danger', { 'uk-form-danger': errors.has('late2') }]"
+                      v-validate="`numeric|min_value:0|max_value:${this.cutOffs[1].workingDays * 24}`" 
+                      v-model="cutOffs[1].late" 
+                      @blur="computeDeduction(1, 'lateDeduction', 'late2')"
+                    />
+                    <span class="uk-text-danger" v-if="errors.has('late2')">{{ errors.first('late2') }}</span>
+                    <div>
+                      Deduction: 
+                      <span class="uk-text-danger">
+                        <vue-numeric 
+                          :currency="config.currency" 
+                          :precision="config.precision" 
+                          :value="cutOffs[1].lateDeduction" 
+                          read-only
+                        ></vue-numeric>
+                      </span>
+                    </div>
+                  </div>
+                </div>  
+                <!-- ./No. Hours Late -->
+
+              </div>
+            </transition>  
+
+            <button 
+              type="button" 
+              class="uk-button uk-align-right uk-margin uk-button-primary" 
+              @click="toggleAdvanceOptions('secondCutoff')"
+              v-text="(advanceOptions.secondCutoff) ? 'Hide Options': 'Advance Options'"
+            >
+            </button>
           </div>
         </div>
         <!-- ./2nd Cutoff -->
 
         <!-- Grid -->
-        <div class="uk-width-1-1 uk-margin-medium">
+        <div class="uk-width-1-1 uk-margin-medium uk-visible@m">
           <div class="uk-flex-center" uk-grid>
             <!-- Calculate Button -->
             <div class="uk-width-1-2@m">
@@ -386,6 +411,7 @@
           </div>
         </div>
         <!-- ./Grid -->
+
 
       </div>
 
@@ -415,6 +441,12 @@
       <!-- ./Grid -->
       
     </div>
+
+    <!-- Floating Calculate Button -->
+    <div class="uk-position-fixed uk-position-bottom-right uk-padding-small uk-hidden@m">
+      <button type="button" class="uk-button uk-button-primary uk-border-rounded" @click.prevent="calculate">Calculate</button>
+    </div>
+    <!-- ./Floating Calculate Button -->
   </div>
 </template>
 
@@ -465,6 +497,10 @@ export default {
         { key: 6, label: 'Saturday', value: false },
         { key: 0, label: 'Sunday', value: false },
       ],
+      advanceOptions: {
+        firstCutoff: false,
+        secondCutoff: false,
+      },
       cutOffs: [
         {
           salary: 0,
@@ -580,7 +616,14 @@ export default {
 
     // Calculate Withholding Tax and other computations
     calculate () {
-      if (!this.salary.monthly) return false
+      if (!this.salary.monthly) {
+        this.$UIkit.notification({
+          status: 'danger',
+          message: 'Please enter your Salary..',
+          pos: 'bottom-left',
+        })
+        return false
+      }
 
       if(this.isTax) {
         const { monthly } = this.salary
@@ -712,8 +755,12 @@ export default {
         .scrollIntoView({behavior: "smooth"})
     },
 
-    openModal() {
+    openModal () {
       this.$refs.holidayModal.openModal()
+    },
+
+    toggleAdvanceOptions (val) {
+      this.advanceOptions[val] = !this.advanceOptions[val]
     }
   },
 
