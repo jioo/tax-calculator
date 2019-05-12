@@ -8,16 +8,16 @@ export default {
 
   data() {
     return {
-      title: `${new Date().getFullYear()} Philippines Tax Calculator`,
-      description: '',
+      title: `TAX PH | Philippines Tax Calculator`,
+      description: 'TAX PH is designed to help Filipino employees understand the breakdown of their taxes and how it is calculated.',
       pageUrl: 'https://www.tax-ph.com',
-      imageUrl: 'https://www.tax-ph.com/img/logo-200x200.png',
+      imageUrl: 'https://www.tax-ph.com/logo.png',
       imageType: 'image/png',
       imageWidth: '200',
       imageHeight: '200',
-      imageAlt: 'Jio',
+      imageAlt: 'TAX PH',
       twiiterCardType: 'summary',
-    };
+    }
   },
 
   metaInfo() {
@@ -51,7 +51,7 @@ export default {
         { name: 'twitter:image:alt', content: `${this.imageAlt}` },
       ],
       link: [{ rel: 'canonical', href: `${this.pageUrl}` }],
-    };
+    }
   }
-};
+}
 </script>
