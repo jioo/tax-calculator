@@ -1,5 +1,6 @@
 <template>
-  <router-view/>
+  <!-- https://github.com/chrisvfritz/prerender-spa-plugin#caveats -->
+  <router-view id="app"/>
 </template>
 
 <script>

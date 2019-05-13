@@ -9,8 +9,11 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+// https://github.com/chrisvfritz/prerender-spa-plugin#tips--troubleshooting
+document.addEventListener('DOMContentLoaded', function () {
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+})

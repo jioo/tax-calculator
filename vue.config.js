@@ -33,7 +33,7 @@ module.exports = {
       .plugin('pre-render-spa')
       .use(PrerenderSPAPlugin, [{
         staticDir: path.join(__dirname, 'dist'),
-        routes: [ '/' ]
+        routes: [ '/', '/calculator', '/faq' ]
       }])
     }
   },
