@@ -43,7 +43,7 @@ export default {
           content: `
           Just load the App once and you can use it without Internet / Data. <br/><br/>
 
-          More info: <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers" target="_blank">Link</a>
+          More info: <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers" target="_blank" rel="noreferrer">Link</a>
           `,
         },
         {
@@ -69,28 +69,28 @@ export default {
           title: 'Monthly Contributions (SSS, GSIS, PAGIBIG, PhilHealth) Formula?',
           content: `
           <h4>Social Security System (SSS)</h4>
-          Source: <a class="default-link" href="https://philpad.com/new-sss-contribution-table/" target="_blank">https://philpad.com/new-sss-contribution-table/</a>
+          Source: <a class="default-link" href="https://philpad.com/new-sss-contribution-table/" target="_blank" rel="noreferrer">https://philpad.com/new-sss-contribution-table/</a>
 
           <h4>Government Service Insurance System (GSIS)</h4>
-          Source: <a class="default-link" href="https://www.gsis.gov.ph/active-members/contributions/" target="_blank">https://www.gsis.gov.ph/active-members/contributions/</a>
+          Source: <a class="default-link" href="https://www.gsis.gov.ph/active-members/contributions/" target="_blank" rel="noreferrer">https://www.gsis.gov.ph/active-members/contributions/</a>
           <p>Section 11 of the Revised Implementing Rules and Regulations of RA 8291 approved on June 23, 2010 under Board Resolution No. 88 provides that the rate of contribution payable by 
           the member and the government agency shall be nine (9) per cent and 12 per cent, respectively, based on the actual monthly salary of the member.</p>
 
           <h4>Pagtutulungan sa Kinabukasan: Ikaw, Bangko, Industria at Gobyerno (PAGIBIG)</h4>
-          Source: <a class="default-link" href="https://powerpinoys.com/new-pagibig-contribution-table/" target="_blank">https://powerpinoys.com/new-pagibig-contribution-table/</a>
+          Source: <a class="default-link" href="https://powerpinoys.com/new-pagibig-contribution-table/" target="_blank" rel="noreferrer">https://powerpinoys.com/new-pagibig-contribution-table/</a>
           
           <h4> Philippine Health Insurance Corporation (PhilHealth)</h4>
-          Source: <a class="default-link" href="https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf" target="_blank">PDF Link</a>
+          Source: <a class="default-link" href="https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf" target="_blank" rel="noreferrer">PDF Link</a>
           `,
         },
         {
           title: '2018~2022 & 2023 BIR Withholding Tax Table?',
           content: `
           <h4>Withholding Tax Table (January 1, 2018 to December 31, 2022 )</h4>
-          Source: <a class="default-link" href="https://www.bir.gov.ph/images/bir_files/internal_communications_2/RMCs/2018/WT%20table.pdf" target="_blank">PDF Link</a>
+          Source: <a class="default-link" href="https://www.bir.gov.ph/images/bir_files/internal_communications_2/RMCs/2018/WT%20table.pdf" target="_blank" rel="noreferrer">PDF Link</a>
 
           <h4>Withholding Tax Table (January 1, 2023 onwards)</h4>
-          Source: <a class="default-link" href="https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/" target="_blank">https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/</a>
+          Source: <a class="default-link" href="https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/" target="_blank" rel="noreferrer">https://www.pinoymoneytalk.com/new-income-tax-table-rates-philippines/</a>
           `,
         },
         {
@@ -136,8 +136,8 @@ export default {
           title: 'Official Holidays Source?',
           content: `
           Sources: 
-          <a class="default-link" href="https://www.officeholidays.com/countries/philippines/index.php" target="_blank">2019</a>
-          <a class="default-link" href="https://publicholidays.ph/2020-dates/" target="_blank">2020</a>
+          <a class="default-link" href="https://www.officeholidays.com/countries/philippines/index.php" target="_blank" rel="noreferrer">2019</a>
+          <a class="default-link" href="https://publicholidays.ph/2020-dates/" target="_blank" rel="noreferrer">2020</a>
           `,
         },
       ]
