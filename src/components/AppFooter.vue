@@ -5,7 +5,7 @@
         Share it on:
       </div>
       <div class="uk-text-center uk-margin-small-top">
-        <social-sharing url="https://jioo.github.io/" inline-template>
+        <social-sharing url="https://tax-ph.netlify.com" inline-template>
           <div>
             <network network="facebook">
             <i class="fab fa-facebook-square fa-2x"></i>&nbsp;&nbsp;
