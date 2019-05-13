@@ -23,12 +23,13 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 /**
- * Test via a getter in the options object to see if the passive property is accessed
+ * Use Passive Event Listeners to Improve Scrolling Performance
  * 
- * https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners
  * https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
+ * https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners
  */
 let supportsPassive = false;
+// Test via a getter in the options object to see if the passive property is accessed
 try {
   const opts = Object.defineProperty({}, 'passive', {
     get: function() {
@@ -40,6 +41,6 @@ try {
 } catch (e) {}
 
 // Use our detect's results. passive applied if supported, capture will be false either way.
-document.addEventListener('touchstart', function(e) {
+document.addEventListener('touchstart touchmove wheel mousewheel', function(e) {
   e.preventDefault();  // does nothing since the listener is passive
-}, supportsPassive ? { passive: true } : false); 
+}, supportsPassive ? { passive: true } : false) 
