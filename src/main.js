@@ -40,6 +40,6 @@ try {
 } catch (e) {}
 
 // Use our detect's results. passive applied if supported, capture will be false either way.
-elem.addEventListener('touchstart', function(e) {
+document.addEventListener('touchstart', function(e) {
   e.preventDefault();  // does nothing since the listener is passive
 }, supportsPassive ? { passive: true } : false); 
