@@ -28,7 +28,7 @@
         with
         <span uk-icon="heart"></span>
         by
-        <a href="http://jioo.github.io" title="Justine Joshua Quiazon" target="_blank">
+        <a href="http://jioo.github.io" rel="noreferrer" title="Justine Joshua Quiazon" target="_blank">
           Justine Joshua Quiazon
         </a>
         &copy;
