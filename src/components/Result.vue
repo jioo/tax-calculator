@@ -33,7 +33,14 @@
 
         <div class="uk-width-1-1"></div>
         <div class="uk-width-auto uk-align-center uk-background-primary uk-padding uk-light uk-text-center">
-          <h4 class="uk-margin-remove">{{ taxDifference2018 }}</h4>
+          <h4 class="uk-margin-remove">
+            <vue-numeric 
+              :currency="config.currency" 
+              :precision="config.precision" 
+              :value="taxDifference2018" 
+              read-only
+            ></vue-numeric>
+          </h4>
           <h5 class="uk-margin-remove">Tax Difference</h5>
         </div>
 

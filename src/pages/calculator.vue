@@ -45,7 +45,8 @@
                 <label class="uk-form-label uk-text-right@m" v-text="`Monthly Salary`"></label>
                 <div class="uk-form-controls">
                   <vue-numeric 
-                    class="uk-input" 
+                    class="uk-input"
+                    ref="payrollMonthly" 
                     :currency="config.currency" 
                     :precision="config.precision" 
                     v-model="salary.monthly" 
@@ -63,6 +64,7 @@
                 <div class="uk-form-controls">
                   <vue-numeric 
                     class="uk-input" 
+                    :ref="key"
                     :currency="config.currency" 
                     :precision="config.precision" 
                     v-model="salary[key]" 
@@ -162,10 +164,11 @@
             <hr>
             
             <transition 
+              ref="transition1"
               enter-active-class="uk-animation-slide-top-small"
-              leave-active-class="uk-animation-slide-top-small uk-animation-reverse"
+              leave-active-class="uk-animation-slide-top-small uk-animation-fast uk-animation-reverse"
             >
-              <div class="uk-form-horizontal" v-if="advanceOptions.firstCutoff">
+              <div class="uk-form-horizontal" v-show="advanceOptions.firstCutoff">
                 
                 <!-- Other Income -->
                 <div class="uk-margin">
@@ -295,9 +298,9 @@
 
             <transition 
               enter-active-class="uk-animation-slide-top-small"
-              leave-active-class="uk-animation-slide-top-small uk-animation-reverse"
+              leave-active-class="uk-animation-slide-top-small uk-animation-fast uk-animation-reverse"
             >
-              <div class="uk-form-horizontal" v-if="advanceOptions.secondCutoff">
+              <div class="uk-form-horizontal" v-show="advanceOptions.secondCutoff">
                 
                 <!-- Other Income -->
                 <div class="uk-margin">
@@ -622,6 +625,8 @@ export default {
           message: 'Please enter your Salary..',
           pos: 'bottom-left',
         })
+        this.$refs.payrollMonthly.$el.focus();
+        this.$refs.monthly[0].$el.focus()
         return false
       }
 

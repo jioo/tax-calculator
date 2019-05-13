@@ -4,24 +4,17 @@
     <button class="uk-modal-close-default" type="button" uk-close></button>
 
     <div class="uk-modal-header">
-      <div class="uk-modal-title" uk-grid> 
-        <div>
-          <select class="uk-select adjust-dropdown" v-model="year">
-            <option v-for="(year, index) in yearList" :key="index" :value="year">{{ year }}</option>
-          </select>
-        </div>
-
-        <div>
-          <span>Official Holidays</span>
-        </div>
-
+      <div class="uk-text-center"> 
+        <select class="uk-select uk-width-auto" v-model="year">
+          <option v-for="(year, index) in yearList" :key="index" :value="year">{{ year }} Official Holidays</option>
+        </select>
       </div>
     </div>
 
-    <div class="uk-modal-body" uk-overflow-auto>
+    <div class="uk-modal-body uk-text-small uk-padding-remove" uk-overflow-auto>
       <table class="uk-table uk-table-striped uk-text-center">
         <thead>
-          <tr>
+          <tr class="uk-text-small">
               <th class="uk-text-center">Date</th>
               <th class="uk-text-center">Day</th>
               <th class="uk-text-center">Holiday</th>

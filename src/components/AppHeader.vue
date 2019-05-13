@@ -42,11 +42,11 @@
           </router-link>
 
           <router-link tag="li" to="/calculator">
-            <a v-text="'Calculator'"></a>
+            <a class="uk-text-medium" v-text="'Calculator'"></a>
           </router-link>
 
           <router-link tag="li" to="/faq">
-            <a v-text="'FAQ'"></a>
+            <a class="uk-text-medium" v-text="'FAQ'"></a>
           </router-link>
         </ul>
       </div>
@@ -66,3 +66,10 @@ export default {
   } 
 }
 </script>
+
+<style scoped>
+  .uk-text-medium {
+    font-size: 18px !important;
+  }
+</style>
+
