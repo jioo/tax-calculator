@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueAnalytics from 'vue-analytics'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   linkActiveClass: 'uk-active',
   scrollBehavior (to, from, savedPosition) {
@@ -22,3 +23,12 @@ export default new Router({
     },
   ]
 })
+
+if (process.env.NODE_ENV === 'production') {
+  Vue.use(VueAnalytics, {
+      id: '###',
+      router
+  })
+}
+
+export default router
