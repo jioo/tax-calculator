@@ -1,6 +1,11 @@
 import { computation } from './common'
 
 /**
+ * @var  int  represents the maximum safe integer in JavaScript 
+ */
+const maxINT = Number.MAX_SAFE_INTEGER;
+
+/**
  * ------------------------------------------------------
  *  Annual Tax Table
  * ------------------------------------------------------
@@ -20,12 +25,12 @@ import { computation } from './common'
  * 
  */
 export const annualTaxTable = [
-  { from: 0,  to: 250000,  taxableCompensation: 0, percentage: 0, excessOver: 0, computation, },
-  { from: 250001, to: 400000, taxableCompensation: 0, percentage: 15, excessOver: 250000, computation, },
-  { from: 400001, to: 800000, taxableCompensation: 22500, percentage: 20, excessOver: 400000, computation, },
-  { from: 800001, to: 2000000, taxableCompensation: 102500, percentage: 25, excessOver: 800000, computation, },
-  { from: 2000001, to: 8000000, taxableCompensation: 402500, percentage: 30, excessOver: 2000000, computation, },
-  { from: 8000001, to: Number.MAX_SAFE_INTEGER, taxableCompensation: 2202500, percentage: 35, excessOver: 8000000, computation, },
+  { from: 0, to: 250000, plus: 0, percentage: 0, excessOver: 0, computation, },
+  { from: 250001, to: 400000, plus: 0, percentage: 15, excessOver: 250000, computation, },
+  { from: 400001, to: 800000, plus: 22500, percentage: 20, excessOver: 400000, computation, },
+  { from: 800001, to: 2000000, plus: 102500, percentage: 25, excessOver: 800000, computation, },
+  { from: 2000001, to: 8000000, plus: 402500, percentage: 30, excessOver: 2000000, computation, },
+  { from: 8000001, to: maxINT, plus: 2202500, percentage: 35, excessOver: 8000000, computation, },
 ]
 
 /**
@@ -46,12 +51,12 @@ export const annualTaxTable = [
  * 
  */
 export const monthlyTaxTable = [
-  { from: 0,  to: 20833,  taxableCompensation: 0, percentage: 0, excessOver: 0, computation, },
-  { from: 20833, to: 33332, taxableCompensation: 0, percentage: 15, excessOver: 20833, computation, },
-  { from: 33333, to: 66666, taxableCompensation: 1875, percentage: 20, excessOver: 33333, computation, },
-  { from: 66667, to: 166666, taxableCompensation: 8541.66, percentage: 25, excessOver: 66667, computation, },
-  { from: 166667, to: 666666, taxableCompensation: 33541.66, percentage: 30, excessOver: 166667, computation, },
-  { from: 666667, to: Number.MAX_SAFE_INTEGER, taxableCompensation: 183541.66, percentage: 35, excessOver: 666667, computation, },
+  { from: 0, to: 20833, plus: 0, percentage: 0, excessOver: 0, computation, },
+  { from: 20833, to: 33332, plus: 0, percentage: 15, excessOver: 20833, computation, },
+  { from: 33333, to: 66666, plus: 1875, percentage: 20, excessOver: 33333, computation, },
+  { from: 66667, to: 166666, plus: 8541.66, percentage: 25, excessOver: 66667, computation, },
+  { from: 166667, to: 666666, plus: 33541.66, percentage: 30, excessOver: 166667, computation, },
+  { from: 666667, to: maxINT, plus: 183541.66, percentage: 35, excessOver: 666667, computation, },
 ]
 
 /**
@@ -72,10 +77,10 @@ export const monthlyTaxTable = [
  * 
  */
 export const semiMonthlyTaxTable = [
-  { from: 0,  to: 10417,  taxableCompensation: 0, percentage: 0, excessOver: 0, computation, },
-  { from: 10417, to: 16666, taxableCompensation: 0, percentage: 15, excessOver: 10417, computation, },
-  { from: 16667, to: 33332, taxableCompensation: 937.5, percentage: 20, excessOver: 16667, computation, },
-  { from: 33333, to: 83332, taxableCompensation: 4270.83, percentage: 25, excessOver: 33333, computation, },
-  { from: 83333, to: 333332, taxableCompensation: 16770.83, percentage: 30, excessOver: 83333, computation, },
-  { from: 333333, to: Number.MAX_SAFE_INTEGER, taxableCompensation: 91770.67, percentage: 35, excessOver: 333333, computation, },
+  { from: 0, to: 10417, plus: 0, percentage: 0, excessOver: 0, computation, },
+  { from: 10417, to: 16666, plus: 0, percentage: 15, excessOver: 10417, computation, },
+  { from: 16667, to: 33332, plus: 937.5, percentage: 20, excessOver: 16667, computation, },
+  { from: 33333, to: 83332, plus: 4270.83, percentage: 25, excessOver: 33333, computation, },
+  { from: 83333, to: 333332, plus: 16770.83, percentage: 30, excessOver: 83333, computation, },
+  { from: 333333, to: maxINT, plus: 91770.67, percentage: 35, excessOver: 333333, computation, },
 ]

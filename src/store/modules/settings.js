@@ -1,5 +1,5 @@
 const state = {
-  calculator: 'payroll',
+  calculator: 'tax',
   type: 'Private Employee',
   types: [
     'Private Employee',

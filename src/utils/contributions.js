@@ -19,7 +19,7 @@ const sssTable = () => {
   for (let range = 2250; range < 19750; range += rangeIncrement) {
     resultTable.push({ 
       from: range, 
-      to: range + (rangeIncrement - 0.1), 
+      to: range + (rangeIncrement - 0.01), 
       computation: baseContribution.toFixedFloat(2) 
     })
 

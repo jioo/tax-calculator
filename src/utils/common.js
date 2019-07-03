@@ -4,12 +4,12 @@ import startCase from 'lodash.startcase'
 /**
  * Main formula for computing the tax
  * 
- * Note: Arrow function throws an error when using Self Reference Object (`this.taxableCompensation`)
+ * Note: Arrow function throws an error when using Self Reference Object (`this.plus`)
  * 
  * @param {number} salary 
  */
 export const computation = function (salary) {
-  return this.taxableCompensation + ( (this.percentage / 100) * (salary - this.excessOver) ) 
+  return this.plus + ( (this.percentage / 100) * (salary - this.excessOver) ) 
 }
 
 /**
@@ -20,7 +20,7 @@ export const computation = function (salary) {
  */
 export const computationFromTable = (salary, table) => {
   return table
-    .filter(item => item.from < salary && item.to > salary)
+    .filter(item => item.from <= salary && item.to >= salary)
     .map(item => {
 
       if (typeof item.computation === 'function')
