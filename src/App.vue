@@ -11,8 +11,8 @@ export default {
     return {
       title: `TAX PH | Philippines Tax Calculator`,
       description: 'TAX PH is designed to help Filipino employees understand the breakdown of their taxes and how it is calculated.',
-      pageUrl: 'https://tax-ph.netlify.com',
-      imageUrl: 'https://tax-ph.netlify.com/logo.png',
+      pageUrl: 'https://tax-ph.com',
+      imageUrl: 'https://tax-ph.com/logo.png',
       imageType: 'image/png',
       imageWidth: '200',
       imageHeight: '200',
