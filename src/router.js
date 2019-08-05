@@ -26,7 +26,7 @@ const router = new Router({
 
 if (process.env.NODE_ENV === 'production') {
   Vue.use(VueAnalytics, {
-      id: '###',
+      id: 'UA-113519778-4',
       router
   })
 }
