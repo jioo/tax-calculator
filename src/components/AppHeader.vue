@@ -52,18 +52,26 @@
       </div>
     </div>
     <!-- ./Off Canvas -->
+
+    <ad-block-detector />
   </div>
 </template>
 
 <script>
+import AdBlockDetector from '@/components/AdBlockDetector'
+
 export default {
+  components: {
+    AdBlockDetector
+  },
+
   watch:{
     // close the off canvas nav when changing route
     $route (to, from){
       const canvas = this.$refs['offcanvas-nav']
       UIkit.offcanvas(canvas).hide();
     }
-  } 
+  }
 }
 </script>
 
@@ -71,5 +79,7 @@ export default {
   .uk-text-medium {
     font-size: 18px !important;
   }
+
+  
 </style>
 
