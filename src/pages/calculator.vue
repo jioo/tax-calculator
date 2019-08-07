@@ -620,6 +620,7 @@ export default {
     // Calculate Withholding Tax and other computations
     calculate () {
       if (!this.salary.monthly) {
+        this.$UIkit.notification.closeAll()
         this.$UIkit.notification({
           status: 'danger',
           message: 'Please enter your Salary..',
