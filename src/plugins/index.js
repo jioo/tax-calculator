@@ -1,6 +1,7 @@
 import './uikit'
 import './v-calendar'
 import './vee-validate'
+import './vue-google-adsense'
 import './vue-meta'
 import './vue-numeric'
 import './vue-slider'

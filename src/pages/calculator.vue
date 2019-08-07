@@ -414,8 +414,6 @@
           </div>
         </div>
         <!-- ./Grid -->
-
-
       </div>
 
       <!-- Result -->
@@ -443,6 +441,12 @@
       </div>
       <!-- ./Grid -->
       
+      <div class="uk-margin-large">
+        <Adsense
+          data-ad-client="ca-pub-8996756097719643">
+        </Adsense>
+      </div>
+
     </div>
 
     <!-- Floating Calculate Button -->
