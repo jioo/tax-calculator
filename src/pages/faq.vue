@@ -27,6 +27,12 @@
         </div>
         <!-- ./FAQs -->
 
+        <div class="uk-margin-large">
+          <Adsense
+            data-ad-client="ca-pub-8996756097719643">
+          </Adsense>
+        </div>
+
       </div>
     </div>
   </div>
