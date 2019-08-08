@@ -43,7 +43,6 @@
           </h4>
           <h5 class="uk-margin-remove">Tax Difference</h5>
         </div>
-
       </div>
     </div>
 
@@ -83,6 +82,12 @@
             </div>
           </div>
         </div>
+
+        <!-- <div>
+          <div class="uk-flex-around uk-child-width-1-2@m" uk-grid>
+            <ad-script src="//p361237.clksite.com/adServe/banners?tid=361237_707769_6"></ad-script>
+          </div>
+        </div> -->
         
         <div>
           <h4 class="uk-text-center@s">2023 Tax Result</h4>
@@ -147,6 +152,10 @@
               </div>
             </div>
             
+            <!-- <div>
+              <ad-script src="//p361237.clksite.com/adServe/banners?tid=361237_707769_7"></ad-script>
+            </div> -->
+            
             <div>
               <h5 class="uk-text-center@s">2nd Cutoff</h5>
               <hr>
@@ -180,6 +189,10 @@
                 ></vue-numeric>
               </div>
             </div>
+
+            <!-- <div>
+              <ad-script src="//p361237.clksite.com/adServe/banners?tid=361237_707769_8"></ad-script>
+            </div> -->
             
             <div>
               <h5 class="uk-text-center@s">2nd Cutoff</h5>

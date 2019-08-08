@@ -93,6 +93,10 @@
           <!-- Contributions (Simple Calculator) -->
           <div class="uk-card uk-card-default uk-card-body uk-text-left" v-show="isTax">
             <contributions />
+
+            <!-- <div class="uk-margin-large">
+              <ad-script src="//p361237.clksite.com/adServe/banners?tid=361237_707769_2"></ad-script>
+            </div> -->
           </div>
           <!-- ./Contributions (Simple Calculator) -->
 

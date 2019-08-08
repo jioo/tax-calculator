@@ -1,3 +1,4 @@
+import './ad-script'
 import './uikit'
 import './v-calendar'
 import './vee-validate'
