@@ -9,9 +9,12 @@ import calendar from './modules/calendar'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  // plugins: [
-  //   createPersistedState()
-  // ],
+  plugins: [
+    createPersistedState({
+      // partially persist modules
+      paths: ['contributions', 'settings', 'calendar']
+    })
+  ],
 
   modules: {
     contributions,

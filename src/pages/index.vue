@@ -37,14 +37,6 @@
 				</div>
 			</div>
     </div>
-
-    <div class="section uk-margin-top">
-      <div class="uk-container uk-container-xsmall uk-text-center">
-        <Adsense
-          data-ad-client="ca-pub-8996756097719643">
-        </Adsense>
-      </div>
-    </div>
   </div>
 </template>
 
