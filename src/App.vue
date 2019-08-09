@@ -9,8 +9,8 @@ export default {
 
   data() {
     return {
-      title: `TAX PH | Philippines Tax Calculator`,
-      description: 'TAX PH is designed to help Filipino employees understand the breakdown of their taxes and how it is calculated.',
+      title: `TAX PH`,
+      description: 'A lightweight tax calculator in the Philippines',
       pageUrl: 'https://tax-ph.com',
       imageUrl: 'https://tax-ph.com/logo.png',
       imageType: 'image/png',

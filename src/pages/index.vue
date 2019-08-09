@@ -4,7 +4,7 @@
       <div class="uk-container uk-container-xsmall uk-text-center">
         <h1 class="uk-heading-medium" style="font-weight: 600;" v-text="`${new Date().getFullYear()} Philippines Tax Calculator`"></h1>
 				<p class="uk-margin-remove uk-h3">
-          <span class="uk-text-primary">TAX PH</span> is designed to help Filipino employees understand the breakdown of their taxes and how it is calculated.
+          <span class="uk-text-primary">TAX PH</span> is designed to help Filipino understand the breakdown of their taxes and how it is calculated.
         </p>
         <router-link 
             :to="'/calculator'"
