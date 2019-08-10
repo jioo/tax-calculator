@@ -496,7 +496,7 @@ export default {
         { key: 1, label: 'Monday', value: true },
         { key: 2, label: 'Tuesday', value: true },
         { key: 3, label: 'Wednesday', value: true },
-        { key: 4, label: 'Thrusday', value: true },
+        { key: 4, label: 'Thursday', value: true },
         { key: 5, label: 'Friday', value: true },
         { key: 6, label: 'Saturday', value: false },
         { key: 0, label: 'Sunday', value: false },
