@@ -1,0 +1,3 @@
+# Redirect to primary domain
+https://tax-ph.netlify.com/* https://www.tax-ph.com/:splat 301!
+https://tax-ph.com/* https://www.tax-ph.com/:splat 301!
