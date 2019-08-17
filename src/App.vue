@@ -11,8 +11,8 @@ export default {
     return {
       title: `TAX PH`,
       description: 'A lightweight tax calculator in the Philippines',
-      pageUrl: 'https://tax-ph.com',
-      imageUrl: 'https://tax-ph.com/logo.png',
+      pageUrl: 'https://www.tax-ph.com',
+      imageUrl: 'https://www.tax-ph.com/logo.png',
       imageType: 'image/png',
       imageWidth: '200',
       imageHeight: '200',
