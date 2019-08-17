@@ -2,12 +2,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://tax-ph.com/</loc>
+    <loc>https://www.tax-ph.com/</loc>
   </url>
   <url>
-    <loc>https://tax-ph.com/calculator</loc>
+    <loc>https://www.tax-ph.com/calculator</loc>
   </url>
   <url>
-    <loc>https://tax-ph.com/faq</loc>
+    <loc>https://www.tax-ph.com/faq</loc>
   </url>
 </urlset>
