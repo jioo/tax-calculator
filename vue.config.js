@@ -52,7 +52,7 @@ module.exports = {
       // To match cross-origin requests, use a RegExp that matches
       // the start of the origin:
       runtimeCaching: [{
-        urlPattern: new RegExp('^https://www.tax-ph\.com'),
+        urlPattern: new RegExp('^https://www\.tax-ph\.com'),
         handler: 'staleWhileRevalidate',
         options: {
           // Use a custom cache name for this route.
