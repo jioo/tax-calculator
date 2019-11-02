@@ -6,6 +6,8 @@ Simple tax calculator using Vuejs + UIKit3
 
 url: https://www.tax-ph.com
 
+![Tax PH](public/img/tax-ph.jpg)
+
 ## Google's Lighthouse Score ##
 
 ![Lighthouse Score](public/img/lighthouse-score.jpg)
