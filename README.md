@@ -10,7 +10,7 @@ url: https://www.tax-ph.com
 
 ## Google's Lighthouse Score ##
 
-![Lighthouse Score](public/img/lighthouse-score.jpg)
+![Lighthouse Score](public/img/lighthouse-score-2.jpg)
 
 ## Download it on Play Store! ##
 
