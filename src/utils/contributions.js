@@ -67,20 +67,20 @@ const pagibigContribution = (salary) => {
  *  (Philhealth) Philippine Health Insurance Corporation
  * ------------------------------------------------------
  * 
- * https://www.philhealth.gov.ph/advisories/2018/adv2018-0003.pdf
+ * https://www.philhealth.gov.ph/news/2019/new_contri.php
  * 
  * 
  * | Monthly Salary Range        	| Monthly Premium         	| Personal Share        	| Employer Share        	|
  * |-----------------------------	|-------------------------	|-----------------------	|-----------------------	|
  * | ₱10,000 and below           	| ₱275.00                 	| ₱137.50               	| ₱137.50               	|
- * | ₱10,000.01 up to ₱39,999.99 	| ₱275.50 up to ₱1,099.99 	| ₱137.50 up to ₱549.99 	| ₱137.50 up to ₱549.99 	|
- * | ₱40,000 and above           	| ₱1,100.00               	| ₱550.00               	| ₱550.00               	|
+ * | ₱10,000.01 up to ₱49,999.99 	| ₱275.50 up to ₱1,375.00 	| ₱137.50 up to ₱687.50 	| ₱137.50 up to ₱687.50 	|
+ * | ₱50,000 and above           	| ₱1,375.00               	| ₱687.50               	| ₱687.50               	|
  * 
  */
 const philhealthTable = [
   { from: 0, to: 10000, computation: 137.50 },
-  { from: 10000.01, to: 39999.99, computation: (salary) => (salary * 0.0275) / 2 },
-  { from: 40000, to: Number.MAX_SAFE_INTEGER, computation: 550 },
+  { from: 10000.01, to: 49999.99, computation: (salary) => (salary * 0.0275) / 2 },
+  { from: 40000, to: Number.MAX_SAFE_INTEGER, computation: 687.5 },
 ]
 
 /**
