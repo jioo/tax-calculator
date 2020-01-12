@@ -53,4 +53,27 @@ export default {
     { date: new Date(2020, 11, 30), label: 'Rizal Day' },
     { date: new Date(2020, 11, 31), label: 'New Year\'s Eve' },
   ],
+
+  // source: https://publicholidays.ph/2021-dates/
+  2021: [
+    { date: new Date(2021, 0, 1),   label: 'New Year\'s Day' },
+    { date: new Date(2021, 1, 12),  label: 'Chinese New Year' },
+    { date: new Date(2021, 1, 25),  label: 'People Power Revolution' },
+    { date: new Date(2021, 3, 1),   label: 'Maundy Thursday' },
+    { date: new Date(2021, 3, 2),  label: 'Good Friday' },
+    { date: new Date(2021, 3, 3),  label: 'Black Saturday' },
+    { date: new Date(2021, 3, 9),  label: 'Day of Valor' },
+    { date: new Date(2021, 4, 1),   label: 'Labor Day' },
+    { date: new Date(2021, 4, 13),  label: 'Eid\'l Fitr (Feast of Ramadan)' },
+    { date: new Date(2021, 5, 12),  label: 'Independence Day' },
+    { date: new Date(2021, 6, 20),  label: 'Eidul Adha' },
+    { date: new Date(2021, 7, 21),  label: 'Ninoy Aquino Day' },
+    { date: new Date(2021, 7, 30),  label: 'National Heroes Day' },
+    { date: new Date(2021, 10, 1),  label: 'All Saint\'s Day' },
+    { date: new Date(2021, 10, 30), label: 'Bonifacio Day' },
+    { date: new Date(2021, 11, 8),  label: 'Immaculate Conception Day' },
+    { date: new Date(2021, 11, 25), label: 'Christmas Day' },
+    { date: new Date(2021, 11, 30), label: 'Rizal Day' },
+    { date: new Date(2021, 11, 31), label: 'New Year\'s Eve' },
+  ],
 }
