@@ -12,7 +12,7 @@ export default new Vuex.Store({
   plugins: [
     createPersistedState({
       // partially persist modules
-      paths: ['contributions', 'settings', 'calendar']
+      paths: ['contributions', 'settings']
     })
   ],
 
