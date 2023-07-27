@@ -76,4 +76,27 @@ export default {
     { date: new Date(2021, 11, 30), label: 'Rizal Day' },
     { date: new Date(2021, 11, 31), label: 'New Year\'s Eve' },
   ],
+
+  // source: https://publicholidays.ph/2023-dates/
+  2023: [
+    { date: new Date(2023, 0, 1),   label: 'New Year\'s Day' },
+    { date: new Date(2023, 0, 2),   label: 'New Year Holiday' },
+    { date: new Date(2023, 1, 24),  label: 'People Power Revolution' },
+    { date: new Date(2023, 3, 6),   label: 'Maundy Thursday' },
+    { date: new Date(2023, 3, 7),  label: 'Good Friday' },
+    { date: new Date(2023, 3, 8),  label: 'Black Saturday' },
+    { date: new Date(2023, 3, 10),  label: 'Day of Valor' },
+    { date: new Date(2023, 3, 21),  label: 'Eid\'l Fitr (Feast of Ramadan)' },
+    { date: new Date(2023, 4, 1),   label: 'Labor Day' },
+    { date: new Date(2023, 5, 12),  label: 'Independence Day' },
+    { date: new Date(2023, 5, 28),  label: 'Eidul Adha' },
+    { date: new Date(2023, 7, 21),  label: 'Ninoy Aquino Day' },
+    { date: new Date(2023, 7, 28),  label: 'National Heroes Day' },
+    { date: new Date(2023, 10, 1),  label: 'All Saint\'s Day' },
+    { date: new Date(2023, 10, 27), label: 'Bonifacio Day' },
+    { date: new Date(2023, 11, 8),  label: 'Immaculate Conception Day' },
+    { date: new Date(2023, 11, 25), label: 'Christmas Day' },
+    { date: new Date(2023, 11, 30), label: 'Rizal Day' },
+    { date: new Date(2023, 11, 31), label: 'New Year\'s Eve' },
+  ],
 }
