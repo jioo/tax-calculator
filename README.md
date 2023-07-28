@@ -2,7 +2,7 @@
 
 Simple tax calculator using Vuejs + UIKit3
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5ffd08f6-3541-49a0-b54c-6b1e1f91301f/deploy-status)](https://app.netlify.com/sites/tax-ph/deploys) [![paypal](https://img.shields.io/badge/paypal-donate-green.svg)](http://paypal.me/jjquiazon)
+[![paypal](https://img.shields.io/badge/paypal-donate-green.svg)](http://paypal.me/jjquiazon)
 
 url: https://www.tax-ph.com
 
@@ -11,12 +11,6 @@ url: https://www.tax-ph.com
 ## Google's Lighthouse Score ##
 
 ![Lighthouse Score](public/img/lighthouse-score-2.jpg)
-
-## Download it on Play Store! ##
-
-link: https://play.google.com/store/apps/details?id=xyz.appmaker.yuioxe
-
-![Tax PH Mobile](public/img/tax-ph-mobile.jpg)
 
 ## Features ##
 
